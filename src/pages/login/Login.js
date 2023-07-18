@@ -21,15 +21,13 @@ export function Login() {
             // dispatch(hideLoading())
                 console.log(res.data)
             dispatch(setUser(res.data))
-                toast.success(res.data.message);
-                toast('Redirecting to dashboard')
-
+                toast.success('Redirecting to dashboard');
                 navigate('/')
 
         } catch (error){
             console.log(error, 'login error')
             // dispatch(hideLoading())
-            toast.error('Something went wrong')
+            toast.error(error.response.data.message)
         }
     }
     const handleChange = (event) => {

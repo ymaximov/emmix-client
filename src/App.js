@@ -9,6 +9,8 @@ import {Login} from './pages/login/Login'
 import PublicRoute from "./routes/PublicRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {setUser, userSlice} from "./redux/slices/userSlice";
+import AdminRoute from "./routes/AdminRoute";
+import {Onboarding} from "./pages/Admin/Onboarding";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,10 @@ const router = createBrowserRouter([
     {
         path: '/login',
         element: <PublicRoute><Login /></PublicRoute>
+    },
+    {
+        path: '/admin/onboarding',
+        element: <ProtectedRoute><AdminRoute><Onboarding /></AdminRoute></ProtectedRoute>
     },
 
 ])

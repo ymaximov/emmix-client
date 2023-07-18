@@ -3,12 +3,58 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import {Badge} from "antd";
 import '../../Layout.css'
+import {useNavigate, useLocation, Link} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const user = useSelector((state) => state.user);
+    const role = user.user.role;
+    console.log(role, user)
+
+
+    const adminMenu = [
+        {
+            name: 'Home',
+            path: '/'
+        },
+        {
+            name: 'Onboarding',
+            path: '/admin/onboarding'
+        },
+        {
+            name: 'Companies',
+            path: '/admin/companies'
+        },
+        {
+            name: 'Users',
+            path: '/admin/users'
+        },
+        {
+            name: 'Billing',
+            path: '/admin/billing'
+        },
+        {
+            name: 'Reports',
+            path: '/admin/reports'
+        },
+
+
+    ]
+
+    const logout = () => {
+        localStorage.clear()
+        navigate('/login')
+    }
+
+const menuToBeRendered = role === 'admin' ? adminMenu : adminMenu
     return (
         <Disclosure as="nav" className="bg-white shadow">
             {({ open }) => (
@@ -41,42 +87,54 @@ export default function Example() {
                                 </div>
                                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                                     {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                                    <a
-                                        href="#"
-                                        className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                                    >
-                                        Dashboard
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                    >
-                                        Team
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                    >
-                                        Projects
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                    >
-                                        Calendar
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                    >
-                                        Calendar
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                    >
-                                        Calendar
-                                    </a>
+                                    {menuToBeRendered.map((menu, index) => {
+                                        const isActive = location.pathname === menu.path;
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={isActive ? 'inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900' : 'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                                            >
+                                                {<Link to={menu.path}>{menu.name}</Link>}
+                                            </div>
+                                        )
+                                    })}
+
+                                    {/*<a*/}
+                                    {/*    href="#"*/}
+                                    {/*    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"*/}
+                                    {/*>*/}
+                                    {/*    Dashboard*/}
+                                    {/*</a>*/}
+                                    {/*<a*/}
+                                    {/*    href="#"*/}
+                                    {/*    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"*/}
+                                    {/*>*/}
+                                    {/*    Team*/}
+                                    {/*</a>*/}
+                                    {/*<a*/}
+                                    {/*    href="#"*/}
+                                    {/*    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"*/}
+                                    {/*>*/}
+                                    {/*    Projects*/}
+                                    {/*</a>*/}
+                                    {/*<a*/}
+                                    {/*    href="#"*/}
+                                    {/*    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"*/}
+                                    {/*>*/}
+                                    {/*    Calendar*/}
+                                    {/*</a>*/}
+                                    {/*<a*/}
+                                    {/*    href="#"*/}
+                                    {/*    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"*/}
+                                    {/*>*/}
+                                    {/*    Calendar*/}
+                                    {/*</a>*/}
+                                    {/*<a*/}
+                                    {/*    href="#"*/}
+                                    {/*    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"*/}
+                                    {/*>*/}
+                                    {/*    Calendar*/}
+                                    {/*</a>*/}
                                 </div>
                             </div>
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -134,7 +192,7 @@ export default function Example() {
                                             </Menu.Item>
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <a
+                                                    <a onClick={logout}
                                                         href="#"
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >

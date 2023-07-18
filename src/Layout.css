@@ -1,3 +1,11 @@
 .ri-notification-line {
     font-size: 22px !important;
 }
+
+.layout {
+    margin: 6rem 3rem 0 3rem;
+}
+
+.layout-header {
+    margin-bottom: 1rem;
+}
