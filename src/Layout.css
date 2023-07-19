@@ -9,3 +9,8 @@
 .layout-header {
     margin-bottom: 1rem;
 }
+
+.logout {
+    text-decoration: underline;
+    cursor: pointer;
+}

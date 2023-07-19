@@ -1,10 +1,15 @@
 import {Layout} from "../layout/Layout";
 import { Form, Row, Col, Button, Input, Space, Tabs, Select} from "antd";
 import { countries } from 'countries-list';
+import usePost from "../../hooks/usePost";
+import {useDispatch} from "react-redux";
+import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
+import toast from 'react-hot-toast'
+import axios from 'axios'
 
 
-
-    const usStates = [
+const usStates = [
+        { label: 'Not Applicable', value: 'NONE' },
         { label: 'Alabama', value: 'AL' },
         { label: 'Alaska', value: 'AK' },
         { label: 'Arizona', value: 'AZ' },
@@ -65,6 +70,25 @@ const countryOptions = Object.keys(countries).map(countryCode => {
 });
 
 export const Onboarding = () => {
+    const dispatch = useDispatch()
+    const onFinish = async (values) => {
+        console.log("received values of form", values);
+        try {
+            dispatch(showLoading())
+            const res = await axios.post("/api/admin/create-tenant", values);
+            dispatch(hideLoading())
+            if (res.status === 200){
+                toast.success(res.data.message);
+                // navigate()
+            } else {
+                toast.error('Error Creating Company');
+            }
+        } catch (error) {
+            dispatch(hideLoading())
+            toast.error("Something went wrong");
+        }
+    }
+
     const { Option } = Select;
         return (
         <>
@@ -73,9 +97,9 @@ export const Onboarding = () => {
             <div className='layout'>
                 <h1 className='layout-header'>Company Onboarding</h1>
                 <hr/>
-                <Form layout="vertical" >
+                <Form layout="vertical" className='mt-4' onFinish={onFinish}>
                     <Row gutter={20}>
-                        <Col span={8} xs={240} s={24} lg={8} className='mt-4'>
+                        <Col span={8} xs={240} s={24} lg={8}>
                             <Form.Item
                                 required
                                 label="Company Name"
@@ -83,6 +107,16 @@ export const Onboarding = () => {
                                 rules={[{ require: true }]}
                             >
                                 <Input placeholder="Company Name"></Input>
+                            </Form.Item>
+                        </Col>
+                        <Col span={8} xs={240} s={24} lg={8}>
+                            <Form.Item
+                                required
+                                label="Email Address"
+                                name="email"
+                                rules={[{ require: true }]}
+                            >
+                                <Input placeholder="Email Address"></Input>
                             </Form.Item>
                         </Col>
                         {/*<Col span={8} xs={240} s={24} lg={8}>*/}
@@ -153,7 +187,7 @@ export const Onboarding = () => {
                             <Form.Item
                                 required
                                 label="City"
-                                name="address_2"
+                                name="city"
                                 rules={[{ require: true }]}
                             >
                                 <Input placeholder="City"></Input>
@@ -194,10 +228,17 @@ export const Onboarding = () => {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <hr></hr>
-                    <h1 className="card-title mt-3">Billing Information</h1>
                     <Row gutter={20}>
-
+                        <Col span={8} xs={240} s={24} lg={8}>
+                            <Form.Item
+                                required
+                                label="Security Code"
+                                name="security_code"
+                                rules={[{ require: true }]}
+                            >
+                                <Input placeholder="Security Code"></Input>
+                            </Form.Item>
+                        </Col>
 
 
                     </Row>

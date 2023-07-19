@@ -26,3 +26,5 @@ const usePost = (props = options) => {
     };
     return {...state, onSubmit};
 }
+
+export default usePost;
