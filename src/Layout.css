@@ -1,9 +1,9 @@
 .ri-notification-line {
-    font-size: 22px !important;
+    font-size: 1.4rem !important;
 }
 
 .layout {
-    margin: 6rem 3rem 0 3rem;
+    margin: 1rem 3rem 0 3rem;
 }
 
 .layout-header {
@@ -13,4 +13,35 @@
 .logout {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.upper-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.3rem;
+    margin-bottom: 0.7rem;
+}
+
+.upper-nav-1 {
+    /*background-color: lightgray;*/
+    display: flex;
+    flex-direction: row;
+    margin-left: 2rem;
+}
+
+.upper-nav-2 {
+    display: flex;
+    flex-direction: row;
+    margin-right: 2rem;
+
+}
+
+.company-name {
+    margin-right: 4rem;
+}
+
+@media (max-width: 1200px) {
+   .nav-right {
+       display: none;
+   }
 }

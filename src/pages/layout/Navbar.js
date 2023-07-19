@@ -72,6 +72,7 @@ const menuToBeRendered = role === 'admin' ? adminMenu : adminMenu
                                     )}
                                 </Disclosure.Button>
                             </div>
+                            {/*<div className='ml-4 nav-left flex flex-1 items-center justify-center'>{user?.user.role}</div>*/}
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex flex-shrink-0 items-center">
                                     <img
@@ -149,8 +150,11 @@ const menuToBeRendered = role === 'admin' ? adminMenu : adminMenu
                                 </button>
 
                                 {/* Right Side Items */}
-                                <div className='ml-4'>Welcome, {user?.user.first_name} {user?.user.last_name}</div>
-                                <div className='ml-4 logout' onClick={logout}>Logout</div>
+                                {/*<div className='ml-4 nav-right'>Welcome, {user?.user.first_name} {user?.user.last_name}</div>*/}
+                                {/*<div className='ml-4 logout nav-right'>My Account</div>*/}
+                                {/*<div className="ml-4">{user?.user.role}</div>*/}
+                                {/*<div className='ml-4 logout nav-right' onClick={logout}>Logout</div>*/}
+
 
                                 {/*<Menu as="div" className="relative ml-3">*/}
                                 {/*    <div>*/}

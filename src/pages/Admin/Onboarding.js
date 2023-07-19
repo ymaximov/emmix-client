@@ -94,7 +94,7 @@ export const Onboarding = () => {
         <>
             <Layout>
             </Layout>
-            <div className='layout'>
+            <div className='layout border-2 p-6'>
                 <h1 className='layout-header'>Company Onboarding</h1>
                 <hr/>
                 <Form layout="vertical" className='mt-4' onFinish={onFinish}>
@@ -207,7 +207,7 @@ export const Onboarding = () => {
                             </Form.Item>
                         </Col>
                         <Col span={8} xs={240} s={24} lg={8}>
-                            <Form.Item label="Select Country" name="country" rules={[{ require: true }]} required>
+                            <Form.Item  label="Select Country" name="country" rules={[{ require: true }]} required>
                                 <Select>
                                     {countryOptions.map(country => (
                                         <Option key={country.value} value={country.value}>
