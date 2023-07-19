@@ -94,7 +94,7 @@ export const Onboarding = () => {
         <>
             <Layout>
             </Layout>
-            <div className='layout border-2 p-6'>
+            <div className='layout'>
                 <h1 className='layout-header'>Company Onboarding</h1>
                 <hr/>
                 <Form layout="vertical" className='mt-4' onFinish={onFinish}>
