@@ -58,6 +58,7 @@ code {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5); /* This will create a semi-transparent background behind the modal */
   z-index: 9999;
+
 }
 
 .form-content {
@@ -67,4 +68,9 @@ code {
   box-shadow: 0 2px 4px slategray;
   border: 1px solid black;
   border-radius: 1rem;
+  overflow: visible;
+}
+
+.ri-close-line {
+  font-size: 1.3rem;
 }

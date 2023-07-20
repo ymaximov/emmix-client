@@ -110,7 +110,8 @@ export function Login() {
                             </button>
                         </div>
                     </form>
-
+                    <div className='mt-3'>Copyright 2023 Emmix Software Ltd.</div>
+                    <div className='mt-3'>For Assistance: helpdesk@emmixsoftware.com</div>
                     {/*<p className="mt-10 text-center text-sm text-gray-500">*/}
                     {/*    Not a member?{' '}*/}
                     {/*    <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">*/}

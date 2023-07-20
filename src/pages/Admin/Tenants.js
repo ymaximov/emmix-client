@@ -44,6 +44,7 @@ export const Tenants = () => {
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
         setDataForModal(params.data); // Pass the data from the clicked cell to the modal
+        console.log(params.data, '***Params Data***')
         setIsModalVisible(true); // Show the modal
     };
     const columnDefs = [
@@ -79,18 +80,10 @@ export const Tenants = () => {
             headerName: "Account Status",
             field: "account_status",
         },
-        // {
-        //   title: "Actions",
-        //   dataIndex: "actions",
-        //   render: (text, record) => (
-        //     <div className="d-flex">
-        //       <Link to={`/user/bp-profile/${record._id}`} className="anchor">
-        //         Edit
-        //       </Link>
-        //     </div>
-        //   ),
-        // },
     ];
+    const handleModalToggle = () => {
+        setIsModalVisible(!isModalVisible);
+    };
 
     useEffect(() => {
         getTenantsData()
@@ -98,11 +91,14 @@ export const Tenants = () => {
     return (
         <>
             <Layout />
+
             {dataForModal && (
-                <TenantProfileModal data={dataForModal} onModalData={handleModalData} />
+                <TenantProfileModal data={dataForModal} onModalData={handleModalData}isModalVisible={isModalVisible} // Pass the modal visibility state to the child component
+                                    onModalToggle={handleModalToggle}  />
             )}
+            <div className="layout">
             {tenants && tenants.length > 0 ? (
-                <div className="layout">
+                <div>
                     <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
                         <AgGridReact rowData={tenants} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
                     </div>
@@ -110,6 +106,7 @@ export const Tenants = () => {
             ) : (
                 <div>...Data is Loading</div>
             )}
+            </div>
         </>
     )
 }
