@@ -11,6 +11,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import {setUser, userSlice} from "./redux/slices/userSlice";
 import AdminRoute from "./routes/AdminRoute";
 import {Onboarding} from "./pages/Admin/Onboarding";
+import {Tenants} from "./pages/Admin/Tenants";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: '/admin/onboarding',
         element: <ProtectedRoute><AdminRoute><Onboarding /></AdminRoute></ProtectedRoute>
     },
+    {
+        path: '/admin/companies',
+        element: <ProtectedRoute><AdminRoute><Tenants /></AdminRoute></ProtectedRoute>
+    },
 
 ])
 function App() {
@@ -33,6 +38,13 @@ function App() {
 
   return (
     <div>
+        {loading && (
+            <div className="spinner-parent">
+                <div className="spinner-border" role="status">
+                    {/* <span class="sr-only">Loading...</span> */}
+                </div>
+            </div>
+        )}
       <Toaster position="top-center" reverseOrder={false} />
       <RouterProvider router={router} />
     </div>

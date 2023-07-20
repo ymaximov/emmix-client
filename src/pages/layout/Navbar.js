@@ -144,11 +144,12 @@ const menuToBeRendered = role === 'admin' ? adminMenu : adminMenu
                                     className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
                                     <span className="sr-only">View notifications</span>
-                                    <Badge count='1'>
-                                        <i className="ri-notification-line header-action-icon mr-2 px-3"></i>
+                                    <Badge count={user?.user.user_id} className='mr-1'>
+                                        <i className="ri-notification-line header-action-icon px-3"></i>
                                     </Badge>
                                 </button>
-
+                                <i className="ri-user-line ml-4 cursor-pointer"></i>
+                                <i className="ri-logout-circle-line ml-4 cursor-pointer" onClick={logout}></i>
                                 {/* Right Side Items */}
                                 {/*<div className='ml-4 nav-right'>Welcome, {user?.user.first_name} {user?.user.last_name}</div>*/}
                                 {/*<div className='ml-4 logout nav-right'>My Account</div>*/}

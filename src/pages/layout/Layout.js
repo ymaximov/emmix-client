@@ -25,8 +25,9 @@ export const Layout = () => {
             </div>
             <div className="upper-nav-2">
                 <div className='ml-4'>Welcome, {user?.user.first_name} {user?.user.last_name}</div>
-                <div className='ml-4 logout'>My Account</div>
-                <div className='ml-4 logout' onClick={logout}>Logout</div>
+                {/*<div className='ml-4 mr-4 underline'>My Account</div>*/}
+                {/*<i className="ri-logout-circle-line ml-4 mr-4 cursor-pointer" onClick={logout}></i>*/}
+                {/*<div className='logout' onClick={logout}>Logout</div>*/}
             </div>
             </div>
         <Navbar />

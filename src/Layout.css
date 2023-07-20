@@ -12,9 +12,13 @@
     margin-bottom: 1rem;
 }
 
-.logout {
-    text-decoration: underline;
-    cursor: pointer;
+
+.ri-logout-circle-line {
+    font-size: 22px !important;
+}
+
+.ri-user-line {
+    font-size: 22px !important;
 }
 
 .upper-nav {
