@@ -7,13 +7,23 @@ import {useNavigate} from "react-router-dom";
 import {countries} from "countries-list";
 
 
-export const TenantProfileModal = ({ data, onModalData, isModalVisible, onModalToggle }) => {
+export const TenantProfileModal = ({ data, onModalData, isModalVisible, onModalToggle, onFormSubmit }) => {
     // const companyId = useSelector((state) => state.user).user.companyId._id;
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate()
 
     const handleModalClose = () => {
         setShowModal(false);
+    };
+
+    const onUpdateTenantFinish = async (values) => {
+        console.log("Received values of form", values);
+        try {
+            const tenantId = data.id
+            onFormSubmit(values, tenantId);
+        } catch (error) {
+            toast.error("Something went wrong");
+        }
     };
 
         // const onFinish = async (values) => {
@@ -106,7 +116,7 @@ export const TenantProfileModal = ({ data, onModalData, isModalVisible, onModalT
 
                     <Tabs.TabPane tab="Company Information" key={0}>
                         <div>
-                            <Form layout="vertical" initialValues={data}>
+                            <Form layout="vertical" initialValues={data} onFinish={onUpdateTenantFinish}>
                                 <h1 className="card-title mt-3">Company Details</h1>
                                 <Row gutter={20}>
                                     <Col span={8} xs={240} s={24} lg={8}>

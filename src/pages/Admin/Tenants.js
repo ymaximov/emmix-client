@@ -85,6 +85,33 @@ export const Tenants = () => {
         setIsModalVisible(!isModalVisible);
     };
 
+    // Modal Handlers
+    const handleUpdateTenantDataSubmit = (formData, tenantId) => {
+        // Process the form data here (e.g., submit it to the server)
+        console.log("Form data submitted:", formData);
+        console.log('Tenant ID', tenantId)
+        // You can use axios or any other method to submit the form data to the server.
+        // Make sure to add proper error handling and success notifications.
+        // Example axios code:
+        // axios.post("/api/user/create-business-partner", formData, {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   },
+        // })
+        // .then((response) => {
+        //   if (response.data.success) {
+        //     toast.success(response.data.message);
+        //     // Additional actions if needed
+        //   } else {
+        //     toast.error(response.data.message);
+        //   }
+        // })
+        // .catch((error) => {
+        //   toast.error("Something went wrong");
+        // });
+
+    };
+
     useEffect(() => {
         getTenantsData()
     }, []);
@@ -94,7 +121,7 @@ export const Tenants = () => {
 
             {dataForModal && (
                 <TenantProfileModal data={dataForModal} onModalData={handleModalData}isModalVisible={isModalVisible} // Pass the modal visibility state to the child component
-                                    onModalToggle={handleModalToggle}  />
+                                    onModalToggle={handleModalToggle} onFormSubmit={handleUpdateTenantDataSubmit} />
             )}
             <div className="layout">
             {tenants && tenants.length > 0 ? (
