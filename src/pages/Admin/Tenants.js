@@ -6,10 +6,11 @@ import {Layout} from "../layout/Layout";
 import {useNavigate} from "react-router-dom";
 import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import useGet from "../../hooks/useGet";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useState, useEffect} from "react";
 import axios from 'axios'
 import {TenantProfileModal} from "../../modals/admin/TenantProfileModal";
+import {setTenantProfile} from "../../redux/slices/admin/tenantProfileSlice";
 
 export const Tenants = () => {
     const navigate = useNavigate()
@@ -43,10 +44,16 @@ export const Tenants = () => {
     };
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
-        setDataForModal(params.data); // Pass the data from the clicked cell to the modal
-        console.log(params.data, '***Params Data***')
-        setIsModalVisible(true); // Show the modal
+        // setDataForModal(params.data); // Pass the data from the clicked cell to the modal
+        // console.log(params.data, '***Params Data***')
+        dispatch(setTenantProfile(params.data))
+        navigate('/admin/companyprofile')
+        // setIsModalVisible(true); // Show the modal
     };
+
+    const tenant = useSelector((state) => state.tenant)
+    const user = useSelector((state) => state.user)
+    console.log(tenant, user, 'TENANT!! USER!!')
     const columnDefs = [
         // {
         //     headerName: "Tenant ID",

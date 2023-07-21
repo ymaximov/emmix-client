@@ -117,7 +117,8 @@ export const TenantProfileModal = ({ data, onModalData, isModalVisible, onModalT
                     <Tabs.TabPane tab="Company Information" key={0}>
                         <div>
                             <Form layout="vertical" initialValues={data} onFinish={onUpdateTenantFinish}>
-                                <h1 className="card-title mt-3">Company Details</h1>
+                                {/*<h1 className="card-title mt-3">Company Details</h1>*/}
+                                <h1 className='mt-3 mb-1 font-bold'>Tenant ID: {data.id}</h1>
                                 <Row gutter={20}>
                                     <Col span={8} xs={240} s={24} lg={8}>
                                         <Form.Item

@@ -12,6 +12,7 @@ import {setUser, userSlice} from "./redux/slices/userSlice";
 import AdminRoute from "./routes/AdminRoute";
 import {Onboarding} from "./pages/Admin/Onboarding";
 import {Tenants} from "./pages/Admin/Tenants";
+import {TenantProfile} from "./pages/Admin/TenantProfile";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     {
         path: '/admin/companies',
         element: <ProtectedRoute><AdminRoute><Tenants /></AdminRoute></ProtectedRoute>
+    },
+    {
+        path: '/admin/companyprofile',
+        element: <ProtectedRoute><AdminRoute><TenantProfile /></AdminRoute></ProtectedRoute>
     },
 
 ])
