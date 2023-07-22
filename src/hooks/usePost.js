@@ -13,14 +13,16 @@ const usePost = (props = options) => {
     const onSubmit = (data) => {
         setState({isLoading: true});
         const newProps = {...options, ...props};
+        const token = JSON.parse(localStorage.getItem('token')).access_token
         return axios[newProps.method](props.api, data, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${token}`
             },
         })
             .then((res) => {
                 setState({});
                 toast.success(res.data.message)
+                console.log(res, 'fetch usePut')
             })
             .catch((err) => toast.error(err?.response?.data?.message))
     };

@@ -108,3 +108,13 @@ code {
 .tenant-profile-content {
   margin-top: -1.7rem;
 }
+
+.ri-user-add-line {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.ri-close-circle-line {
+  font-size: 1.5rem;
+  cursor: pointer;
+}

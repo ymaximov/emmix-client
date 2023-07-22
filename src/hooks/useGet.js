@@ -7,11 +7,12 @@ const options = {
 
 const useGet = (props = options) => {
     const [state, setState] = useState({isLoading: true});
+    const token = JSON.parse(localStorage.getItem('token')).access_token
     useEffect(() => {
         axios
             .get(props.api, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${token}`
             },
         })
             .then((res) => setState({data: res.data}))
