@@ -13,6 +13,7 @@ import AdminRoute from "./routes/AdminRoute";
 import {Onboarding} from "./pages/Admin/Onboarding";
 import {Tenants} from "./pages/Admin/Tenants";
 import {TenantProfile} from "./pages/Admin/TenantProfile";
+import {ResetPassword} from "./pages/Admin/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,10 @@ const router = createBrowserRouter([
         path: '/admin/companyprofile',
         element: <ProtectedRoute><AdminRoute><TenantProfile /></AdminRoute></ProtectedRoute>
     },
-
+    {
+        path: '/admin/resetpassword',
+        element: <ProtectedRoute><AdminRoute><ResetPassword /></AdminRoute></ProtectedRoute>
+    },
 ])
 function App() {
   const {loading} = useSelector((state) => state.alerts)

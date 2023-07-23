@@ -15,6 +15,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {hi} from "date-fns/locale";
 import {AddNewUserModal} from "../../modals/admin/AddNewUserModal";
+import {UpdateUserModal} from "../../modals/admin/UpdateUserModal";
 
 
 export const TenantProfile = () => {
@@ -90,12 +91,12 @@ export const TenantProfile = () => {
             field: "phone",
         },
         {
-            headerName: "Account Status",
-            field: "account_status",
-        },
-        {
             headerName: "Role",
             field: "role",
+        },
+        {
+            headerName: "Account Status",
+            field: "account_status",
         },
         // {
         //     headerName: "Creation Date",
@@ -103,13 +104,17 @@ export const TenantProfile = () => {
         // },
     ];
 
+    // Update User Modal
+    const [showUpdateUserModal, setShowUpdateUserModal] = useState(false)
+    const [updateUserModallData, setUpdateUserModalData] = useState(null);
+    const closeUpdateUserModal = () => {
+        setShowUpdateUserModal(false);
+    };
     const handleCellClicked = (params) => {
-        console.log('AG GRID cell clicked', params);
-        // setDataForModal(params.data); // Pass the data from the clicked cell to the modal
-        // console.log(params.data, '***Params Data***')
-        dispatch(setTenantProfile(params.data))
-        navigate('/admin/companyprofile')
-        // setIsModalVisible(true); // Show the modal
+        console.log('AG GRID cell clickeddddd', params);
+        setUpdateUserModalData(params.data)
+        setShowUpdateUserModal(true)
+
     };
 
 
@@ -339,11 +344,12 @@ export const TenantProfile = () => {
                     </div>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab='User Accounts' key={1}>
-                    <AddNewUserModal />
+                    <AddNewUserModal getUsersData={getUsersData}/>
+                    {showUpdateUserModal && <UpdateUserModal getUsersData={getUsersData} isOpen={showUpdateUserModal} closeModal={closeUpdateUserModal} data={updateUserModallData}/>}
                     {users && users.length > 0 ? (
                         <div>
                             <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
-                                <AgGridReact rowData={users} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                                <AgGridReact rowData={users} columnDefs={columnDefs} onCellClicked={handleCellClicked} getUsersData={getUsersData}/>
                             </div>
                         </div>
                     ) : (<div>No data to show...</div>)

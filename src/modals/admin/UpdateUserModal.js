@@ -5,21 +5,32 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {ChangePasswordModal} from "../ChangePasswordModal";
 
 
-export const AddNewUserModal = ({getUsersData}) => {
+export const UpdateUserModal = ({ isOpen, data, closeModal, setRowData, getUsersData }) => {
     // const companyId = useSelector((state) => state.user).user.companyId._id;    /
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate()
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = useSelector((state) => state.tenant).tenant.id
     console.log(tenant)
+    console.log(data, 'data')
+    const [formData, setFormData] = useState({
+        // Initialize form fields based on the data received
+        first_name: data ? data.first_name : '',
+        last_name: data ? data.last_name : '',
+        email: data ? data.email : '',
+        phone: data ? data.phone : '',
+        role: data ? data.role : '',
+        // Add more form fields as needed
+    });
     // console.log(tenantID)
     const onFinish = async (values) => {
         console.log("received values of form", values);
         try {
             values.tenant_id = tenant
-            const res = await axios.post("/api/user/add-new-user", values,
+            const res = await axios.put("/api/user/update-user", values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -29,8 +40,8 @@ export const AddNewUserModal = ({getUsersData}) => {
             if (res.data.success) {
                 toast.success(res.data.message);
                 getUsersData()
-                setShowModal(false)
-                navigate('/admin/companyprofile')
+                closeModal()
+                // navigate('/admin/companyprofile')
             } else {
                 toast.error(res.data.message);
             }
@@ -39,18 +50,17 @@ export const AddNewUserModal = ({getUsersData}) => {
             console.log(error)
         }
     };
+
+
     return (
 
         <div className='new-bp-modal'>
-            <i className="ri-user-add-line" onClick={() => setShowModal(true)}></i>
-            {showModal ? (
                 <>
                     <div className='modal'>
-
                         <div className='form-content'>
-                            <i className="ri-close-circle-line" onClick={() => setShowModal(false)}></i>
-                            <h1 className='modal-title'>Add New User Account</h1>
-                            <Form layout="vertical" onFinish={onFinish}>
+                            <i className="ri-close-circle-line" onClick={closeModal}></i>
+                            <h1 className='modal-title'>Update User Account</h1>
+                            <Form layout="vertical" onFinish={onFinish} initialValues={formData}>
                                 <h1 className="card-title mt-3 mb-3">User account details</h1>
                                 <Row gutter={20}>
                                     <Col span={8} xs={240} s={24} lg={8}>
@@ -92,16 +102,6 @@ export const AddNewUserModal = ({getUsersData}) => {
                                             rules={[{ require: true }]}
                                         >
                                             <Input placeholder="Phone Number"></Input>
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={8} xs={240} s={24} lg={8}>
-                                        <Form.Item
-                                            required
-                                            label="Password"
-                                            name="password"
-                                            rules={[{ require: true }]}
-                                        >
-                                            <Input.Password placeholder="Password"></Input.Password>
                                         </Form.Item>
                                     </Col>
                                     <Col>
@@ -155,14 +155,14 @@ export const AddNewUserModal = ({getUsersData}) => {
         </Row> */}
                                 <div className="d-flex justify-content-end">
                                     <Button className="primary-button" htmlType="submit">
-                                        SUBMIT
+                                        Update
                                     </Button>
                                 </div>
                             </Form>
+                            <div className='mt-5 chp' onClick={() => navigate('/admin/resetpassword')}>Change Password</div>
                         </div>
                     </div>
                 </>
-            ) : null}
 
         </div>
     );

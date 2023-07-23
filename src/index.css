@@ -37,11 +37,10 @@ code {
   background-color: rgb(137, 53, 215) !important;
   border-color: black !important;
   height: 40px !important;
-  width: 100% !important;
+  /*width: 8rem !important;*/
   color: white !important;
   font-size: 14px !important;
   /*font-weight:900 !important;*/
-  width: 90px !important;
   margin-top: 10px;
   padding: 0.3rem;
 }
@@ -117,4 +116,12 @@ code {
 .ri-close-circle-line {
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+}
+
+.chp {
+  text-decoration: underline;
 }
