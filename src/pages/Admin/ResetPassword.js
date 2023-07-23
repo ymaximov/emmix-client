@@ -20,13 +20,10 @@ export const ResetPassword = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
-            } else {
-                toast.error(res.data.message);
-                console.log(res, 'res')
             }
         } catch (error) {
-            toast.error("Something went wrong");
-            console.log(error)
+            toast.error(error.response.data.message);
+            console.log(error.response, 'error')
         }
     };
     return (

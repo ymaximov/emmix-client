@@ -122,6 +122,8 @@ code {
   font-size: 1.5rem;
 }
 
+/*Change password div*/
 .chp {
   text-decoration: underline;
+  cursor: pointer;
 }
