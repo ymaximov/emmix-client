@@ -1,5 +1,5 @@
-import './css/crm.css'
-import {Layout} from "./layout/Layout";
+import './crm.css'
+import {Layout} from "../layout/Layout";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic, Button } from 'antd';
 import CountUp from 'react-countup';
@@ -9,8 +9,9 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useState} from "react";
-import {setTenantProfile} from "../redux/slices/admin/tenantProfileSlice";
+import React, {useState} from "react";
+import {setTenantProfile} from "../../redux/slices/admin/tenantProfileSlice";
+import {AddNewCustomerModal} from "../../modals/CRM/AddNewCustomerModal";
 
 const formatter = (value) => <CountUp end={value} separator="," />;
 
@@ -18,6 +19,10 @@ export const CRM = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [customers, setCustomers] = useState([]);
+    const [showAddNewCustomerModal, setShowAddNewCustomerModal] = useState(false)
+    const closeCreateCustomerModal = () => {
+        setShowAddNewCustomerModal(false);
+    };
 
     const columnDefs = [
         // {
@@ -66,7 +71,8 @@ export const CRM = () => {
         <Layout />
             <div className='layout'>
                 <div className='crm-top mb-10'>
-
+                    <i className="ri-user-add-line" onClick={() => setShowAddNewCustomerModal(true)}></i>
+                    {showAddNewCustomerModal && <AddNewCustomerModal  setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
                 </div>
                 <div>
                     <Row gutter={16} className='mt-5'>

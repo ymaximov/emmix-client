@@ -14,7 +14,8 @@ import {Onboarding} from "./pages/Admin/Onboarding";
 import {Tenants} from "./pages/Admin/Tenants";
 import {TenantProfile} from "./pages/Admin/TenantProfile";
 import {ResetPassword} from "./pages/Admin/ResetPassword";
-import {CRM} from "./pages/Crm";
+import {CRM} from "./pages/CRM/Crm";
+import {AddNewCustomer} from "./pages/CRM/AddNewCustomer";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
     {
         path: '/crm',
         element: <ProtectedRoute><CRM /></ProtectedRoute>
+    },
+    {
+        path: '/crm/addnewcustomer',
+        element: <ProtectedRoute><AddNewCustomer /></ProtectedRoute>
     },
 ])
 function App() {

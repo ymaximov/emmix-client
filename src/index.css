@@ -42,7 +42,7 @@ code {
   font-size: 14px !important;
   /*font-weight:900 !important;*/
   margin-top: 10px;
-  padding: 0.3rem;
+  padding: 0.5rem;
 }
 
 /*Modals*/
@@ -66,6 +66,8 @@ code {
   padding: 2.5rem !important;
   box-shadow: 0 2px 4px slategray;
   border: 1px solid black;
+  height: 50rem;
+  width: 65rem;
   border-radius: 1rem;
   overflow: visible;
   z-index: 9999;
