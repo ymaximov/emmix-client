@@ -71,6 +71,7 @@ const countryOptions = Object.keys(countries).map(countryCode => {
 
 export const Onboarding = () => {
     const dispatch = useDispatch()
+    const [form] = Form.useForm();
     const onFinish = async (values) => {
         console.log("received values of form", values);
         try {
@@ -79,6 +80,7 @@ export const Onboarding = () => {
             dispatch(hideLoading())
             if (res.status === 200){
                 toast.success(res.data.message);
+                form.resetFields()
                 // navigate()
             } else {
                 toast.error('Error Creating Company');
@@ -97,7 +99,7 @@ export const Onboarding = () => {
             <div className='layout'>
                 <h1 className='layout-header'>Company Onboarding</h1>
                 <hr/>
-                <Form layout="vertical" className='mt-4' onFinish={onFinish}>
+                <Form layout="vertical" className='mt-4' onFinish={onFinish} form={form}>
                     <Row gutter={20}>
                         <Col span={8} xs={240} s={24} lg={8}>
                             <Form.Item
@@ -135,7 +137,7 @@ export const Onboarding = () => {
                         <Col span={8} xs={240} s={24} lg={8}>
                             <Form.Item
                                 required
-                                label="Main Contact First Name"
+                                label="First Name"
                                 name="first_name"
                                 rules={[{ require: true }]}
                             >
@@ -145,7 +147,7 @@ export const Onboarding = () => {
                         <Col span={8} xs={240} s={24} lg={8}>
                             <Form.Item
                                 required
-                                label="Main Contact Last Name"
+                                label="Last Name"
                                 name="last_name"
                                 rules={[{ require: true }]}
                             >
@@ -167,7 +169,7 @@ export const Onboarding = () => {
                         <Col span={8} xs={240} s={24} lg={8}>
                             <Form.Item
                                 required
-                                label="Address 1"
+                                label="Address"
                                 name="address_1"
                                 rules={[{ require: true }]}
                             >
@@ -245,7 +247,7 @@ export const Onboarding = () => {
 
                     <div className="d-flex justify-content-end">
                         <Button className="primary-button" htmlType="submit">
-                            Submit
+                            Add +
                         </Button>
                     </div>
                 </Form>

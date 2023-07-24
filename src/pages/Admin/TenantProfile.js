@@ -195,6 +195,21 @@ export const TenantProfile = () => {
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <Form.Item
                                         required
+                                        name="account_status" // Use the name prop to link the form field with form data
+                                        label="Account Status"
+                                        rules={[{ required: true, message: 'Please select an account type' }]}
+                                    >
+                                        <select className="bp-type custom-select">
+                                            <option>--Please Select an Option--</option>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                            <option value="deleted">Deleted</option>
+                                        </select>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={8} xs={240} s={24} lg={8}>
+                                    <Form.Item
+                                        required
                                         label="Company Name"
                                         name="company_name"
                                         rules={[{ require: true }]}
@@ -332,8 +347,6 @@ export const TenantProfile = () => {
                                         <Input placeholder="Security Code"></Input>
                                     </Form.Item>
                                 </Col>
-
-
                             </Row>
                             <div className="d-flex justify-content-end">
                                 <Button className="primary-button" htmlType="submit">

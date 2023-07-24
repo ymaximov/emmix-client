@@ -23,6 +23,8 @@ export const UpdateUserModal = ({ isOpen, data, closeModal, setRowData, getUsers
         email: data ? data.email : '',
         phone: data ? data.phone : '',
         role: data ? data.role : '',
+        account_status: data ? data.account_status : '',
+
         // Add more form fields as needed
     });
     // console.log(tenantID)
@@ -62,6 +64,23 @@ export const UpdateUserModal = ({ isOpen, data, closeModal, setRowData, getUsers
                             <h1 className='modal-title'>Update User Account</h1>
                             <Form layout="vertical" onFinish={onFinish} initialValues={formData}>
                                 <h1 className="card-title mt-3 mb-3">User account details</h1>
+                                <Row gutter={20}>
+                                    <Col span={8} xs={240} s={24} lg={8}>
+                                        <Form.Item
+                                            required
+                                            name="account_status" // Use the name prop to link the form field with form data
+                                            label="Account Status"
+                                            rules={[{ required: true, message: 'Please select an account type' }]}
+                                        >
+                                            <select className="bp-type custom-select">
+                                                <option>--Please Select an Option--</option>
+                                                <option value="active">Active</option>
+                                                <option value="inactive">Inactive</option>
+                                                <option value="deleted">Deleted</option>
+                                            </select>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
                                 <Row gutter={20}>
                                     <Col span={8} xs={240} s={24} lg={8}>
                                         <Form.Item

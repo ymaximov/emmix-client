@@ -1,0 +1,44 @@
+.quick-actions {
+    display: flex;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    width: 20rem;
+    height: 20rem;
+    padding: 1rem;
+}
+
+.quick-actions-button {
+    background-color: lightgray;
+    border: 1px solid black;
+    /*margin-left: 1rem;*/
+    margin-right: 1rem;
+    margin-top: 1rem;
+}
+
+.top-menus {
+    display: flex;
+}
+
+.crm-top {
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    height: 5rem;
+}
+
+@media screen and (max-width: 414px) {
+    .quick-actions {
+        display: flex;
+        /*border: 1px solid black;*/
+        border-radius: 0.5rem;
+        width: 15rem;
+        height: 20rem;
+        padding: 1rem;
+    }
+    .quick-actions-button {
+        background-color: lightgray;
+        border: 1px solid black;
+        /*margin-left: 1rem;*/
+        margin-right: 1rem;
+        margin-top: 1rem;
+    }
+}

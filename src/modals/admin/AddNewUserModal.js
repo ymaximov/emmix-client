@@ -14,6 +14,7 @@ export const AddNewUserModal = ({getUsersData}) => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = useSelector((state) => state.tenant).tenant.id
     console.log(tenant)
+    const [form] = Form.useForm()
     // console.log(tenantID)
     const onFinish = async (values) => {
         console.log("received values of form", values);
@@ -31,6 +32,7 @@ export const AddNewUserModal = ({getUsersData}) => {
                 getUsersData()
                 setShowModal(false)
                 navigate('/admin/companyprofile')
+                form.resetFields()
             } else {
                 toast.error(res.data.message);
             }
@@ -50,7 +52,7 @@ export const AddNewUserModal = ({getUsersData}) => {
                         <div className='form-content'>
                             <i className="ri-close-circle-line" onClick={() => setShowModal(false)}></i>
                             <h1 className='modal-title'>Add New User Account</h1>
-                            <Form layout="vertical" onFinish={onFinish}>
+                            <Form layout="vertical" onFinish={onFinish} form={form}>
                                 <h1 className="card-title mt-3 mb-3">User account details</h1>
                                 <Row gutter={20}>
                                     <Col span={8} xs={240} s={24} lg={8}>
@@ -101,7 +103,7 @@ export const AddNewUserModal = ({getUsersData}) => {
                                             name="password"
                                             rules={[{ require: true }]}
                                         >
-                                            <Input.Password placeholder="Password"></Input.Password>
+                                            <Input.Password  className="custom-password-input"  placeholder="Password"></Input.Password>
                                         </Form.Item>
                                     </Col>
                                     <Col>
@@ -111,7 +113,7 @@ export const AddNewUserModal = ({getUsersData}) => {
                                             label="Account Type"
                                             rules={[{ required: true, message: 'Please select an account type' }]}
                                         >
-                                            <select className="bp-type">
+                                            <select className="bp-type custom-select">
                                                 <option>--Please Select an Option--</option>
                                                 <option value="admin">Admin</option>
                                                 <option value="super user">Super User</option>

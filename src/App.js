@@ -14,6 +14,7 @@ import {Onboarding} from "./pages/Admin/Onboarding";
 import {Tenants} from "./pages/Admin/Tenants";
 import {TenantProfile} from "./pages/Admin/TenantProfile";
 import {ResetPassword} from "./pages/Admin/ResetPassword";
+import {CRM} from "./pages/Crm";
 
 const router = createBrowserRouter([
   {
@@ -26,19 +27,23 @@ const router = createBrowserRouter([
     },
     {
         path: '/admin/onboarding',
-        element: <ProtectedRoute><AdminRoute><Onboarding /></AdminRoute></ProtectedRoute>
+        element: <AdminRoute><Onboarding /></AdminRoute>
     },
     {
         path: '/admin/companies',
-        element: <ProtectedRoute><AdminRoute><Tenants /></AdminRoute></ProtectedRoute>
+        element: <AdminRoute><Tenants /></AdminRoute>
     },
     {
         path: '/admin/companyprofile',
-        element: <ProtectedRoute><AdminRoute><TenantProfile /></AdminRoute></ProtectedRoute>
+        element: <AdminRoute><TenantProfile /></AdminRoute>
     },
     {
         path: '/admin/resetpassword',
-        element: <ProtectedRoute><AdminRoute><ResetPassword /></AdminRoute></ProtectedRoute>
+        element: <AdminRoute><ResetPassword /></AdminRoute>
+    },
+    {
+        path: '/crm',
+        element: <ProtectedRoute><CRM /></ProtectedRoute>
     },
 ])
 function App() {

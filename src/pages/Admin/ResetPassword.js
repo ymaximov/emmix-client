@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 export const ResetPassword = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
-
+    const [form] = Form.useForm();
     const onFinish = async (values) => {
         console.log("received values of form", values);
         try {
@@ -20,6 +20,9 @@ export const ResetPassword = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
+                form.resetFields()
+            } else {
+                toast.eror(res.data.message)
             }
         } catch (error) {
             toast.error(error.response.data.message);
@@ -30,7 +33,7 @@ export const ResetPassword = () => {
         <>
             <Layout />
             <div className='layout'>
-            <Form layout="vertical" className='mt-4' onFinish={onFinish}>
+            <Form layout="vertical" className='mt-4' onFinish={onFinish} form={form}>
                 <Row gutter={20}>
                     <Col span={8} xs={240} s={24} lg={8}>
                         <Form.Item

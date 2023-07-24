@@ -22,7 +22,7 @@ export default function Example() {
 
     const adminMenu = [
         {
-            name: 'Home',
+            name: 'Dashboard',
             path: '/'
         },
         {
@@ -48,13 +48,47 @@ export default function Example() {
 
 
     ]
+    const userMenu = [
+        {
+            name: 'Dashboard',
+            path: '/'
+        },
+        {
+            name: 'CRM',
+            path: '/crm'
+        },
+        {
+            name: 'Sales',
+            path: '/service'
+        },
+        {
+            name: 'Service',
+            path: '/service'
+        },
+        {
+            name: 'Purchasing',
+            path: '/purchasing'
+        },
+        {
+            name: 'Inventory',
+            path: '/inventory'
+        },
+        {
+            name: 'Accounting',
+            path: '/accounting'
+        },
+        {
+            name: 'Reports',
+            path: '/reports'
+        },
+    ]
 
     const logout = () => {
         localStorage.clear()
         navigate('/login')
     }
 
-const menuToBeRendered = role === 'admin' ? adminMenu : adminMenu
+const menuToBeRendered = role === 'admin' ? adminMenu : userMenu
     return (
         <Disclosure as="nav" className="bg-white shadow">
             {({ open }) => (

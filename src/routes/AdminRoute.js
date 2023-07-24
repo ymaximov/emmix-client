@@ -12,8 +12,13 @@ export default function AdminRoute(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
-        // const user = JSON.parse(localStorage.getItem('token'))
-        // dispatch(setUser(user))
+        const user = JSON.parse(localStorage.getItem('token'))
+        dispatch(setUser(user))
+        if(user == null || user == undefined) {
+            console.log(user)
+            navigate('/login')
+            return
+        }
         if( role !== 'admin') {
             console.log(role);
             toast.error('You do not have permission to view this page')
@@ -21,6 +26,7 @@ export default function AdminRoute(props) {
             return
         }
     }, []);
+    if(user === "loading") return "..."
     return props.children
 }
 
