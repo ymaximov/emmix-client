@@ -70,7 +70,7 @@ export const CRM = () => {
         <>
         <Layout />
             <div className='layout'>
-                <div className='crm-top mb-10'>
+                <div className='crm-top mb-4'>
                     <i className="ri-user-add-line" onClick={() => setShowAddNewCustomerModal(true)}></i>
                     {showAddNewCustomerModal && <AddNewCustomerModal  setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
                 </div>

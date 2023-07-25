@@ -4,6 +4,7 @@ import {UpdateUserModal} from "../../modals/admin/UpdateUserModal";
 import {AgGridReact} from "ag-grid-react";
 import {countries} from "countries-list";
 import React, {useState} from "react";
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 
 export const AddNewCustomerModal = ({setShowAddNewCustomerModal}) => {
     const usStates = [
@@ -76,192 +77,292 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal}) => {
             <div className="modal">
                 <div className="form-content">
                     <i className="ri-close-circle-line" onClick={handleClose}></i>
+                    <Form layout="vertical">
             <Tabs>
-
                 <Tabs.TabPane tab="Customer Information" key={0}>
                     <div>
-                        <Form layout="vertical">
                             {/*<h1 className="card-title mt-3">Company Details</h1>*/}
+                            <Row gutter={20}>
+                                <Col span={8} xs={240} s={24} lg={8}>
+                                    <div>
+                                        <label htmlFor="tax_id" className="block text-sm font-medium leading-6 text-gray-900">
+                                            VAT/Tax ID
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="text"
+                                                name="tax_id"
+                                                id="tax_id"
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                placeholder="VAT/Tax ID"
+                                            />
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col span={8} xs={240} s={24} lg={8}>
+                                    <div>
+                                        <label htmlFor="company_name" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Company Name
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="text"
+                                                name="company_name"
+                                                id="company_name"
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                placeholder="Company Name"
+                                            />
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col span={8} xs={240} s={24} lg={8}>
+                                    <div>
+                                        <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Phone Number
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="text"
+                                                name="phone"
+                                                id="phone"
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                placeholder="Phone Number"
+                                            />
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
 
                             <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item
-                                        label="VAT/Tax ID"
-                                        name="tax_d"
-                                        rules={[{ require: false }]}
-                                    >
-                                        <Input placeholder="VAT/Tax ID"></Input>
-                                    </Form.Item>
+                                    <div>
+                                        <label htmlFor="address_1" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Address 1
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="text"
+                                                name="address_1"
+                                                id="address_1"
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                placeholder="Address 1"
+                                            />
+                                        </div>
+                                    </div>
                                 </Col>
                                 <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item
-                                        label="Company Name"
-                                        name="company_name"
-                                        rules={[{ require: false }]}
-                                    >
-                                        <Input placeholder="Company Name"></Input>
-                                    </Form.Item>
+                                    <div>
+                                        <label htmlFor="address_2" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Address 2
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="text"
+                                                name="address_2"
+                                                id="address_2"
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                placeholder="e.g. floor or suite no."
+                                            />
+                                        </div>
+                                    </div>
                                 </Col>
                                 <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item
-                                        label="Phone Number"
-                                        name="phone"
-                                        rules={[{ require: false }]}
-                                    >
-                                        <Input placeholder="Phone Number"></Input>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={20}>
-                                <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item
-                                        label="Address 1"
-                                        name="address_1"
-                                        rules={[{ require: false }]}
-                                    >
-                                        <Input placeholder="Address 1"></Input>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item
-                                        label="Address 2"
-                                        name="address_2"
-                                        rules={[{ require: false }]}
-                                    >
-                                        <Input placeholder="Address 2"></Input>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item
-                                        label="City"
-                                        name="city"
-                                        rules={[{ require: false }]}
-                                    >
-                                        <Input placeholder="City"></Input>
-                                    </Form.Item>
+                                    <div>
+                                        <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
+                                            City
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="text"
+                                                name="city"
+                                                id="city"
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                placeholder="city"
+                                            />
+                                        </div>
+                                    </div>
                                 </Col>
                             </Row>
                             <Row gutter={20}>
+                               <Col span={8} xs={240} s={24} lg={8}>
+                                   <div>
+                                       <label htmlFor="state" className="block text-sm font-medium leading-6 text-gray-900">
+                                           State
+                                       </label>
+                                       <select
+                                           id="state"
+                                           name="state"
+                                           className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                           defaultValue="Un"
+                                       >
+                                           {usStates.map(state => (
+                                               <option key={state.value} value={state.value}>
+                                                   {state.label}
+                                               </option>
+                                           ))}
+                                       </select>
+                                   </div>
+                               </Col>
                                 <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item label="Select State" name="state" rules={[{ require: false }]}>
-                                        <Select>
-                                            {usStates.map(state => (
-                                                <Option key={state.value} value={state.value}>
-                                                    {state.label}
-                                                </Option>
-                                            ))}
-                                        </Select>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item  label="Select Country" name="country" rules={[{ require: true }]}>
-                                        <Select>
-                                            {countryOptions.map(country => (
-                                                <Option key={country.value} value={country.value}>
-                                                    {country.label}
-                                                </Option>
-                                            ))}
-                                        </Select>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8} xs={240} s={24} lg={8}>
-                                    <Form.Item
-                                        label="Postal Code"
-                                        name="postal_code"
-                                        rules={[{ require: false }]}
-                                    >
-                                        <Input placeholder="Postal Code"></Input>
-                                    </Form.Item>
+                                    <div>
+                                        <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Country
+                                        </label>
+                                        <select
+                                            id="country"
+                                            name="country"
+                                            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            defaultValue="United States"
+                                        >
+                                                {countryOptions.map(country => (
+                                                    <option key={country.value} value={country.value}>
+                                                        {country.label}
+                                                    </option>
+                                                ))}
+                                        </select>
+                                    </div>
                                 </Col>
                             </Row>
                             <Row gutter={20}>
                                 <Col>
-                                    <Form.Item
-                                        name="role" // Use the name prop to link the form field with form data
-                                        label="Customer Type"
-                                        rules={[{ required: false, message: 'Please select a type' }]}
-                                    >
-                                        <select className="bp-type custom-select">
+                                    <div>
+                                        <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Customer Type
+                                        </label>
+                                        <select
+                                            id="customer_type"
+                                            name="customer_type"
+                                            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            defaultValue="Canada"
+                                        >
                                             <option>--Please Select an Option--</option>
                                             <option value="commercial">Commercial</option>
                                             <option value="government">Government</option>
                                             <option value="individual">Individual</option>
                                         </select>
-                                    </Form.Item>
+                                    </div>
                                 </Col>
                             </Row>
-                            <div className="d-flex justify-content-end">
-                                <Button className="primary-button" htmlType="submit">
-                                    Save
-                                </Button>
-                            </div>
-                        </Form>
                     </div>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab='Contact Information' key={1}>
-                    <Form layout="vertical">
                         {/*<h1 className="card-title mt-3">Company Details</h1>*/}
 
                         <Row gutter={20}>
                             <Col span={8} xs={240} s={24} lg={8}>
-                                <Form.Item
-                                    label="Contact Name"
-                                    name="tcontact_name"
-                                    rules={[{ require: false }]}
-                                >
-                                    <Input placeholder="e.g. CEO"></Input>
-                                </Form.Item>
+                                <div>
+                                    <label htmlFor="contact_name" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Contact Name
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="contact_name"
+                                            id="contact_name"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="e.g. CEO, Account Manager"
+                                        />
+                                    </div>
+                                </div>
                             </Col>
                             <Col span={8} xs={240} s={24} lg={8}>
-                                <Form.Item
-                                    label="First Name"
-                                    name="first_name"
-                                    rules={[{ require: false }]}
-                                >
-                                    <Input placeholder="First Name"></Input>
-                                </Form.Item>
+                                <div>
+                                    <label htmlFor="first_name" className="block text-sm font-medium leading-6 text-gray-900">
+                                        First Name
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="first_name"
+                                            id="first_name"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="First Name"
+                                        />
+                                    </div>
+                                </div>
                             </Col>
                             <Col span={8} xs={240} s={24} lg={8}>
-                                <Form.Item
-                                    label="Last Name"
-                                    name="last_name"
-                                    rules={[{ require: false }]}
-                                >
-                                    <Input placeholder="Last Name"></Input>
-                                </Form.Item>
+                                <div>
+                                    <label htmlFor="last_name" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Last Name
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="last_name"
+                                            id="last_name"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="Last Name"
+                                        />
+                                    </div>
+                                </div>
                             </Col>
                         </Row>
                         <Row gutter={20}>
                             <Col span={8} xs={240} s={24} lg={8}>
-                                <Form.Item
-                                    label="Phone Number"
-                                    name="contact_phone"
-                                    rules={[{ require: false }]}
-                                >
-                                    <Input placeholder="Phone Number"></Input>
-                                </Form.Item>
+                                <div>
+                                    <label htmlFor="contact_phone" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Phone Number
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="contact_phone"
+                                            id="contact_phone"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="Phone Number"
+                                        />
+                                    </div>
+                                </div>
                             </Col>
                             <Col span={8} xs={240} s={24} lg={8}>
-                                <Form.Item
-                                    label="Email Address"
-                                    name="email"
-                                    rules={[{ require: false }]}
-                                >
-                                    <Input placeholder="Address 2"></Input>
-                                </Form.Item>
+                                <div>
+                                    <label htmlFor="last_name" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Last Name
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="last_name"
+                                            id="last_name"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="Last Name"
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+                            <Col span={8} xs={240} s={24} lg={8}>
+                                <div>
+                                    <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Email
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            id="email"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="you@example.com"
+                                        />
+                                    </div>
+                                </div>
                             </Col>
                         </Row>
-                        <div className="d-flex justify-content-end">
-                            <Button className="primary-button" htmlType="submit">
-                                Save
-                            </Button>
-                        </div>
-                    </Form>
+
                 </Tabs.TabPane>
                 <Tabs.TabPane tab='Billing Information' key={2}></Tabs.TabPane>
                 <Tabs.TabPane tab='Details' key={3}>
                 </Tabs.TabPane>
             </Tabs>
+                        <div className="d-flex justify-content-end">
+                            <button
+                                type="submit"
+                                className="mt-3 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Save
+                            </button>
+                        </div>
+        </Form>
             </div>
             </div>
         </>
