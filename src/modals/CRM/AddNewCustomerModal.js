@@ -9,7 +9,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import {useSelector} from "react-redux";
 
-export const AddNewCustomerModal = ({setShowAddNewCustomerModal}) => {
+export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersData}) => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = useSelector((state) => state.user).user.tenant_id
 
@@ -132,6 +132,7 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal}) => {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
                 console.log('Form submitted successfully!');
+                getCustomersData()
                 handleClose()
             } else {
                 toast.error(res.data.message)
@@ -190,14 +191,14 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal}) => {
                                 </Col>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
-                                        <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="phone_1" className="block text-sm font-medium leading-6 text-gray-900">
                                             Phone Number
                                         </label>
                                         <div className="mt-2">
                                             <input
                                                 type="text"
-                                                name="phone"
-                                                id="phone"
+                                                name="phone_1"
+                                                id="phone_1"
                                                 onChange={handleChange}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 placeholder="212-619-9200"

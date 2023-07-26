@@ -8,20 +8,46 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import React, {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import React, {useEffect, useState} from "react";
 import {setTenantProfile} from "../../redux/slices/admin/tenantProfileSlice";
 import {AddNewCustomerModal} from "../../modals/CRM/AddNewCustomerModal";
+import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
+import axios from "axios";
 
 const formatter = (value) => <CountUp end={value} separator="," />;
 
 export const CRM = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const token = JSON.parse(localStorage.getItem('token')).access_token;
+    const tenant = useSelector((state) => state.user).user.tenant_id
+    console.log(tenant)
     const [customers, setCustomers] = useState([]);
     const [showAddNewCustomerModal, setShowAddNewCustomerModal] = useState(false)
     const closeCreateCustomerModal = () => {
         setShowAddNewCustomerModal(false);
+    };
+
+    const getCustomersData = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/crm/get-all-customers-by-tenant-id/${tenant}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            console.log('TENANT ID', tenant)
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setCustomers(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
     };
 
     const columnDefs = [
@@ -47,15 +73,15 @@ export const CRM = () => {
         },
         {
             headerName: "Phone Number",
-            field: "phone",
+            field: "phone_1",
         },
         {
-            headerName: "Security Code",
-            field: "security_code",
+            headerName: "Customer Type",
+            field: "customer_type",
         },
         {
-            headerName: "Account Status",
-            field: "account_status",
+            headerName: "Status",
+            field: "status",
         },
     ];
     const handleCellClicked = (params) => {
@@ -66,13 +92,16 @@ export const CRM = () => {
         navigate('/admin/companyprofile')
         // setIsModalVisible(true); // Show the modal
     };
+    useEffect(() => {
+        getCustomersData()
+    }, []);
     return (
         <>
         <Layout />
             <div className='layout'>
                 <div className='crm-top mb-4'>
                     <i className="ri-user-add-line" onClick={() => setShowAddNewCustomerModal(true)}></i>
-                    {showAddNewCustomerModal && <AddNewCustomerModal  setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
+                    {showAddNewCustomerModal && <AddNewCustomerModal  getCustomersData={getCustomersData} setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
                 </div>
                 <div>
                     <Row gutter={16} className='mt-5'>
@@ -110,9 +139,15 @@ export const CRM = () => {
                             <Statistic title="Account Balance (CNY)" value={112893} precision={2} formatter={formatter} />
                         </Col>
                     </Row>
-                    <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
-                        <AgGridReact rowData={customers} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
-                    </div>
+                    {customers && customers.length > 0 ? (
+                        <div>
+                            <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
+                                <AgGridReact rowData={customers} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                            </div>
+                        </div>
+                    ) : (
+                        <div>...Data is Loading</div>
+                    )}
                 </div>
 
 
