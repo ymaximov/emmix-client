@@ -25,6 +25,7 @@
     "countries-list": "^2.6.1",
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",
+    "formik": "^2.4.2",
     "jspdf": "^2.5.1",
     "pdfmake": "^0.2.7",
     "react": "^18.2.0",
