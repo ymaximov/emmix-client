@@ -1,3 +1,12 @@
+.actions {
+    display: flex;
+    flex-direction: row;
+}
+
+.ri-search-line{
+    font-size: 1.4rem;
+}
+
 .quick-actions {
     display: flex;
     border: 1px solid black;

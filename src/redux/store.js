@@ -1,14 +1,35 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import alertsSlice from "./slices/alertsSlice";
 import userSlice from "./slices/userSlice";
 import tenantProfileSlice from "./slices/admin/tenantProfileSlice";
+import customerSlice from "./slices/customerSlice";
+
+const persistConfig = {
+    key: 'root', // The key under which the state will be saved
+    storage,
+};
+
+// Wrap each slice's reducer with the `persistReducer` function
+const persistedAlertsReducer = persistReducer(persistConfig, alertsSlice);
+const persistedUserReducer = persistReducer(persistConfig, userSlice);
+const persistedTenantReducer = persistReducer(persistConfig, tenantProfileSlice);
+const persistedCustomerReducer = persistReducer(persistConfig, customerSlice);
+
+const rootReducer = {
+    alerts: persistedAlertsReducer,
+    user: persistedUserReducer,
+    tenant: persistedTenantReducer,
+    customer: persistedCustomerReducer,
+};
 
 const store = configureStore({
-    reducer: {
-        alerts: alertsSlice,
-        user: userSlice,
-        tenant: tenantProfileSlice
-    }
-})
+    reducer: rootReducer,
+    // Add any other store configurations here if needed
+});
 
-export default store
+// Create the persistor using the store
+export const persistor = persistStore(store);
+
+export default store;

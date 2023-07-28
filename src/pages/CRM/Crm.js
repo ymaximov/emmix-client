@@ -13,6 +13,7 @@ import React, {useEffect, useState} from "react";
 import {setTenantProfile} from "../../redux/slices/admin/tenantProfileSlice";
 import {AddNewCustomerModal} from "../../modals/CRM/AddNewCustomerModal";
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
+import {setCustomer} from '../../redux/slices/customerSlice'
 import axios from "axios";
 
 const formatter = (value) => <CountUp end={value} separator="," />;
@@ -21,8 +22,8 @@ export const CRM = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const token = JSON.parse(localStorage.getItem('token')).access_token;
-    const tenant = useSelector((state) => state.user).user.tenant_id
-    console.log(tenant)
+    const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
+    console.log(tenantId)
     const [customers, setCustomers] = useState([]);
     const [showAddNewCustomerModal, setShowAddNewCustomerModal] = useState(false)
     const closeCreateCustomerModal = () => {
@@ -32,13 +33,12 @@ export const CRM = () => {
     const getCustomersData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/crm/get-all-customers-by-tenant-id/${tenant}`, {
+            const res = await axios.get(`/api/crm/get-all-customers-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             console.log(res, 'response')
-            console.log('TENANT ID', tenant)
             dispatch(hideLoading());
             if (res.status === 200) {
                 console.log(res)
@@ -86,11 +86,8 @@ export const CRM = () => {
     ];
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
-        // setDataForModal(params.data); // Pass the data from the clicked cell to the modal
-        // console.log(params.data, '***Params Data***')
-        dispatch(setTenantProfile(params.data))
-        navigate('/admin/companyprofile')
-        // setIsModalVisible(true); // Show the modal
+        dispatch(setCustomer(params.data))
+        navigate('/crm/customerprofile')
     };
     useEffect(() => {
         getCustomersData()
@@ -100,7 +97,10 @@ export const CRM = () => {
         <Layout />
             <div className='layout'>
                 <div className='crm-top mb-4'>
-                    <i className="ri-user-add-line" onClick={() => setShowAddNewCustomerModal(true)}></i>
+                    <div className='actions'>
+                        <i className="ri-user-add-line" onClick={() => setShowAddNewCustomerModal(true)}></i>
+                        <i className="ri-search-line ml-1"></i>
+                    </div>
                     {showAddNewCustomerModal && <AddNewCustomerModal  getCustomersData={getCustomersData} setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
                 </div>
                 <div>
@@ -133,7 +133,7 @@ export const CRM = () => {
 
                     <Row gutter={16} className='mt-6 mb-10'>
                         <Col span={12}>
-                            <Statistic title="Active Users" value={112893} formatter={formatter} />
+                            <Statistic title="Customers" value={customers.length} formatter={formatter} />
                         </Col>
                         <Col span={12}>
                             <Statistic title="Account Balance (CNY)" value={112893} precision={2} formatter={formatter} />
