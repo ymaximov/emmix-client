@@ -10,7 +10,8 @@ export const CustomerProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = useSelector((state) => state.user).user.tenant_id
     const customer = useSelector((state) => state.customer).customer
-    console.log(customer.company_name, 'customer')
+    const id = useSelector((state) => state.customer).customer.id
+    console.log(id, 'ID')
 
     const [formData, setFormData] = useState({
         tax_id: '',
@@ -55,11 +56,9 @@ export const CustomerProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const {tax_id} = formData
         console.log('form data', formData)
-        console.log('1111')
         try {
-            formData.tenant_id = tenant
+            formData.id = id
             const res = await axios.post("/api/crm/add-new-customer", formData,
                 {
                     headers: {
@@ -144,7 +143,8 @@ export const CustomerProfile = () => {
         <div>
             <Layout />
         <div className='layout'>
-            <h1>Add New Customer</h1>
+            <h1 className='layout-title'>Customer Profile</h1>
+            <div className='mt-3'>Customer No. {customer.id}</div>
             <form layout="vertical" onSubmit={handleSubmit}>
                 <Tabs>
                     <Tabs.TabPane tab="Customer Information" key={0}>
@@ -750,7 +750,7 @@ export const CustomerProfile = () => {
                         type="submit"
                         className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                        Save & Close
+                        Update
                     </button>
                 </div>
             </form>

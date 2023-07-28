@@ -12,6 +12,10 @@
     margin-bottom: 1rem;
 }
 
+.layout-title {
+    font-size: 1.5rem;
+}
+
 
 .ri-logout-circle-line {
     font-size: 22px !important;
