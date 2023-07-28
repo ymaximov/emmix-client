@@ -6,55 +6,57 @@ import toast from "react-hot-toast";
 import {useSelector, connect} from "react-redux";
 import {countries} from "countries-list";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {useNavigate} from "react-router-dom";
 
 export const CustomerProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = useSelector((state) => state.user).user.tenant_id
     const customer = useSelector((state) => state.customer).customer
     const id = useSelector((state) => state.customer).customer.id
+    const navigate = useNavigate()
     console.log(id, 'ID')
 
-    const [formData, setFormData] = useState({
-        tax_id: '',
-        company_name: '',
-        email: '',
-        first_name: '',
-        phone_1: '',
-        fax: '',
-        industry: '',
-        customer_type: '',
-        payment_terms: '',
-        late_interest: '',
-        cc_number: '',
-        cc_expiration: '',
-        cc_security_code: '',
-        cc_id: '',
-        bank_country: '',
-        bank_name: '',
-        bank_code: '',
-        bic_swift: '',
-        bank_account_name: '',
-        bank_account_no: '',
-        bank_branch: '',
-        bank_signature_date: '',
-        remarks: '',
-        address_1: '',
-        address_2: '',
-        city: '',
-        state: '',
-        country: '',
-        postal_code: '',
-        contact_name: '',
-        contact_phone: '',
-    });
+    // const [formData, setFormData] = useState({
+    //     tax_id: '',
+    //     company_name: '',
+    //     email: '',
+    //     first_name: '',
+    //     phone_1: '',
+    //     fax: '',
+    //     industry: '',
+    //     customer_type: '',
+    //     payment_terms: '',
+    //     late_interest: '',
+    //     cc_number: '',
+    //     cc_expiration: '',
+    //     cc_security_code: '',
+    //     cc_id: '',
+    //     bank_country: '',
+    //     bank_name: '',
+    //     bank_code: '',
+    //     bic_swift: '',
+    //     bank_account_name: '',
+    //     bank_account_no: '',
+    //     bank_branch: '',
+    //     bank_signature_date: '',
+    //     remarks: '',
+    //     address_1: '',
+    //     address_2: '',
+    //     city: '',
+    //     state: '',
+    //     country: '',
+    //     postal_code: '',
+    //     contact_name: '',
+    //     contact_phone: '',
+    // });
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((prevCustomer) => ({
-            ...prevCustomer,
-            [name]: value,
-        }));
-    };
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormData((prevCustomer) => ({
+    //         ...prevCustomer,
+    //         [name]: value,
+    //     }));
+    // };
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(false)
@@ -74,7 +76,7 @@ export const CustomerProfile = () => {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
                 console.log('Form submitted successfully!');
-
+                navigate('/crm')
             } else {
                 toast.error(res.data.message)
                 console.error('Form submission failed.');
@@ -215,7 +217,7 @@ export const CustomerProfile = () => {
                                             as="select"
                                             id="state"
                                             name="state"
-                                            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         >
                                             {usStates.map((state) => (
                                                 <option key={state.value} value={state.value}>
@@ -228,26 +230,11 @@ export const CustomerProfile = () => {
                                 </Col>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
-                                        <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
-                                            Country
-                                        </label>
-                                        <Field
-                                            as="select"
-                                            id="country"
-                                            name="country"
-                                            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        >
-                                            {countryOptions.map((country) => (
-                                                <option key={country.value} value={country.value}>
-                                                    {country.label}
-                                                </option>
-                                            ))}
-                                        </Field>
-                                        <ErrorMessage name="country" component="div" className="text-red-600" />
+                                        <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Zip/Postal Code</label>
+                                        <Field type="text" placeholder='Zip/Postal Code' name="postal_code" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                        <ErrorMessage name="name" component="div" />
                                     </div>
                                 </Col>
-                            </Row>
-                            <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
                                         <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
@@ -257,7 +244,7 @@ export const CustomerProfile = () => {
                                             as="select"
                                             id="country"
                                             name="country"
-                                            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            className=" block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         >
                                             {countryOptions.map((country) => (
                                                 <option key={country.value} value={country.value}>
@@ -268,25 +255,6 @@ export const CustomerProfile = () => {
                                         <ErrorMessage name="country" component="div" className="text-red-600" />
                                     </div>
                                 </Col>
-                                {/*<Col span={8} xs={240} s={24} lg={8}>*/}
-                                {/*    <div>*/}
-                                {/*        <label htmlFor="industry" className="block text-sm font-medium leading-6 text-gray-900">*/}
-                                {/*            Industry*/}
-                                {/*        </label>*/}
-                                {/*        <select*/}
-                                {/*            id="industry"*/}
-                                {/*            name="industry"*/}
-                                {/*            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"*/}
-                                {/*        >*/}
-                                {/*            <option>--Please Select an Option--</option>*/}
-                                {/*            <option value="it">Information Technology</option>*/}
-                                {/*            <option value="education">Education</option>*/}
-                                {/*            <option value="government">Government</option>*/}
-                                {/*            <option value="retail">Retail</option>*/}
-                                {/*            <option value="other">Other</option>*/}
-                                {/*        </select>*/}
-                                {/*    </div>*/}
-                                {/*</Col>*/}
                             </Row>
                         </div>
                     </Tabs.TabPane>
@@ -518,7 +486,6 @@ export const CustomerProfile = () => {
                                     id="remarks"
                                     name="remarks"
                                     rows="15"
-                                    onChange={handleChange}
                                     cols="100"
                                     className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                                 ></Field>
