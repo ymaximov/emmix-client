@@ -16,6 +16,7 @@ import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import {setCustomer} from '../../redux/slices/customerSlice'
 import axios from "axios";
 import {SearchModal} from "../../modals/CRM/SearchModal";
+import ActiveInactiveChart from "../../components/crm/ActiveInactiveChart";
 
 const formatter = (value) => <CountUp end={value} separator="," />;
 
@@ -91,6 +92,21 @@ export const CRM = () => {
         dispatch(setCustomer(params.data))
         navigate('/crm/customerprofile')
     };
+
+    const filterCustomersByStatusInactive = (customers) => {
+        return customers.filter((customer) => customer.status === "inactive");
+    };
+
+    const inactiveCustomers = filterCustomersByStatusInactive(customers);
+    console.log(inactiveCustomers);
+
+    const filterCustomersByStatusActive = (customers) => {
+        return customers.filter((customer) => customer.status === "active");
+    };
+
+    const activeCustomers = filterCustomersByStatusActive(customers);
+    console.log(activeCustomers);
+
     useEffect(() => {
         getCustomersData()
     }, []);
@@ -107,40 +123,13 @@ export const CRM = () => {
                     {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} customers={customers}/>}
                 </div>
                 <div>
-                    <Row gutter={16} className='mt-5'>
-                        <Col span={12}>
-                            <Card bordered={false}>
-                                <Statistic
-                                    title="Active Customers"
-                                    value={11.28}
-                                    precision={2}
-                                    valueStyle={{ color: '#3f8600' }}
-                                    prefix={<ArrowUpOutlined />}
-                                    suffix="%"
-                                />
-                            </Card>
-                        </Col>
-                        <Col span={12}>
-                            <Card bordered={false}>
-                                <Statistic
-                                    title="Inactive Customers"
-                                    value={9.3}
-                                    precision={2}
-                                    valueStyle={{ color: '#cf1322' }}
-                                    prefix={<ArrowDownOutlined />}
-                                    suffix="%"
-                                />
-                            </Card>
-                        </Col>
-                    </Row>
 
                     <Row gutter={16} className='mt-6 mb-10'>
-                        <Col span={12}>
-                            <Statistic title="Active Customers" value={customers.length} formatter={formatter} />
-                        </Col>
-                        <Col span={12}>
-                            <Statistic title="Inactive Customers" value={customers.length -1} precision={2} formatter={formatter} />
-                        </Col>
+                        {customers && customers.length > 0 ? <div>
+                            <ActiveInactiveChart active={activeCustomers} inactive={inactiveCustomers} />
+                        </div>: (
+                            <div>...Data is Loading</div>
+                        )}
                     </Row>
                     {customers && customers.length > 0 ? (
                         <div>
