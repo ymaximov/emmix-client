@@ -40,12 +40,12 @@ const ActiveInactiveChart = ({active, inactive, setShowFilteredResultsModal}) =>
                             console.log('Clicked bar:', clickedBarLabel, 'Value:', clickedBarValue);
                             if(clickedBarLabel == 'Active Customers') {
                                 dispatch(setFilteredResults(active))
-                                dispatch(setFilterName('Active'))
+                                dispatch(setFilterName('Active Customers'))
                                 setShowFilteredResultsModal(true)
                             }
                             if (clickedBarLabel == 'Inactive Customers') {
                                 dispatch(setFilteredResults(inactive))
-                                dispatch(setFilterName('Inactive'))
+                                dispatch(setFilterName('Inactive Customers'))
                                 setShowFilteredResultsModal(true)
                             }
                         }

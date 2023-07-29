@@ -61,7 +61,7 @@ export const FilteredResultsModal = ({setShowFilteredResultsModal}) => {
         <div className="modal">
             <div className="form-content">
                 <i className="ri-close-circle-line" onClick={handleClose}></i>
-                <h1 className='layout-title mt-3 mb-9'>{status} Companies</h1>
+                <h1 className='layout-title mt-3 mb-9'>{status}</h1>
             <div className='mt-3'>
                 <div className="ag-theme-alpine" style={{ height: '30rem', width: '100%' }}>
                     <AgGridReact rowData={filteredResults} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
