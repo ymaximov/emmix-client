@@ -282,6 +282,21 @@ export const CustomerProfile = () => {
                                     </div>
                                     <ErrorMessage name="customer_type" component="div" className="text-red-600" />
                                 </Col>
+                                    <Col span={8} xs={240} s={24} lg={8}>
+
+                                        <div>
+                                            <label>
+                                                <Field type="radio" name="status" value="active" />
+                                                Active
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>
+                                                <Field type="radio" name="status" value="inactive" />
+                                                Inactive
+                                            </label>
+                                        </div>
+                                    </Col>
                                 </Row>
                         </div>
                     </Tabs.TabPane>

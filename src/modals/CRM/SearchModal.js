@@ -10,7 +10,7 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 export const SearchModal = ({setShowSearchModal, customers}) => {
-    console.log(customers.company_name, 'customers comp')
+    console.log(customers, 'customers')
     const [searchResults, setSearchResults] = useState([]);
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -18,14 +18,16 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
         const filteredCustomers = customers.filter((customer) => {
             // Helper function to check if a field value matches the customer property
             const fieldValueMatches = (fieldValue, customerProperty) => {
-                if (!fieldValue) {
+                const stringFieldValue = String(fieldValue);
+                const stringCustomerProperty = String(customerProperty);
+
+                if (!stringFieldValue) {
                     return true; // Empty field value means it's a match for this field
                 }
-                return customerProperty.toLowerCase().includes(fieldValue.toLowerCase());
+                return stringCustomerProperty.toLowerCase().includes(stringFieldValue.toLowerCase());
             };
 
             console.log("id:", values.id, "customer id:", customer.id); // Debug log
-            console.log(customers.id, customer.id, "IDD")
             return (
                 fieldValueMatches(values.id, customer.id) &&
                 fieldValueMatches(values.tax_id, customer.tax_id) &&
@@ -94,7 +96,7 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
             <div className="modal">
                 <div className="form-content">
                     <i className="ri-close-circle-line" onClick={handleClose}></i>
-                    <h1 className='layout-title mt-3'>Search For a Customer</h1>
+                    <h1 className='layout-title mt-3 mb-2'>Search For a Customer</h1>
                     <Formik
                         initialValues={{
                             id: '',
@@ -226,7 +228,7 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                         </Form>
                     </Formik>
                     <div className='mt-3'>
-                        <div className="ag-theme-alpine" style={{ height: '250px', width: '100%' }}>
+                        <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
                             <AgGridReact rowData={searchResults} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
                         </div>
                     </div>
