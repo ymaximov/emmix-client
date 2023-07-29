@@ -5,7 +5,8 @@
 .layout {
     margin: 1rem 3rem 0 3rem;
     border: 1px solid lightgray;
-    padding:30px;
+    height: 40rem;
+    padding:1.6rem
 }
 
 .layout-header {
@@ -13,7 +14,8 @@
 }
 
 .layout-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    margin-top: -1.3rem;
 }
 
 

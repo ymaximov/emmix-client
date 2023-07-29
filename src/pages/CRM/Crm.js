@@ -15,6 +15,7 @@ import {AddNewCustomerModal} from "../../modals/CRM/AddNewCustomerModal";
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import {setCustomer} from '../../redux/slices/customerSlice'
 import axios from "axios";
+import {SearchModal} from "../../modals/CRM/SearchModal";
 
 const formatter = (value) => <CountUp end={value} separator="," />;
 
@@ -26,9 +27,10 @@ export const CRM = () => {
     console.log(tenantId)
     const [customers, setCustomers] = useState([]);
     const [showAddNewCustomerModal, setShowAddNewCustomerModal] = useState(false)
-    const closeCreateCustomerModal = () => {
-        setShowAddNewCustomerModal(false);
-    };
+    const [showSearchModal, setShowSearchModal] = useState(false)
+    // const closeCreateCustomerModal = () => {
+    //     setShowAddNewCustomerModal(false);
+    // };
 
     const getCustomersData = async () => {
         try {
@@ -99,16 +101,17 @@ export const CRM = () => {
                 <div className='crm-top mb-4'>
                     <div className='actions'>
                         <i className="ri-user-add-line" onClick={() => setShowAddNewCustomerModal(true)}></i>
-                        <i className="ri-search-line ml-1"></i>
+                        <i className="ri-search-line ml-1" onClick={() => setShowSearchModal(true)}></i>
                     </div>
                     {showAddNewCustomerModal && <AddNewCustomerModal  getCustomersData={getCustomersData} setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
+                    {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} customers={customers}/>}
                 </div>
                 <div>
                     <Row gutter={16} className='mt-5'>
                         <Col span={12}>
                             <Card bordered={false}>
                                 <Statistic
-                                    title="Active"
+                                    title="Active Customers"
                                     value={11.28}
                                     precision={2}
                                     valueStyle={{ color: '#3f8600' }}
@@ -120,7 +123,7 @@ export const CRM = () => {
                         <Col span={12}>
                             <Card bordered={false}>
                                 <Statistic
-                                    title="Idle"
+                                    title="Inactive Customers"
                                     value={9.3}
                                     precision={2}
                                     valueStyle={{ color: '#cf1322' }}
@@ -133,10 +136,10 @@ export const CRM = () => {
 
                     <Row gutter={16} className='mt-6 mb-10'>
                         <Col span={12}>
-                            <Statistic title="Customers" value={customers.length} formatter={formatter} />
+                            <Statistic title="Active Customers" value={customers.length} formatter={formatter} />
                         </Col>
                         <Col span={12}>
-                            <Statistic title="Account Balance (CNY)" value={112893} precision={2} formatter={formatter} />
+                            <Statistic title="Inactive Customers" value={customers.length -1} precision={2} formatter={formatter} />
                         </Col>
                     </Row>
                     {customers && customers.length > 0 ? (

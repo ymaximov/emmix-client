@@ -152,7 +152,7 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersDat
             <div className="modal">
                 <div className="form-content">
                     <i className="ri-close-circle-line" onClick={handleClose}></i>
-                    <h1 className='layout-title'>Add New Customer</h1>
+                    <h1>Add New Customer</h1>
                     <form layout="vertical" onSubmit={handleSubmit}>
             <Tabs>
                 <Tabs.TabPane tab="Customer Information" key={0}>
@@ -699,7 +699,7 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersDat
                                     type="date"
                                     id="date"
                                     onChange={handleChange}
-                                    name="date"
+                                    name="bank_signature_date"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -717,7 +717,7 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersDat
                             <textarea
                                 id="remarks"
                                 name="remarks"
-                                rows="15"
+                                rows="14"
                                 onChange={handleChange}
                                 cols="100"
                                 className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"

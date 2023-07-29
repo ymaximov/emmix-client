@@ -7,6 +7,12 @@
     font-size: 1.4rem;
 }
 
+.account-details {
+    font-size: 0.8rem;
+    display: flex;
+
+}
+
 .quick-actions {
     display: flex;
     border: 1px solid black;
@@ -50,4 +56,8 @@
         margin-right: 1rem;
         margin-top: 1rem;
     }
+}
+
+.ri-search-line {
+    cursor: pointer !important;
 }
