@@ -265,7 +265,7 @@ export const CustomerProfile = () => {
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
                                         <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900">
-                                            Customer Type
+                                           Sector
                                         </label>
                                         <Field
                                             as="select"

@@ -61,3 +61,8 @@
 .ri-search-line {
     cursor: pointer !important;
 }
+
+.crm-statistics {
+    display: flex;
+    justify-content: center;
+}

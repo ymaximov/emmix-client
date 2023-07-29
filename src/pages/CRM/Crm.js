@@ -17,6 +17,7 @@ import {setCustomer} from '../../redux/slices/customerSlice'
 import axios from "axios";
 import {SearchModal} from "../../modals/CRM/SearchModal";
 import ActiveInactiveChart from "../../components/crm/ActiveInactiveChart";
+import CustomerTypeChart from "../../components/crm/CustomerTypeChart";
 
 const formatter = (value) => <CountUp end={value} separator="," />;
 
@@ -107,6 +108,22 @@ export const CRM = () => {
     const activeCustomers = filterCustomersByStatusActive(customers);
     console.log(activeCustomers);
 
+    const commercialCustomers = customers.filter(
+        (customer) => customer.customer_type === 'commercial'
+    );
+    const governmentCustomers = customers.filter(
+        (customer) => customer.customer_type === 'government'
+    );
+    const educationCustomers = customers.filter(
+        (customer) => customer.customer_type === 'education'
+    );
+
+    const individualCustomers = customers.filter(
+        (customer) => customer.customer_type === 'individual'
+    );
+
+
+
     useEffect(() => {
         getCustomersData()
     }, []);
@@ -123,14 +140,19 @@ export const CRM = () => {
                     {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} customers={customers}/>}
                 </div>
                 <div>
-
-                    <Row gutter={16} className='mt-6 mb-10'>
+                    <div className='crm-statistics mb-8'>
                         {customers && customers.length > 0 ? <div>
                             <ActiveInactiveChart active={activeCustomers} inactive={inactiveCustomers} />
                         </div>: (
                             <div>...Data is Loading</div>
                         )}
-                    </Row>
+                        {customers && customers.length > 0 ? <div>
+                                <CustomerTypeChart commercial={commercialCustomers} government={governmentCustomers} education={educationCustomers} individual={individualCustomers}/>
+
+                        </div>: (
+                            <div>...Data is Loading</div>
+                        )}
+                    </div>
                     {customers && customers.length > 0 ? (
                         <div>
                             <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
