@@ -5,10 +5,15 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {Row, Col} from 'antd'
+import {setCustomer} from "../../redux/slices/customerSlice";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 export const SearchModal = ({setShowSearchModal, customers}) => {
     console.log(customers.company_name, 'customers comp')
     const [searchResults, setSearchResults] = useState([]);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const filterCustomers = (values) => {
         const filteredCustomers = customers.filter((customer) => {
             // Helper function to check if a field value matches the customer property
@@ -79,6 +84,11 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
         },
     ];
 
+    const handleCellClicked = (params) => {
+        console.log('AG GRID cell clicked', params);
+        dispatch(setCustomer(params.data))
+        navigate('/crm/customerprofile')
+    }
     return (
         <>
             <div className="modal">
@@ -217,7 +227,7 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                     </Formik>
                     <div className='mt-3'>
                         <div className="ag-theme-alpine" style={{ height: '250px', width: '100%' }}>
-                            <AgGridReact rowData={searchResults} columnDefs={columnDefs} onCellClicked='{handleCellClicked}' />
+                            <AgGridReact rowData={searchResults} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
                         </div>
                     </div>
                 </div>
