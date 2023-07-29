@@ -18,6 +18,7 @@ import axios from "axios";
 import {SearchModal} from "../../modals/CRM/SearchModal";
 import ActiveInactiveChart from "../../components/crm/ActiveInactiveChart";
 import CustomerTypeChart from "../../components/crm/CustomerTypeChart";
+import {FilteredResultsModal} from "../../modals/CRM/FilteredResultsModal";
 
 const formatter = (value) => <CountUp end={value} separator="," />;
 
@@ -30,6 +31,7 @@ export const CRM = () => {
     const [customers, setCustomers] = useState([]);
     const [showAddNewCustomerModal, setShowAddNewCustomerModal] = useState(false)
     const [showSearchModal, setShowSearchModal] = useState(false)
+    const [showFilteredResultsModal, setShowFilteredResultsModal] = useState(false)
     // const closeCreateCustomerModal = () => {
     //     setShowAddNewCustomerModal(false);
     // };
@@ -138,11 +140,12 @@ export const CRM = () => {
                     </div>
                     {showAddNewCustomerModal && <AddNewCustomerModal  getCustomersData={getCustomersData} setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
                     {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} customers={customers}/>}
+                    {showFilteredResultsModal && <FilteredResultsModal setShowFilteredResultsModal={setShowFilteredResultsModal}/>}
                 </div>
                 <div>
                     <div className='crm-statistics mb-8'>
                         {customers && customers.length > 0 ? <div>
-                            <ActiveInactiveChart active={activeCustomers} inactive={inactiveCustomers} />
+                            <ActiveInactiveChart active={activeCustomers} inactive={inactiveCustomers} setShowFilteredResultsModal={setShowFilteredResultsModal}/>
                         </div>: (
                             <div>...Data is Loading</div>
                         )}

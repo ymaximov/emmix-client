@@ -1,32 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
+import {useSelector, useDispatch} from "react-redux";
+import {setFilteredResults, setFilterName} from "../../redux/slices/filteredResultsSlice";
 
-const ActiveInactiveChart = ({active, inactive}) => {
+const ActiveInactiveChart = ({active, inactive, setShowFilteredResultsModal}) => {
+    const dispatch = useDispatch()
     const chartRef = useRef(null);
     let myChart = null;
 
     const combinedData = {
-        labels: [],
+        labels: ['Active Customers', 'Inactive Customers'],
         datasets: [
             {
-                label: 'Data Set 1',
-                data: [],
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
+                data: [active.length, inactive.length],
+                backgroundColor: ['#36A2EB', '#FF6384'],
+                hoverBackgroundColor: ['#36A2EB', '#FF6384'],
             },
         ],
     };
-
-    const mergeData = (sourceData) => {
-        sourceData.forEach((item) => {
-            combinedData.labels.push(item.label);
-            combinedData.datasets[0].data.push(item.value);
-        });
-    };
-
-    mergeData(active);
-    mergeData(inactive);
 
 
     useEffect(() => {
@@ -38,16 +29,7 @@ const ActiveInactiveChart = ({active, inactive}) => {
 
             myChart = new Chart(chartRef.current, {
                 type: 'doughnut',
-                data: {
-                    labels: ['Active Customers', 'Inactive Customers',],
-                    datasets: [
-                        {
-                            data: [active.length, inactive.length],
-                            backgroundColor: ['#36A2EB', '#FF6384'],
-                            hoverBackgroundColor: ['#36A2EB', '#36A2EB'],
-                        },
-                    ],
-                },
+                data: combinedData,
                 options: {
                     onClick: (event, elements) => {
                         if (elements.length > 0) {
@@ -56,6 +38,16 @@ const ActiveInactiveChart = ({active, inactive}) => {
                             const clickedBarLabel = combinedData.labels[clickedBarIndex];
                             const clickedBarValue = combinedData.datasets[0].data[clickedBarIndex];
                             console.log('Clicked bar:', clickedBarLabel, 'Value:', clickedBarValue);
+                            if(clickedBarLabel == 'Active Customers') {
+                                dispatch(setFilteredResults(active))
+                                dispatch(setFilterName('Active'))
+                                setShowFilteredResultsModal(true)
+                            }
+                            if (clickedBarLabel == 'Inactive Customers') {
+                                dispatch(setFilteredResults(inactive))
+                                dispatch(setFilterName('Inactive'))
+                                setShowFilteredResultsModal(true)
+                            }
                         }
                     },
                     responsive: true,
@@ -70,7 +62,7 @@ const ActiveInactiveChart = ({active, inactive}) => {
                 myChart.destroy();
             }
         };
-    }, []);
+    }, [active, inactive]);
 
     return <canvas ref={chartRef} width="200" height="200" />;
 };
