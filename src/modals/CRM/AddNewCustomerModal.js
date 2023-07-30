@@ -709,7 +709,23 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersDat
 
 
                 </Tabs.TabPane>
-                <Tabs.TabPane tab='Remarks' key={3}>
+                <Tabs.TabPane tab='Attachments' key={3}>
+                    <Row gutter={20}>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="remarks" className="mb-2">Remarks</label>
+                            <textarea
+                                id="remarks"
+                                name="remarks"
+                                rows="14"
+                                onChange={handleChange}
+                                cols="100"
+                                className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                            ></textarea>
+                        </div>
+                    </Row>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab='Remarks' key={4}>
                     <Row gutter={20}>
 
                         <div className="flex flex-col">
