@@ -8,6 +8,8 @@ import {Row, Col} from 'antd'
 import {setCustomer} from "../../redux/slices/customerSlice";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {countries} from "countries-list";
+import '../../pages/CRM/crm.css'
 
 export const SearchModal = ({setShowSearchModal, customers}) => {
     console.log(customers, 'customers')
@@ -27,7 +29,7 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                 return stringCustomerProperty.toLowerCase().includes(stringFieldValue.toLowerCase());
             };
 
-            console.log("id:", values.id, "customer id:", customer.id); // Debug log
+            console.log("state:", values.state, "customer id:", customer.state); // Debug log
             return (
                 fieldValueMatches(values.id, customer.id) &&
                 fieldValueMatches(values.tax_id, customer.tax_id) &&
@@ -38,6 +40,8 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                 fieldValueMatches(values.email, customer.email) &&
                 fieldValueMatches(values.phone_1, customer.phone_1) &&
                 fieldValueMatches(values.status, customer.status) &&
+                fieldValueMatches(values.city, customer.city) &&
+                fieldValueMatches(values.state, customer.state) &&
                 fieldValueMatches(values.contact_phone, customer.contact_phone)
             );
         });
@@ -50,6 +54,60 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
         const handleClose = () => {
         setShowSearchModal(false)
     }
+
+    const usStates = [
+        { label: 'Not Applicable', value: 'NONE' },
+        { label: 'Alabama', value: 'AL' },
+        { label: 'Alaska', value: 'AK' },
+        { label: 'Arizona', value: 'AZ' },
+        { label: 'Arkansas', value: 'AR' },
+        { label: 'California', value: 'CA' },
+        { label: 'Colorado', value: 'CO' },
+        { label: 'Connecticut', value: 'CT' },
+        { label: 'Delaware', value: 'DE' },
+        { label: 'Florida', value: 'FL' },
+        { label: 'Georgia', value: 'GA' },
+        { label: 'Hawaii', value: 'HI' },
+        { label: 'Idaho', value: 'ID' },
+        { label: 'Illinois', value: 'IL' },
+        { label: 'Indiana', value: 'IN' },
+        { label: 'Iowa', value: 'IA' },
+        { label: 'Kansas', value: 'KS' },
+        { label: 'Kentucky', value: 'KY' },
+        { label: 'Louisiana', value: 'LA' },
+        { label: 'Maine', value: 'ME' },
+        { label: 'Maryland', value: 'MD' },
+        { label: 'Massachusetts', value: 'MA' },
+        { label: 'Michigan', value: 'MI' },
+        { label: 'Minnesota', value: 'MN' },
+        { label: 'Mississippi', value: 'MS' },
+        { label: 'Missouri', value: 'MO' },
+        { label: 'Montana', value: 'MT' },
+        { label: 'Nebraska', value: 'NE' },
+        { label: 'Nevada', value: 'NV' },
+        { label: 'New Hampshire', value: 'NH' },
+        { label: 'New Jersey', value: 'NJ' },
+        { label: 'New Mexico', value: 'NM' },
+        { label: 'New York', value: 'NY' },
+        { label: 'North Carolina', value: 'NC' },
+        { label: 'North Dakota', value: 'ND' },
+        { label: 'Ohio', value: 'OH' },
+        { label: 'Oklahoma', value: 'OK' },
+        { label: 'Oregon', value: 'OR' },
+        { label: 'Pennsylvania', value: 'PA' },
+        { label: 'Rhode Island', value: 'RI' },
+        { label: 'South Carolina', value: 'SC' },
+        { label: 'South Dakota', value: 'SD' },
+        { label: 'Tennessee', value: 'TN' },
+        { label: 'Texas', value: 'TX' },
+        { label: 'Utah', value: 'UT' },
+        { label: 'Vermont', value: 'VT' },
+        { label: 'Virginia', value: 'VA' },
+        { label: 'Washington', value: 'WA' },
+        { label: 'West Virginia', value: 'WV' },
+        { label: 'Wisconsin', value: 'WI' },
+        { label: 'Wyoming', value: 'WY' }
+    ];
 
     const columnDefs = [
         // {
@@ -91,15 +149,21 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
         dispatch(setCustomer(params.data))
         navigate('/crm/customerprofile')
     }
+
+    const clearForm = (formik) => {
+        formik.resetForm();
+    };
     return (
         <>
             <div className="modal">
                 <div className="form-content">
                     <i className="ri-close-circle-line" onClick={handleClose}></i>
-                    <h1 className='layout-title mt-3 mb-2'>Search For a Customer</h1>
+                    <h1 className='layout-title mt-3 mb-2'>Search for a customer</h1>
                     <Formik
                         initialValues={{
                             id: '',
+                            city: '',
+                            state: '',
                             tax_id: '',
                             customer_type: '',
                             company_name: '',
@@ -114,6 +178,7 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                             filterCustomers(values);
                         }}
                     >
+                        {({ handleSubmit, ...formik }) => (
                         <Form>
                             <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
@@ -200,6 +265,33 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                             <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
+                                        <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>City</label>
+                                        <Field type="text" placeholder='City' name="city" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                        <ErrorMessage name="name" component="div" />
+                                    </div>
+                                </Col>
+                                <Col span={8} xs={240} s={24} lg={8}>
+                                    <div>
+                                        <label htmlFor="state" className="block text-sm font-medium leading-6 text-gray-900">
+                                            State
+                                        </label>
+                                        <Field
+                                            as="select"
+                                            id="state"
+                                            name="state"
+                                            className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        >
+                                            {usStates.map((state) => (
+                                                <option key={state.value} value={state.value}>
+                                                    {state.label}
+                                                </option>
+                                            ))}
+                                        </Field>
+                                        <ErrorMessage name="state" component="div" className="text-red-600" />
+                                    </div>
+                                </Col>
+                                <Col span={8} xs={240} s={24} lg={8}>
+                                    <div>
                                         <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900">
                                             Account Status
                                         </label>
@@ -217,6 +309,7 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                                     <ErrorMessage name="customer_type" component="div" className="text-red-600" />
                                 </Col>
                             </Row>
+                            <div className='crm-search-modal-buttons'>
                             <div className="d-flex justify-content-end">
                                 <button
                                     type="submit"
@@ -225,7 +318,18 @@ export const SearchModal = ({setShowSearchModal, customers}) => {
                                     Search
                                 </button>
                             </div>
+                            <div className="d-flex justify-content-end">
+                                <button
+                                    type="button"
+                                    className="mt-4 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                    onClick={() => clearForm(formik)}
+                                >
+                                    Clear Form
+                                </button>
+                            </div>
+                            </div>
                         </Form>
+                        )}
                     </Formik>
                     <div className='mt-3'>
                         <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>

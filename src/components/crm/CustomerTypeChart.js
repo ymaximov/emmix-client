@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
-import {setFilteredResults, setFilterName} from "../../redux/slices/filteredResultsSlice";
+import {setFilteredResults, setFilterName, setResultsTotal} from "../../redux/slices/filteredResultsSlice";
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -56,22 +56,26 @@ const CustomerTypeChart = ({ commercial, government, education, individual, setS
                             const clickedBarValue = myChart.data.datasets[0].data[clickedBarIndex];
                             if(clickedBarLabel == 'Commercial') {
                                 dispatch(setFilteredResults(commercial))
-                                dispatch(setFilterName('Customers From Commercial Sector'))
+                                dispatch(setFilterName('Customers from commercial sector'))
+                                dispatch(setResultsTotal(commercial.length))
                                 setShowFilteredResultsModal(true)
                             }
                             if(clickedBarLabel == 'Government') {
                                 dispatch(setFilteredResults(government))
-                                dispatch(setFilterName('Customers From Governmental Sector'))
+                                dispatch(setFilterName('Customers from governmental sector'))
+                                dispatch(setResultsTotal(government.length))
                                 setShowFilteredResultsModal(true)
                             }
                             if(clickedBarLabel == 'Education') {
                                 dispatch(setFilteredResults(education))
-                                dispatch(setFilterName('Customers From Educational Sector'))
+                                dispatch(setFilterName('Customers from educational sector'))
+                                dispatch(setResultsTotal(education.length))
                                 setShowFilteredResultsModal(true)
                             }
                             if(clickedBarLabel == 'Individual') {
                                 dispatch(setFilteredResults(individual))
-                                dispatch(setFilterName('Individual/Non-Commercial Customers'))
+                                dispatch(setFilterName('Individual/non-commercial customers'))
+                                dispatch(setResultsTotal(individual.length))
                                 setShowFilteredResultsModal(true)
                             }
                             console.log('Clicked bar:', clickedBarLabel, 'Value:', clickedBarValue);

@@ -58,6 +58,10 @@ export default function Example() {
             path: '/crm'
         },
         {
+            name: 'Vendors',
+            path: '/vendors'
+        },
+        {
             name: 'Sales',
             path: '/service'
         },
@@ -74,13 +78,17 @@ export default function Example() {
             path: '/inventory'
         },
         {
+            name: 'Contracts',
+            path: '/contracts'
+        },
+        {
             name: 'Accounting',
             path: '/accounting'
         },
-        {
-            name: 'Reports',
-            path: '/reports'
-        },
+        // {
+        //     name: 'Reports',
+        //     path: '/reports'
+        // },
     ]
 
     const logout = () => {
@@ -127,7 +135,7 @@ const menuToBeRendered = role === 'admin' ? adminMenu : userMenu
                                         return (
                                             <div
                                                 key={index}
-                                                className={isActive ? 'inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900' : 'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                                                className={isActive ? 'inline-flex items-center border-b-2 border-violet-600 px-1 pt-1 text-sm font-medium text-gray-900' : 'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'}
                                             >
                                                 {<Link to={menu.path}>{menu.name}</Link>}
                                             </div>
@@ -178,7 +186,7 @@ const menuToBeRendered = role === 'admin' ? adminMenu : userMenu
                                     className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
                                     <span className="sr-only">View notifications</span>
-                                    <Badge count={user?.user.user_id} className='mr-1'>
+                                    <Badge count={user?.user.user_id} className='mr-1 '>
                                         <i className="ri-notification-line header-action-icon px-3"></i>
                                     </Badge>
                                 </button>

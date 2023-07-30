@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import {useSelector, useDispatch} from "react-redux";
-import {setFilteredResults, setFilterName} from "../../redux/slices/filteredResultsSlice";
+import {setFilteredResults, setFilterName, setResultsTotal} from "../../redux/slices/filteredResultsSlice";
 
 const ActiveInactiveChart = ({active, inactive, setShowFilteredResultsModal}) => {
     const dispatch = useDispatch()
@@ -41,11 +41,13 @@ const ActiveInactiveChart = ({active, inactive, setShowFilteredResultsModal}) =>
                             if(clickedBarLabel == 'Active Customers') {
                                 dispatch(setFilteredResults(active))
                                 dispatch(setFilterName('Active Customers'))
+                                dispatch(setResultsTotal(active.length))
                                 setShowFilteredResultsModal(true)
                             }
                             if (clickedBarLabel == 'Inactive Customers') {
                                 dispatch(setFilteredResults(inactive))
                                 dispatch(setFilterName('Inactive Customers'))
+                                dispatch(setResultsTotal(inactive.length))
                                 setShowFilteredResultsModal(true)
                             }
                         }

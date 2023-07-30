@@ -1,11 +1,9 @@
 .actions {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
-.ri-search-line{
-    font-size: 1.4rem;
-}
 
 .account-details {
     font-size: 0.8rem;
@@ -60,9 +58,19 @@
 
 .ri-search-line {
     cursor: pointer !important;
+    font-size: 1.9rem !important;
 }
 
+.ri-user-add-line {
+    font-size: 1.9rem;
+    cursor: pointer;
+}
 .crm-statistics {
     display: flex;
     justify-content: center;
+}
+
+.crm-search-modal-buttons {
+    display: flex;
+    flex-direction: row;
 }

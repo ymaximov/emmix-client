@@ -151,11 +151,12 @@ export const CustomerProfile = () => {
             <Layout />
         <div className='layout'>
             <h1 className='layout-title'>Customer Profile</h1>
+            {customer.status == 'inactive' && <div className='text-red-600 mb-2 font-bold'>Customer is inactive</div>}
             <div className='account-details'>
             <div >Account Balance: ${customer.id}</div>
             <div className='ml-3'>Open Sales Orders: 0</div>
             </div>
-            <div className='mt-6'>Customer No. {customer.id}</div>
+            <div className='mt-6 font-bold'>Customer No. {customer.id}</div>
             <Formik
                 initialValues={customer}
                 onSubmit={handleSubmit}
@@ -433,7 +434,7 @@ export const CustomerProfile = () => {
                             </Col>
                             <Col span={8} xs={240} s={24} lg={8}>
                                 <div>
-                                    <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>ID Number</label>
+                                    <label htmlFor="name" className='mb-2 block text-sm font-medium leading-6 text-gray-900'>ID Number</label>
                                     <Field type="text"  name="cc_id" placeholder='ID no. for Credit Card' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                     <ErrorMessage name="name" component="div" />
                                 </div>
@@ -512,11 +513,30 @@ export const CustomerProfile = () => {
                                 </div>
                             </Col>
                         </Row>
-
-
-
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab='Remarks' key={3}>
+                    <Tabs.TabPane tab='Sales History' key={3}></Tabs.TabPane>
+                    <Tabs.TabPane tab='Service History' key={4}></Tabs.TabPane>
+                    <Tabs.TabPane tab='Contracts' key={5}></Tabs.TabPane>
+                    <Tabs.TabPane tab='Remarks' key={6}>
+                        <Row gutter={20}>
+
+                            <div className="flex flex-col">
+                                <label htmlFor="remarks" className="mb-2">
+                                    Remarks
+                                </label>
+                                <Field
+                                    as="textarea"
+                                    id="remarks"
+                                    name="remarks"
+                                    rows="14"
+                                    cols="100"
+                                    className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                                ></Field>
+                                <ErrorMessage name="remarks" component="div" className="text-red-600" />
+                            </div>
+                        </Row>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab='Attachments' key={7}>
                         <Row gutter={20}>
 
                             <div className="flex flex-col">

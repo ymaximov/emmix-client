@@ -12,6 +12,7 @@ export const FilteredResultsModal = ({setShowFilteredResultsModal}) => {
     const navigate = useNavigate()
     const filteredResults = useSelector((state) => state.filteredResults).filteredResults
     const status = useSelector((state) => state.filteredResults).filterName
+    const resultsTotal = useSelector((state) => state.filteredResults).resultsTotal
     console.log(filteredResults, status, 'companies')
     const handleClose = () => {
         setShowFilteredResultsModal(false)
@@ -62,6 +63,7 @@ export const FilteredResultsModal = ({setShowFilteredResultsModal}) => {
             <div className="form-content">
                 <i className="ri-close-circle-line" onClick={handleClose}></i>
                 <h1 className='layout-title mt-3 mb-9'>{status}</h1>
+                <div className='mt-10'>Total Results: {resultsTotal}</div>
             <div className='mt-3'>
                 <div className="ag-theme-alpine" style={{ height: '30rem', width: '100%' }}>
                     <AgGridReact rowData={filteredResults} columnDefs={columnDefs} onCellClicked={handleCellClicked} />

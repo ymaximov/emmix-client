@@ -152,7 +152,7 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersDat
             <div className="modal">
                 <div className="form-content">
                     <i className="ri-close-circle-line" onClick={handleClose}></i>
-                    <h1>Add New Customer</h1>
+                    <h1 className='layout-title mt-1'>Add New Customer</h1>
                     <form layout="vertical" onSubmit={handleSubmit}>
             <Tabs>
                 <Tabs.TabPane tab="Customer Information" key={0}>
