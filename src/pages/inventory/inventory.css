@@ -1,0 +1,14 @@
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.custom-input {
+    width: 39.5rem;
+}
+
+.item-type {
+    display: flex;
+    flex-direction: column;
+}

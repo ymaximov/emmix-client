@@ -18,6 +18,7 @@ import {CRM} from "./pages/CRM/Crm";
 import {CustomerProfile} from "./pages/CRM/CustomerProfile";
 import {Vendors} from "./pages/vendors/Vendors";
 import {VendorProfile} from "./pages/vendors/VendorProfile";
+import {Inventory} from "./pages/inventory/Inventory";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
     {
         path: '/vendors/vendorprofile',
         element: <ProtectedRoute><VendorProfile /></ProtectedRoute>
+    },
+    {
+        path: '/inventory',
+        element: <ProtectedRoute><Inventory /></ProtectedRoute>
     },
 ])
 function App() {

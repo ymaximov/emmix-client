@@ -13,7 +13,7 @@ export const VendorProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = useSelector((state) => state.user).user.tenant_id
     const vendor = useSelector((state) => state.vendor).vendor
-    const id = useSelector((state) => state.customer).customer.id
+    const id = vendor.id
     const navigate = useNavigate()
     console.log(id, 'ID')
 
@@ -151,7 +151,7 @@ export const VendorProfile = () => {
         <div>
             <Layout />
             <div className='layout'>
-                <h1 className='layout-title'>{title}</h1>
+                <h1 className='layout-title font-bold'>{title}</h1>
                 <div className='account-details'>
                     {vendor.status == 'inactive' && <div className='mr-3 text-red-600 mb-2 font-bold'>Vendor is inactive</div>}
                     <div >Account Balance: ${vendor.id}</div>
@@ -266,13 +266,13 @@ export const VendorProfile = () => {
                                     <Row gutter={20}>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
-                                                <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900">
+                                                <label htmlFor="vendor_type" className="block text-sm font-medium leading-6 text-gray-900">
                                                     Sector
                                                 </label>
                                                 <Field
                                                     as="select"
-                                                    id="customer_type"
-                                                    name="customer_type"
+                                                    id="vendor_type"
+                                                    name="vendor_type"
                                                     className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option value="">--Please Select an Option--</option>
@@ -282,7 +282,7 @@ export const VendorProfile = () => {
                                                     <option value="individual">Individual</option>
                                                 </Field>
                                             </div>
-                                            <ErrorMessage name="customer_type" component="div" className="text-red-600" />
+                                            <ErrorMessage name="vendor_type" component="div" className="text-red-600" />
                                         </Col>
                                         <Col span={8} xs={240} s={24} lg={8}>
 
@@ -346,8 +346,8 @@ export const VendorProfile = () => {
                                 </Row>
 
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab='Sales History' key={2}></Tabs.TabPane>
-                            <Tabs.TabPane tab='Service History' key={3}></Tabs.TabPane>
+                            <Tabs.TabPane tab='Purchasing History' key={2}></Tabs.TabPane>
+                            <Tabs.TabPane tab='Inventory' key={3}></Tabs.TabPane>
                             <Tabs.TabPane tab='Contracts' key={4}></Tabs.TabPane>
                             <Tabs.TabPane tab='Attachments' key={5}>
                                 <Row gutter={20}>
@@ -394,7 +394,7 @@ export const VendorProfile = () => {
                                 type="submit"
                                 className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Update
+                                Update & Close
                             </button>
                         </div>
                     </Form>

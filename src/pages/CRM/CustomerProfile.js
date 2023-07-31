@@ -150,7 +150,7 @@ export const CustomerProfile = () => {
         <div>
             <Layout />
         <div className='layout'>
-            <h1 className='layout-title'>{title}</h1>
+            <h1 className='layout-title font-bold'>{title}</h1>
             <div className='account-details'>
                 {customer.status == 'inactive' && <div className=' mr-3 text-red-600 mb-2 font-bold'>Customer is inactive</div>}
             <div >Account Balance: ${customer.id}</div>
@@ -562,7 +562,7 @@ export const CustomerProfile = () => {
                         type="submit"
                         className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                        Update
+                        Update & Close
                     </button>
                 </div>
             </Form>
