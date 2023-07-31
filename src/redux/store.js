@@ -5,6 +5,7 @@ import alertsSlice from "./slices/alertsSlice";
 import userSlice from "./slices/userSlice";
 import tenantProfileSlice from "./slices/admin/tenantProfileSlice";
 import customerSlice from "./slices/customerSlice";
+import vendorSlice from "./slices/vendorSlice";
 import filteredResultsSlice from "./slices/filteredResultsSlice";
 
 const persistConfig = {
@@ -17,6 +18,7 @@ const persistedAlertsReducer = persistReducer(persistConfig, alertsSlice);
 const persistedUserReducer = persistReducer(persistConfig, userSlice);
 const persistedTenantReducer = persistReducer(persistConfig, tenantProfileSlice);
 const persistedCustomerReducer = persistReducer(persistConfig, customerSlice);
+const persistedVendorReducer = persistReducer(persistConfig, vendorSlice);
 const persistedFilteredResultsReducer = persistReducer(persistConfig, filteredResultsSlice);
 
 const rootReducer = {
@@ -24,6 +26,7 @@ const rootReducer = {
     user: persistedUserReducer,
     tenant: persistedTenantReducer,
     customer: persistedCustomerReducer,
+    vendor: persistedVendorReducer,
     filteredResults: persistedFilteredResultsReducer
 };
 

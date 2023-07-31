@@ -145,14 +145,14 @@ export const CustomerProfile = () => {
         const countryName = countries[countryCode].name;
         return { label: countryName, value: countryCode };
     });
-
+    const title = customer.company_name == '' ? customer.first_name + ' ' + customer.last_name : customer.company_name
     return (
         <div>
             <Layout />
         <div className='layout'>
-            <h1 className='layout-title'>Customer Profile</h1>
-            {customer.status == 'inactive' && <div className='text-red-600 mb-2 font-bold'>Customer is inactive</div>}
+            <h1 className='layout-title'>{title}</h1>
             <div className='account-details'>
+                {customer.status == 'inactive' && <div className=' mr-3 text-red-600 mb-2 font-bold'>Customer is inactive</div>}
             <div >Account Balance: ${customer.id}</div>
             <div className='ml-3'>Open Sales Orders: 0</div>
             </div>
@@ -517,25 +517,6 @@ export const CustomerProfile = () => {
                     <Tabs.TabPane tab='Sales History' key={3}></Tabs.TabPane>
                     <Tabs.TabPane tab='Service History' key={4}></Tabs.TabPane>
                     <Tabs.TabPane tab='Contracts' key={5}></Tabs.TabPane>
-                    <Tabs.TabPane tab='Remarks' key={6}>
-                        <Row gutter={20}>
-
-                            <div className="flex flex-col">
-                                <label htmlFor="remarks" className="mb-2">
-                                    Remarks
-                                </label>
-                                <Field
-                                    as="textarea"
-                                    id="remarks"
-                                    name="remarks"
-                                    rows="14"
-                                    cols="100"
-                                    className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                                ></Field>
-                                <ErrorMessage name="remarks" component="div" className="text-red-600" />
-                            </div>
-                        </Row>
-                    </Tabs.TabPane>
                     <Tabs.TabPane tab='Attachments' key={7}>
                         <Row gutter={20}>
 
@@ -555,6 +536,26 @@ export const CustomerProfile = () => {
                             </div>
                         </Row>
                     </Tabs.TabPane>
+                    <Tabs.TabPane tab='Remarks' key={6}>
+                        <Row gutter={20}>
+
+                            <div className="flex flex-col">
+                                <label htmlFor="remarks" className="mb-2">
+                                    Remarks
+                                </label>
+                                <Field
+                                    as="textarea"
+                                    id="remarks"
+                                    name="remarks"
+                                    rows="14"
+                                    cols="100"
+                                    className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                                ></Field>
+                                <ErrorMessage name="remarks" component="div" className="text-red-600" />
+                            </div>
+                        </Row>
+                    </Tabs.TabPane>
+
                 </Tabs>
                 <div className="d-flex justify-content-end">
                     <button

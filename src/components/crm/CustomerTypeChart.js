@@ -17,7 +17,7 @@ const CustomerTypeChart = ({ commercial, government, education, individual, setS
             labels: ['Commercial', 'Government', 'Education', 'Individual'],
             datasets: [
                 {
-                    label: 'Sectors',
+                    label: 'Customers per sector',
                     data: [commercial.length, government.length, education.length, individual.length],
                     backgroundColor: '#36A2EB',
                 },

@@ -10,10 +10,14 @@ import './vendors.css'
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {useDispatch} from "react-redux";
+import {SearchModal} from '../../modals/vendors/SearchModal'
+import {setVendor} from "../../redux/slices/vendorSlice";
+import {useNavigate} from "react-router-dom";
 
 export const Vendors = () => {
     const [vendors, setVendors] = useState([]);
     const [showAddNewVendorModal, setShowAddNewVendorModal] = useState(false)
+    const [showSearchModal, setShowSearchModal] = useState(false)
     const columnDefs = [
 
         {
@@ -37,8 +41,8 @@ export const Vendors = () => {
             field: "phone_1",
         },
         {
-            headerName: "Customer Type",
-            field: "customer_type",
+            headerName: "Vendor Type",
+            field: "vendor_type",
         },
         {
             headerName: "Status",
@@ -46,6 +50,7 @@ export const Vendors = () => {
         },
     ];
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
@@ -71,6 +76,8 @@ export const Vendors = () => {
     };
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
+        dispatch(setVendor(params.data))
+        navigate('/vendors/vendorprofile')
     };
 
     useEffect(() => {
@@ -84,10 +91,11 @@ export const Vendors = () => {
             <div className='crm-top mb-4'>
                 <div className='actions'>
                     <i className="ri-user-add-line" onClick={() => setShowAddNewVendorModal(true)}></i>
-                    <i className="ri-search-line ml-1" onClick={() => {}}></i>
+                    <i className="ri-search-line ml-1" onClick={() => setShowSearchModal(true)}></i>
                 </div>
             </div>
                 {showAddNewVendorModal && <AddNewVendorModal setShowAddNewVendorModal={setShowAddNewVendorModal} getVendorsData={getVendorsData}/>}
+                {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} vendors={vendors}/>}
                 {/*{inventory && inventory.length > 0 ? (*/}
                     <div>
                         <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>

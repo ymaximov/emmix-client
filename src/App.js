@@ -16,7 +16,8 @@ import {TenantProfile} from "./pages/Admin/TenantProfile";
 import {ResetPassword} from "./pages/Admin/ResetPassword";
 import {CRM} from "./pages/CRM/Crm";
 import {CustomerProfile} from "./pages/CRM/CustomerProfile";
-import {Vendors} from "./pages/vendors/vendors";
+import {Vendors} from "./pages/vendors/Vendors";
+import {VendorProfile} from "./pages/vendors/VendorProfile";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
     {
         path: '/vendors',
         element: <ProtectedRoute><Vendors /></ProtectedRoute>
+    },
+    {
+        path: '/vendors/vendorprofile',
+        element: <ProtectedRoute><VendorProfile /></ProtectedRoute>
     },
 ])
 function App() {
