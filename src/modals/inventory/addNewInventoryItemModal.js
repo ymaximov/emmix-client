@@ -120,11 +120,22 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                             inventory_item: false,
                             sales_item: false,
                             purchasing_item: false,
+                            prop_1: false,
+                            prop_2: false,
+                            prop_3: false,
+                            prop_4: false,
+                            prop_5: false,
+                            prop_6: false,
+                            prop_7: false,
+                            prop_8: false,
+                            prop_9: false,
+                            prop_10: false,
+
                         }}
                     >
                         <Form layout="vertical">
                             <Tabs>
-                                <Tabs.TabPane tab="General Details" key={0}>
+                                <Tabs.TabPane tab="General" key={0}>
                                     <div>
                                         {/*<h1 className="card-title mt-3">Company Details</h1>*/}
                                         <Row gutter={20}>
@@ -139,7 +150,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                         name="item_type"
                                                         className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     >
-                                                        <option value="">--Please Select an Option--</option>
+                                                        <option value="">Please Select an Option</option>
                                                         <option value="items">Items</option>
                                                         <option value="labor">Labor</option>
                                                         <option value="travel">Travel</option>
@@ -186,6 +197,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                 </div>
                                             </Col>
                                         </Row>
+                                        <hr  className='mt-4 mb-4'/>
                                         <Row gutter={20}>
                                             <Col span={8} xs={240} s={24} lg={8}>
                                                 <div>
@@ -255,44 +267,31 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                     <ErrorMessage name="vendor_type" component="div" className="text-red-600" />
                                                 </Col>
                                             </Row>
-
+                                        <hr  className='mt-4 mb-4'/>
                                         <Row gutter={20}>
                                             <Col span={8} xs={240} s={24} lg={8}>
                                                 <div>
-                                                    <label htmlFor="state" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        State
-                                                    </label>
-                                                    <Field
-                                                        as="select"
-                                                        id="state"
-                                                        name="state"
-                                                        className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                    >
-                                                        {usStates.map((state) => (
-                                                            <option key={state.value} value={state.value}>
-                                                                {state.label}
-                                                            </option>
-                                                        ))}
-                                                    </Field>
-                                                    <ErrorMessage name="state" component="div" className="text-red-600" />
+                                                    <label htmlFor="barcode" className='block text-sm font-medium leading-6 text-gray-900'>Barcode</label>
+                                                    <Field type="text" placeholder='Barcode' name="barcode" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                    <ErrorMessage name="barcode" component="div" />
                                                 </div>
                                             </Col>
                                             <Col span={8} xs={240} s={24} lg={8}>
                                                 <div>
-                                                    <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Zip/Postal Code</label>
-                                                    <Field type="text" placeholder='Zip/Postal Code' name="postal_code" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                    <ErrorMessage name="name" component="div" />
+                                                    <label htmlFor="add_identifier" className='block text-sm font-medium leading-6 text-gray-900'>Additional Identifier</label>
+                                                    <Field type="text" placeholder='Additional Identifier' name="add_identifier" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                    <ErrorMessage name="add_identifier" component="div" />
                                                 </div>
                                             </Col>
                                             <Col span={8} xs={240} s={24} lg={8}>
                                                 <div>
-                                                    <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Country
+                                                    <label htmlFor="country_origin" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Country of Origin
                                                     </label>
                                                     <Field
                                                         as="select"
-                                                        id="country"
-                                                        name="country"
+                                                        id="country_origin"
+                                                        name="country_origin"
                                                         className=" block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     >
                                                         {countryOptions.map((country) => (
@@ -301,34 +300,13 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                             </option>
                                                         ))}
                                                     </Field>
-                                                    <ErrorMessage name="country" component="div" className="text-red-600" />
+                                                    <ErrorMessage name="country_origin" component="div" className="text-red-600" />
                                                 </div>
                                             </Col>
                                         </Row>
                                         <Row gutter={20}>
-                                            <Col span={8} xs={240} s={24} lg={8}>
-                                                <div>
-                                                    <label htmlFor="vendor_type" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Sector
-                                                    </label>
-                                                    <Field
-                                                        as="select"
-                                                        id="vendor_type"
-                                                        name="vendor_type"
-                                                        className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                    >
-                                                        <option value="">--Please Select an Option--</option>
-                                                        <option value="commercial">Commercial</option>
-                                                        <option value="government">Government</option>
-                                                        <option value="education">Education</option>
-                                                        <option value="individual">Individual</option>
-                                                    </Field>
-                                                </div>
-                                                <ErrorMessage name="vendor_type" component="div" className="text-red-600" />
-                                            </Col>
-                                            <Col span={8} xs={240} s={24} lg={8}>
-
-                                                <div>
+                                        <Col span={8} xs={240} s={24} lg={8} className='mt-3'>
+                                            <div>
                                                     <label>
                                                         <Field type="radio" name="status" value="active" />
                                                         Active
@@ -344,71 +322,293 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                         </Row>
                                     </div>
                                 </Tabs.TabPane>
-                                <Tabs.TabPane tab='Contact Information' key={1}>
-                                    {/*<h1 className="card-title mt-3">Company Details</h1>*/}
-
+                                <Tabs.TabPane tab='Purchasing' key={1}>
                                     <Row gutter={20}>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
-                                                <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Contact Name</label>
-                                                <Field type="text" placeholder='e.g. CEO, Account Manager' name="contact_name" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="name" component="div" />
+                                                <label htmlFor="vendor" className="block text-sm font-medium leading-6 text-gray-900">
+                                                    Preferred Supplier
+                                                </label>
+                                                <Field
+                                                    as="select"
+                                                    id="vendor"
+                                                    name="vendor"
+                                                    className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                >
+                                                    <option value="">Please Select an Option</option>
+                                                </Field>
+                                            </div>
+                                            <ErrorMessage name="vendor" component="div" className="text-red-600" />
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="vendor" className="block text-sm font-medium leading-6 text-gray-900">
+                                                    Secondary Supplier
+                                                </label>
+                                                <Field
+                                                    as="select"
+                                                    id="vendor2"
+                                                    name="vendor2"
+                                                    className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                >
+                                                    <option value="">Please Select an Option</option>
+                                                </Field>
+                                            </div>
+                                            <ErrorMessage name="vendor2" component="div" className="text-red-600" />
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="manuf_sku" className='block text-sm font-medium leading-6 text-gray-900'>Manufacturer SKU</label>
+                                                <Field type="text" placeholder='Manufacturer SKU' name="manuf_sku" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="manuf_sku" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <hr  className='mt-4 mb-4'/>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="purchasing_uom" className='block text-sm font-medium leading-6 text-gray-900'>Purchasing UoM</label>
+                                                <Field type="text" placeholder='Purchasing UoM' name="purchasing_uom" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="purchasing_uom" component="div" />
                                             </div>
                                         </Col>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
-                                                <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>First Name</label>
-                                                <Field type="text" placeholder='First Name' name="first_name" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="name" component="div" />
-                                            </div>
-                                        </Col>
-                                        <Col span={8} xs={240} s={24} lg={8}>
-                                            <div>
-                                                <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Last Name</label>
-                                                <Field type="text" placeholder='Last Name' name="last_name" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="name" component="div" />
+                                                <label htmlFor="purchasing_items_per_unit" className='block text-sm font-medium leading-6 text-gray-900'>Items Per Purchasing Unit</label>
+                                                <Field type="text"  placeholder='Items Per Purchasing Unit' name="purchasing_items_per_unit" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="purchasing_items_per_unit" component="div" />
                                             </div>
                                         </Col>
                                     </Row>
                                     <Row gutter={20}>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
-                                                <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Phone Number</label>
-                                                <Field type="text"  placeholder='Phone Nymber' name="contact_phone" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="name" component="div" />
+                                                <label htmlFor="purchasing_packaging_uom" className='block text-sm font-medium leading-6 text-gray-900'>Packaging UoM</label>
+                                                <Field type="text"  placeholder='Packaging UoM' name="purchasing_packaging_uom" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="purchasing_packaging_uom" component="div" />
                                             </div>
                                         </Col>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
-                                                <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Email Address</label>
-                                                <Field type="text"  name="email" placeholder='Email Address' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="name" component="div" />
+                                                <label htmlFor="purchasing_items_per_package" className='block text-sm font-medium leading-6 text-gray-900'>Items Per Package</label>
+                                                <Field type="text"  placeholder='Items Per Package' name="purchasing_items_per_package" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="purchasing_items_per_package" component="div" />
                                             </div>
                                         </Col>
                                     </Row>
-
+                                    <hr  className='mt-4 mb-4'/>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="length" className='block text-sm font-medium leading-6 text-gray-900'>Length</label>
+                                                <Field type="text"  placeholder='Length' name="length" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="length" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="width" className='block text-sm font-medium leading-6 text-gray-900'>Width</label>
+                                                <Field type="text"  placeholder='Width' name="width" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="width" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="hieght" className='block text-sm font-medium leading-6 text-gray-900'>Height</label>
+                                                <Field type="text"  placeholder='Height' name="hieght" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="hieght" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="volume" className='block text-sm font-medium leading-6 text-gray-900'>Volume</label>
+                                                <Field type="text"  placeholder='Volume' name="volume" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="volume" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="weight" className='block text-sm font-medium leading-6 text-gray-900'>Weight</label>
+                                                <Field type="text"  placeholder='Weight' name="weight" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="weight" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
                                 </Tabs.TabPane>
-                                <Tabs.TabPane tab='Purchasing History' key={2}></Tabs.TabPane>
-                                <Tabs.TabPane tab='Inventory' key={3}></Tabs.TabPane>
-                                <Tabs.TabPane tab='Contracts' key={4}></Tabs.TabPane>
-                                <Tabs.TabPane tab='Attachments' key={5}>
+                                <Tabs.TabPane tab='Sales' key={2}>
                                     <Row gutter={20}>
-
-                                        <div className="flex flex-col">
-                                            <label htmlFor="remarks" className="mb-2">
-                                                Remarks
-                                            </label>
-                                            <Field
-                                                as="textarea"
-                                                id="remarks"
-                                                name="remarks"
-                                                rows="14"
-                                                cols="100"
-                                                className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                                            ></Field>
-                                            <ErrorMessage name="remarks" component="div" className="text-red-600" />
-                                        </div>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="sales_uom" className='block text-sm font-medium leading-6 text-gray-900'>Sales UoM</label>
+                                                <Field type="text" placeholder='Sales UoM' name="sales_uom" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="sales_uom" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="sales_items_per_unit" className='block text-sm font-medium leading-6 text-gray-900'>Items Per Unit</label>
+                                                <Field type="text"  placeholder='Items Per Unit' name="sales_items_per_unit" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="sales_items_per_unit" component="div" />
+                                            </div>
+                                        </Col>
                                     </Row>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="sales_packaging_uom" className='block text-sm font-medium leading-6 text-gray-900'>Packaging UoM</label>
+                                                <Field type="text"  placeholder='Packaging UoM' name="sales_packaging_uom" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="sales_packaging_uom" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="items_per_package" className='block text-sm font-medium leading-6 text-gray-900'>Items Per Package</label>
+                                                <Field type="text"  placeholder='Items Per Package' name="items_per_package" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="items_per_package" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <hr  className='mt-4 mb-4'/>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="length" className='block text-sm font-medium leading-6 text-gray-900'>Length</label>
+                                                <Field type="text"  placeholder='Length' name="length" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="length" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="width" className='block text-sm font-medium leading-6 text-gray-900'>Width</label>
+                                                <Field type="text"  placeholder='Width' name="width" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="width" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="hieght" className='block text-sm font-medium leading-6 text-gray-900'>Height</label>
+                                                <Field type="text"  placeholder='Height' name="hieght" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="hieght" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="volume" className='block text-sm font-medium leading-6 text-gray-900'>Volume</label>
+                                                <Field type="text"  placeholder='Volume' name="volume" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="volume" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="weight" className='block text-sm font-medium leading-6 text-gray-900'>Weight</label>
+                                                <Field type="text"  placeholder='Weight' name="weight" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="weight" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Tabs.TabPane>
+                                <Tabs.TabPane tab='Inventory Data' key={3}>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="required_inv" className='block text-sm font-medium leading-6 text-gray-900'>Required (Purchasing UoM)</label>
+                                                <Field type="text"  placeholder='Volume' name="required_inv" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="required_inv" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="minimum_inv" className='block text-sm font-medium leading-6 text-gray-900'>Minimum</label>
+                                                <Field type="text"  placeholder='Weight' name="minimum_inv" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="minimum_inv" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="maximium_inv" className='block text-sm font-medium leading-6 text-gray-900'>Maximum</label>
+                                                <Field type="text"  placeholder='Weight' name="maximium_inv" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="maximium_inv" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <hr  className='mt-4 mb-4'/>
+                                    <div>AG GRID HERE</div>
+                                </Tabs.TabPane>
+                                <Tabs.TabPane tab='Item Properties' key={4}>
+                                    <Col span={8} xs={240} s={24} lg={8}>
+                                        <div className='item-properties'>
+                                        <div className='mt-2 item-type'>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_1" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_2" className='mr-1' />
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_3" className='mr-1' />
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_4" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_5" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_6" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_7" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_8" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_9" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <Field type="checkbox" name="prop_10" className='mr-1'/>
+                                                    {}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </Col>
+                                </Tabs.TabPane>
+                                <Tabs.TabPane tab='Attachments' key={5}>
+
                                 </Tabs.TabPane>
                                 <Tabs.TabPane tab='Remarks' key={6}>
                                     <Row gutter={20}>

@@ -12,3 +12,15 @@
     display: flex;
     flex-direction: column;
 }
+
+.item-properties {
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: left;
+}
+
+.item-properties > {
+    margin-right: 1rem;
+}
