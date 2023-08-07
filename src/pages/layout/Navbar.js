@@ -191,6 +191,7 @@ const menuToBeRendered = role === 'admin' ? adminMenu : userMenu
                                     </Badge>
                                 </button>
                                 <i className="ri-user-line ml-4 cursor-pointer"></i>
+                                <i className="ri-settings-3-line"></i>
                                 <i className="ri-logout-circle-line ml-4 cursor-pointer" onClick={logout}></i>
                                 {/* Right Side Items */}
                                 {/*<div className='ml-4 nav-right'>Welcome, {user?.user.first_name} {user?.user.last_name}</div>*/}

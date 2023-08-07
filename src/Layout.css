@@ -27,6 +27,13 @@
     font-size: 22px !important;
 }
 
+.ri-settings-3-line {
+    font-size: 23px !important;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+
+}
+
 .upper-nav {
     display: flex;
     justify-content: space-between;

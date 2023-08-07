@@ -3,19 +3,120 @@ import {AddNewUserModal} from "../../modals/admin/AddNewUserModal";
 import {UpdateUserModal} from "../../modals/admin/UpdateUserModal";
 import {AgGridReact} from "ag-grid-react";
 import {countries} from "countries-list";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import {useSelector} from "react-redux";
 import {ErrorMessage, Field, Formik} from "formik";
 import '../../pages/inventory/inventory.css'
+import {useDispatch} from "react-redux";
+import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 
 export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVendorsData}) => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = JSON.parse(localStorage.getItem('token')).tenant_id
-
-
+    const dispatch = useDispatch()
+    const [vendors, setVendors] = useState()
+    const [itemGroups, setItemGroups] = useState()
+    const [itemProperties, setItemProperties] = useState()
+    const [warehouses, setWarehouses] = useState()
+    const [manufacturers, setManufacturers] = useState()
+    const getVendors = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-vendors/${tenant}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setVendors(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
+    const getItemGroups = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-item-groups/${tenant}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setItemGroups(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
+    const getItemProperties = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-item-properties/${tenant}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setItemProperties(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
+    const getWarehouses = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-warehouses/${tenant}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setWarehouses(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
+    const getManufacturers = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-manufacturers/${tenant}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setManufacturers(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
 
     const usStates = [
         { label: 'Not Applicable', value: 'NONE' },
@@ -108,6 +209,14 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
             console.error('An error occurred:', error);
         }
     };
+
+    useEffect(() => {
+        getVendors()
+        getWarehouses()
+        getItemGroups()
+        getItemProperties()
+        getManufacturers()
+    }, []);
     return (
         <>
 
@@ -120,6 +229,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                             inventory_item: false,
                             sales_item: false,
                             purchasing_item: false,
+                            sales_tax_liable: false,
                             prop_1: false,
                             prop_2: false,
                             prop_3: false,
@@ -160,19 +270,13 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                 <ErrorMessage name="vendor_type" component="div" className="text-red-600" />
                                             </Col>
                                             <Col span={8} xs={240} s={24} lg={8} className='mt-5'>
-
                                                 <div>
                                                     <label>
-                                                        <Field type="radio" name="sales_tax" value="liable" />
+                                                        <Field type="checkbox" name="sales_tax_liable" />
                                                         Sales Tax/VAT Liable
                                                     </label>
                                                 </div>
-                                                <div>
-                                                    <label>
-                                                        <Field type="radio" name="sales_tax" value="exempt" />
-                                                        Sales Tax/VAT Exempt
-                                                    </label>
-                                                </div>
+
                                             </Col>
                                             <Col span={8} xs={240} s={24} lg={8}>
                                                 <div className='mt-2 item-type'>
