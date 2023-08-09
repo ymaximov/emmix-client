@@ -822,7 +822,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                 <Tabs.TabPane tab='Remarks'  key={6}>
                                     <Row gutter={20}>
 
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col ml-3">
                                             <label htmlFor="remarks" className="mb-2">
                                                 Remarks
                                             </label>
@@ -831,7 +831,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                 id="remarks"
                                                 name="remarks"
                                                 rows="14"
-                                                cols="100"
+                                                cols="90"
                                                 className="border border-gray-400 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                                             ></Field>
                                             <ErrorMessage name="remarks" component="div" className="text-red-600" />
