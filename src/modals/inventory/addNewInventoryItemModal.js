@@ -1,4 +1,4 @@
-import {Button, Col, Form, Input, Row, Select, Tabs} from "antd";
+import {Button, Col, Input, Row, Select, Tabs} from "antd";
 import {AddNewUserModal} from "../../modals/admin/AddNewUserModal";
 import {UpdateUserModal} from "../../modals/admin/UpdateUserModal";
 import {countries} from "countries-list";
@@ -6,7 +6,7 @@ import React, {useEffect, useState} from "react";
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import {useSelector} from "react-redux";
-import {ErrorMessage, Field, Formik,} from "formik";
+import {ErrorMessage, Field, Formik, Form} from "formik";
 import '../../pages/inventory/inventory.css'
 import {useDispatch} from "react-redux";
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
@@ -289,9 +289,9 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                             // prop_10: false,
 
                         }}
-
+                        onSubmit={addItem}
                     >
-                        <Form layout="vertical"  onSubmit={addItem} >
+                        <Form layout="vertical" >
                             <Tabs>
                                 <Tabs.TabPane tab="General" key={0}>
                                     <div>
