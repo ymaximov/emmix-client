@@ -1,17 +1,20 @@
 import {Button, Col, Form, Input, Row, Select, Tabs} from "antd";
 import {AddNewUserModal} from "../../modals/admin/AddNewUserModal";
 import {UpdateUserModal} from "../../modals/admin/UpdateUserModal";
-import {AgGridReact} from "ag-grid-react";
 import {countries} from "countries-list";
 import React, {useEffect, useState} from "react";
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
-import toast from 'react-hot-toast'
 import {useSelector} from "react-redux";
-import {ErrorMessage, Field, Formik} from "formik";
+import {ErrorMessage, Field, Formik,} from "formik";
 import '../../pages/inventory/inventory.css'
 import {useDispatch} from "react-redux";
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import 'ag-grid-enterprise';
+import toast from 'react-hot-toast'
 
 export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVendorsData}) => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -22,6 +25,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
     const [itemProperties, setItemProperties] = useState()
     const [warehouses, setWarehouses] = useState()
     const [manufacturers, setManufacturers] = useState()
+
     const getVendors = async () => {
         try {
             dispatch(showLoading());
@@ -49,10 +53,10 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(res, 'response')
+            console.log(res, 'response ITEMGROPUS')
             dispatch(hideLoading());
             if (res.status === 200) {
-                console.log(res)
+                console.log(res, 'ITEM GROUPSSS')
                 setItemGroups(res.data.data)
             }
         } catch (error) {
@@ -60,6 +64,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
             console.log(error)
         }
     };
+    console.log(itemGroups, "ITEMGROUPS")
     const getItemProperties = async () => {
         try {
             dispatch(showLoading());
@@ -176,17 +181,57 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
         return { label: countryName, value: countryCode };
     });
     const { Option } = Select;
+
+
+    const columnDefs = [
+        // {
+        //     headerName: "Tenant ID",
+        //     field: "tenant_id",
+        // },
+        {
+            headerName: "Company Name",
+            field: "company_name",
+        },
+        {
+            headerName: "First Name",
+            field: "first_name",
+        },
+        {
+            headerName: "Last Name",
+            field: "last_name",
+        },
+        {
+            headerName: "Email",
+            field: "email",
+        },
+        {
+            headerName: "Phone Number",
+            field: "phone_1",
+        },
+        {
+            headerName: "Customer Type",
+            field: "customer_type",
+        },
+        {
+            headerName: "Status",
+            field: "status",
+        },
+    ];
+    const handleCellClicked = (params) => {
+        console.log('AG GRID cell clicked', params);
+    };
     const handleClose = () => {
         // Perform some action that updates the state in the parent component
         setShowAddNewInventoryItemModal(false);
         // You can also close the modal after updating the state, depending on your use case
     };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const addItem = async (values, actions) => {
+        console.log('addItem Function Called')
+        console.log('FORM VALUES', values)
+        values.tenant_id = tenant
 
-        console.log('1111')
         try {
-            const res = await axios.post("/api/vendor/add-new-vendor", 'values',
+            const res = await axios.post("/api/inventory/add-new-inventory-item", values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -198,8 +243,6 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
                 console.log('Form submitted successfully!');
-                getVendorsData()
-                handleClose()
             } else {
                 toast.error(res.data.message)
                 console.error('Form submission failed.');
@@ -209,6 +252,8 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
             console.error('An error occurred:', error);
         }
     };
+    console.log(vendors, 'VENDORS')
+
 
     useEffect(() => {
         getVendors()
@@ -230,20 +275,23 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                             sales_item: false,
                             purchasing_item: false,
                             sales_tax_liable: false,
-                            prop_1: false,
-                            prop_2: false,
-                            prop_3: false,
-                            prop_4: false,
-                            prop_5: false,
-                            prop_6: false,
-                            prop_7: false,
-                            prop_8: false,
-                            prop_9: false,
-                            prop_10: false,
+                            manufacturer: '',
+                            item_group_id: '',
+                            manufacturter_id: '',// prop_1: false,
+                            // prop_2: false,
+                            // prop_3: false,
+                            // prop_4: false,
+                            // prop_5: false,
+                            // prop_6: false,
+                            // prop_7: false,
+                            // prop_8: false,
+                            // prop_9: false,
+                            // prop_10: false,
 
                         }}
+
                     >
-                        <Form layout="vertical">
+                        <Form layout="vertical"  onSubmit={addItem} >
                             <Tabs>
                                 <Tabs.TabPane tab="General" key={0}>
                                     <div>
@@ -331,6 +379,11 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             <option value="">Please Select an Option</option>
+                                                            {itemGroups?.map((group) => (
+                                                                <option key={group.id} value={group.id}>
+                                                                    {group.name}
+                                                                </option>
+                                                            ))}
                                                         </Field>
                                                     </div>
                                                     <ErrorMessage name="vendor_type" component="div" className="text-red-600" />
@@ -347,6 +400,11 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             <option value="">Please Select an Option</option>
+                                                            {manufacturers?.map((group) => (
+                                                                <option key={group.id} value={group.id}>
+                                                                    {group.name}
+                                                                </option>
+                                                            ))}
                                                         </Field>
                                                     </div>
                                                     <ErrorMessage name="vendor_type" component="div" className="text-red-600" />
@@ -440,6 +498,11 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                     className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option value="">Please Select an Option</option>
+                                                    {vendors?.map((group) => (
+                                                        <option key={group.id} value={group.id}>
+                                                            {group.company_name}
+                                                        </option>
+                                                    ))}
                                                 </Field>
                                             </div>
                                             <ErrorMessage name="vendor" component="div" className="text-red-600" />
@@ -456,6 +519,11 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                     className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option value="">Please Select an Option</option>
+                                                    {vendors?.map((group) => (
+                                                        <option key={group.id} value={group.id}>
+                                                            {group.company_name}
+                                                        </option>
+                                                    ))}
                                                 </Field>
                                             </div>
                                             <ErrorMessage name="vendor2" component="div" className="text-red-600" />
@@ -641,7 +709,15 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                         </Col>
                                     </Row>
                                     <hr  className='mt-4 mb-4'/>
-                                    <div>AG GRID HERE</div>
+                                    {warehouses && warehouses.length > 0 ? (
+                                        <div>
+                                            <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
+                                                <AgGridReact rowData={warehouses} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div>Warehouse Data Has Not Been Set Up</div>
+                                    )}
                                 </Tabs.TabPane>
                                 <Tabs.TabPane tab='Item Properties' key={4}>
                                     <Col span={8} xs={240} s={24} lg={8}>
@@ -650,7 +726,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                             <div>
                                                 <label>
                                                     <Field type="checkbox" name="prop_1" className='mr-1'/>
-                                                    {}
+                                                   Property 1: {itemProperties?.prop_1}
                                                 </label>
                                             </div>
                                             <div>
