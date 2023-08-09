@@ -265,7 +265,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
     return (
         <>
 
-            <div className="modal">
+            <div className="modal ADDInventoryModal  ">
                 <div className="form-content">
                     <i className="ri-close-circle-line" onClick={handleClose}></i>
                     <h1 className='layout-title mt-1'>Add New Inventory Item</h1>
@@ -292,7 +292,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                         onSubmit={addItem}
                     >
                         <Form layout="vertical" >
-                            <Tabs>
+                            <Tabs rootClassName='overflow-hidden'>
                                 <Tabs.TabPane tab="General" key={0}>
                                     <div>
                                         {/*<h1 className="card-title mt-3">Company Details</h1>*/}
@@ -790,7 +790,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                 <Tabs.TabPane tab='Attachments' key={5}>
 
                                 </Tabs.TabPane>
-                                <Tabs.TabPane tab='Remarks' key={6}>
+                                <Tabs.TabPane tab='Remarks'  key={6}>
                                     <Row gutter={20}>
 
                                         <div className="flex flex-col">

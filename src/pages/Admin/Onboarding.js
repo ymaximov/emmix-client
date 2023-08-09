@@ -72,11 +72,18 @@ const countryOptions = Object.keys(countries).map(countryCode => {
 export const Onboarding = () => {
     const dispatch = useDispatch()
     const [form] = Form.useForm();
+    const token = JSON.parse(localStorage.getItem('token')).access_token
     const onFinish = async (values) => {
         console.log("received values of form", values);
         try {
             dispatch(showLoading())
-            const res = await axios.post("/api/admin/create-tenant", values);
+            const res = await axios.post("/api/admin/create-tenant", values,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+
+                    });
             dispatch(hideLoading())
             if (res.status === 200){
                 toast.success(res.data.message);
