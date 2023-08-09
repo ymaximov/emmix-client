@@ -242,6 +242,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
             if (res.status === 200) {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
+                setShowAddNewInventoryItemModal(false)
                 console.log('Form submitted successfully!');
             } else {
                 toast.error(res.data.message)
@@ -275,9 +276,16 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                             sales_item: false,
                             purchasing_item: false,
                             sales_tax_liable: false,
-                            manufacturer: '',
-                            item_group_id: '',
-                            manufacturter_id: '',// prop_1: false,
+                            item_type: null,
+                            item_group_id: null,
+                            item_management: null,
+                            barcode: null,
+                            addit_identifier: null,
+                           country: null,
+                            vendor_1: null,
+                            vendor_2: null,
+                            vendor_3: null,
+                            // prop_1: false,
                             // prop_2: false,
                             // prop_3: false,
                             // prop_4: false,
@@ -287,6 +295,27 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                             // prop_8: false,
                             // prop_9: false,
                             // prop_10: false,
+                            manuf_sku: null,
+                            purchasing_uom: null,
+                            purchasing_items_per_unit: null,
+                            purchasing_items_per_package: null,
+                            purchasing_packaging_uom: null,
+                            length: null,
+                            width: null,
+                            height: null,
+                            volume: null,
+                            weight: null,
+                            sales_uom: null,
+                            sales_items_per_unit: null,
+                            sales_packaging_uom: null,
+                            sales_items_per_package: null,
+                            required_inv: null,
+                            minimum_inv: null,
+                            maximum_inv: null,
+                            warehouse_1: null,
+                            warehouse_2: null,
+                            warehouse_3: null,
+                            warehouse_4: null
 
                         }}
                         onSubmit={addItem}
@@ -375,7 +404,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                         <Field
                                                             as="select"
                                                             id="item_group"
-                                                            name="item_group"
+                                                            name="item_group_id"
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             <option value="">Please Select an Option</option>
@@ -396,7 +425,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                         <Field
                                                             as="select"
                                                             id="manufacturer"
-                                                            name="manufacturer"
+                                                            name="manufacturer_id"
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             <option value="">Please Select an Option</option>
@@ -441,7 +470,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                             <Col span={8} xs={240} s={24} lg={8}>
                                                 <div>
                                                     <label htmlFor="add_identifier" className='block text-sm font-medium leading-6 text-gray-900'>Additional Identifier</label>
-                                                    <Field type="text" placeholder='Additional Identifier' name="add_identifier" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                    <Field type="text" placeholder='Additional Identifier' name="addit_identifier" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                                     <ErrorMessage name="add_identifier" component="div" />
                                                 </div>
                                             </Col>
@@ -453,7 +482,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                     <Field
                                                         as="select"
                                                         id="country_origin"
-                                                        name="country_origin"
+                                                        name="country"
                                                         className=" block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     >
                                                         {countryOptions.map((country) => (
@@ -494,7 +523,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                 <Field
                                                     as="select"
                                                     id="vendor"
-                                                    name="vendor"
+                                                    name="vendor_1"
                                                     className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option value="">Please Select an Option</option>
@@ -515,7 +544,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                                 <Field
                                                     as="select"
                                                     id="vendor2"
-                                                    name="vendor2"
+                                                    name="vendor_2"
                                                     className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option value="">Please Select an Option</option>
@@ -638,58 +667,58 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
                                                 <label htmlFor="items_per_package" className='block text-sm font-medium leading-6 text-gray-900'>Items Per Package</label>
-                                                <Field type="text"  placeholder='Items Per Package' name="items_per_package" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <Field type="text"  placeholder='Items Per Package' name="sales_items_per_package" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                                 <ErrorMessage name="items_per_package" component="div" />
                                             </div>
                                         </Col>
                                     </Row>
                                     <hr  className='mt-4 mb-4'/>
-                                    <Row gutter={20}>
-                                        <Col span={8} xs={240} s={24} lg={8}>
-                                            <div>
-                                                <label htmlFor="length" className='block text-sm font-medium leading-6 text-gray-900'>Length</label>
-                                                <Field type="text"  placeholder='Length' name="length" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="length" component="div" />
-                                            </div>
-                                        </Col>
-                                        <Col span={8} xs={240} s={24} lg={8}>
-                                            <div>
-                                                <label htmlFor="width" className='block text-sm font-medium leading-6 text-gray-900'>Width</label>
-                                                <Field type="text"  placeholder='Width' name="width" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="width" component="div" />
-                                            </div>
-                                        </Col>
-                                        <Col span={8} xs={240} s={24} lg={8}>
-                                            <div>
-                                                <label htmlFor="hieght" className='block text-sm font-medium leading-6 text-gray-900'>Height</label>
-                                                <Field type="text"  placeholder='Height' name="hieght" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="hieght" component="div" />
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row gutter={20}>
-                                        <Col span={8} xs={240} s={24} lg={8}>
-                                            <div>
-                                                <label htmlFor="volume" className='block text-sm font-medium leading-6 text-gray-900'>Volume</label>
-                                                <Field type="text"  placeholder='Volume' name="volume" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="volume" component="div" />
-                                            </div>
-                                        </Col>
-                                        <Col span={8} xs={240} s={24} lg={8}>
-                                            <div>
-                                                <label htmlFor="weight" className='block text-sm font-medium leading-6 text-gray-900'>Weight</label>
-                                                <Field type="text"  placeholder='Weight' name="weight" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                                <ErrorMessage name="weight" component="div" />
-                                            </div>
-                                        </Col>
-                                    </Row>
+                                    {/*<Row gutter={20}>*/}
+                                    {/*    <Col span={8} xs={240} s={24} lg={8}>*/}
+                                    {/*        <div>*/}
+                                    {/*            <label htmlFor="length" className='block text-sm font-medium leading-6 text-gray-900'>Length</label>*/}
+                                    {/*            <Field type="text"  placeholder='Length' name="length" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>*/}
+                                    {/*            <ErrorMessage name="length" component="div" />*/}
+                                    {/*        </div>*/}
+                                    {/*    </Col>*/}
+                                    {/*    <Col span={8} xs={240} s={24} lg={8}>*/}
+                                    {/*        <div>*/}
+                                    {/*            <label htmlFor="width" className='block text-sm font-medium leading-6 text-gray-900'>Width</label>*/}
+                                    {/*            <Field type="text"  placeholder='Width' name="width" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>*/}
+                                    {/*            <ErrorMessage name="width" component="div" />*/}
+                                    {/*        </div>*/}
+                                    {/*    </Col>*/}
+                                    {/*    <Col span={8} xs={240} s={24} lg={8}>*/}
+                                    {/*        <div>*/}
+                                    {/*            <label htmlFor="hieght" className='block text-sm font-medium leading-6 text-gray-900'>Height</label>*/}
+                                    {/*            <Field type="text"  placeholder='Height' name="hieght" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>*/}
+                                    {/*            <ErrorMessage name="hieght" component="div" />*/}
+                                    {/*        </div>*/}
+                                    {/*    </Col>*/}
+                                    {/*</Row>*/}
+                                    {/*<Row gutter={20}>*/}
+                                    {/*    <Col span={8} xs={240} s={24} lg={8}>*/}
+                                    {/*        <div>*/}
+                                    {/*            <label htmlFor="volume" className='block text-sm font-medium leading-6 text-gray-900'>Volume</label>*/}
+                                    {/*            <Field type="text"  placeholder='Volume' name="volume" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>*/}
+                                    {/*            <ErrorMessage name="volume" component="div" />*/}
+                                    {/*        </div>*/}
+                                    {/*    </Col>*/}
+                                    {/*    <Col span={8} xs={240} s={24} lg={8}>*/}
+                                    {/*        <div>*/}
+                                    {/*            <label htmlFor="weight" className='block text-sm font-medium leading-6 text-gray-900'>Weight</label>*/}
+                                    {/*            <Field type="text"  placeholder='Weight' name="weight" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>*/}
+                                    {/*            <ErrorMessage name="weight" component="div" />*/}
+                                    {/*        </div>*/}
+                                    {/*    </Col>*/}
+                                    {/*</Row>*/}
                                 </Tabs.TabPane>
                                 <Tabs.TabPane tab='Inventory Data' key={3}>
                                     <Row gutter={20}>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
                                                 <label htmlFor="required_inv" className='block text-sm font-medium leading-6 text-gray-900'>Required (Purchasing UoM)</label>
-                                                <Field type="text"  placeholder='Volume' name="required_inv" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <Field type="text"  placeholder='Required Inventory' name="required_inv" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                                 <ErrorMessage name="required_inv" component="div" />
                                             </div>
                                         </Col>
