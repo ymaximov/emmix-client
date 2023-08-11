@@ -20,6 +20,8 @@ import {Vendors} from "./pages/vendors/Vendors";
 import {VendorProfile} from "./pages/vendors/VendorProfile";
 import {Inventory} from "./pages/inventory/Inventory";
 import {InventoryItemProfile} from "./pages/inventory/InventoryItemProfile";
+import {Purchasing} from "./pages/purchasing/Purchasing";
+import {CreatePurchaseOrder} from "./pages/purchasing/CreatePurchaseOrder";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +71,14 @@ const router = createBrowserRouter([
     {
         path: '/inventory/itemprofile',
         element: <ProtectedRoute><InventoryItemProfile /></ProtectedRoute>
+    },
+    {
+        path: '/purchasing',
+        element: <ProtectedRoute><Purchasing /></ProtectedRoute>
+    },
+    {
+        path: '/purchasing/createpo',
+        element: <ProtectedRoute><CreatePurchaseOrder /></ProtectedRoute>
     },
 ])
 function App() {

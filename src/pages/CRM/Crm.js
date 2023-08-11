@@ -150,23 +150,6 @@ export const CRM = () => {
                             <div>...Data is Loading</div>
                         )}
                         {customers && customers.length > 0 ? <div>
-                            <ActiveInactiveChart active={activeCustomers} inactive={inactiveCustomers} setShowFilteredResultsModal={setShowFilteredResultsModal}/>
-                        </div>: (
-                            <div>...Data is Loading</div>
-                        )}
-                        {customers && customers.length > 0 ? <div>
-                                <CustomerTypeChart commercial={commercialCustomers} government={governmentCustomers} education={educationCustomers} individual={individualCustomers} setShowFilteredResultsModal={setShowFilteredResultsModal}/>
-
-                        </div>: (
-                            <div>...Data is Loading</div>
-                        )}
-                        {customers && customers.length > 0 ? <div>
-                            <CustomerTypeChart commercial={commercialCustomers} government={governmentCustomers} education={educationCustomers} individual={individualCustomers} setShowFilteredResultsModal={setShowFilteredResultsModal}/>
-
-                        </div>: (
-                            <div>...Data is Loading</div>
-                        )}
-                        {customers && customers.length > 0 ? <div>
                             <CustomerTypeChart commercial={commercialCustomers} government={governmentCustomers} education={educationCustomers} individual={individualCustomers} setShowFilteredResultsModal={setShowFilteredResultsModal}/>
 
                         </div>: (
