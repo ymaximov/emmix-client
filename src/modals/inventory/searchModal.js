@@ -282,12 +282,16 @@ export const SearchModal = ({setShowSearchModal, inventory}) => {
                 (!parsedValues.manuf_sku || filterByValue(item.manuf_sku, parsedValues.manuf_sku)) &&
                 (!parsedValues.vendor_1 || item.vendor_1 === parsedValues.vendor_1) &&
                 (!parsedValues.vendor_2 || item.vendor_2 === parsedValues.vendor_2) &&
-                (!parsedValues.status || item.status.toLowerCase() === parsedValues.status.toLowerCase())
+                (!parsedValues.status || item.status.toLowerCase() === parsedValues.status.toLowerCase()) &&
+                (!parsedValues.inventory_item || item.inventory_item === parsedValues.inventory_item) &&
+                (!parsedValues.sales_item || item.sales_item === parsedValues.sales_item) &&
+                (!parsedValues.purchasing_item || item.purchasing_item === parsedValues.purchasing_item)
             );
         });
 
         setSearchResults(filteredData);
     };
+
 
 
     useEffect(() => {

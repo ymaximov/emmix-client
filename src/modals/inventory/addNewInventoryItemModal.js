@@ -286,6 +286,8 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                             vendor_1: null,
                             vendor_2: null,
                             vendor_3: null,
+                            price: null,
+                            cost: null,
                             // prop_1: false,
                             // prop_2: false,
                             // prop_3: false,
@@ -518,6 +520,15 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                                     <Row gutter={20}>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
+                                                <label htmlFor="cost" className='block text-sm font-medium leading-6 text-gray-900'>Cost</label>
+                                                <Field type="text"  placeholder='Cost' name="cost" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="cost" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
                                                 <label htmlFor="vendor" className="block text-sm font-medium leading-6 text-gray-900">
                                                     Preferred Supplier
                                                 </label>
@@ -641,6 +652,15 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                                     </Row>
                                 </Tabs.TabPane>
                                 <Tabs.TabPane tab='Sales' key={2}>
+                                    <Row gutter={20}>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="price" className='block text-sm font-medium leading-6 text-gray-900'>Price</label>
+                                                <Field type="text" placeholder='Price' name="price" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="price" component="div" />
+                                            </div>
+                                        </Col>
+                                    </Row>
                                     <Row gutter={20}>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
