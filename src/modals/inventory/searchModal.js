@@ -157,22 +157,7 @@ export const SearchModal = ({setShowSearchModal, inventory}) => {
 
     console.log(searchResults, 'SEARCH RESULT')
 
-    const handleSearch = async (values) => {
-        const filteredData = inventory.filter(item => {
-            return (
-                (!values.id || item.id.includes(values.id)) &&
-                (!values.item_name || item.item_name.includes(values.item_name)) &&
-                (!values.item_description || item.item_description.includes(values.item_description)) &&
-                (!values.item_type || item.item_type === values.item_type) &&
-                (!values.manuf_sku || item.manuf_sku.includes(values.manuf_sku)) &&
-                (!values.vendor_1 || item.vendor_1 === values.vendor_1) &&
-                (!values.vendor_2 || item.vendor_2 === values.vendor_2) &&
-                (!values.status || item.status === values.status)
-            );
-        });
 
-        setSearchResults(filteredData);
-    };
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
         dispatch(setItem(params.data))
@@ -274,6 +259,37 @@ export const SearchModal = ({setShowSearchModal, inventory}) => {
             console.log(error)
         }
     };
+
+    const handleSearch = (values) => {
+        const parsedValues = {
+            ...values,
+            id: values.id !== '' ? parseInt(values.id, 10) : null,
+            vendor_1: values.vendor_1 !== '' ? parseInt(values.vendor_1, 10) : null,
+            vendor_2: values.vendor_2 !== '' ? parseInt(values.vendor_2, 10) : null,
+        };
+
+        const filterByValue = (value, searchTerm) => {
+            if (value === null || value === undefined) return false;
+            return value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+        };
+
+        const filteredData = inventory.filter(item => {
+            return (
+                (!parsedValues.id || filterByValue(item.id, parsedValues.id.toString())) &&
+                (!parsedValues.item_name || filterByValue(item.item_name, parsedValues.item_name)) &&
+                (!parsedValues.item_description || filterByValue(item.item_description, parsedValues.item_description)) &&
+                (!parsedValues.item_type || item.item_type === parsedValues.item_type) &&
+                (!parsedValues.manuf_sku || filterByValue(item.manuf_sku, parsedValues.manuf_sku)) &&
+                (!parsedValues.vendor_1 || item.vendor_1 === parsedValues.vendor_1) &&
+                (!parsedValues.vendor_2 || item.vendor_2 === parsedValues.vendor_2) &&
+                (!parsedValues.status || item.status.toLowerCase() === parsedValues.status.toLowerCase())
+            );
+        });
+
+        setSearchResults(filteredData);
+    };
+
+
     useEffect(() => {
         getVendors()
         getWarehouses()
@@ -304,10 +320,13 @@ export const SearchModal = ({setShowSearchModal, inventory}) => {
                             email: '',
                             phone_1: '',
                             contact_phone: '',
-                            status: ''
+                            status: '',
+                            vendor_1: null,
+                            vendor_2: null,
                         }}
                         onSubmit={(values) => {
                             handleSearch(values);
+                            console.log('FORMM VALUES', values)
                         }}
                     >
                         {({ handleSubmit, ...formik }) => (

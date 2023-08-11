@@ -94,7 +94,7 @@ export const Inventory = () => {
                         <i className="ri-search-line ml-1" onClick={() => setShowSearchModal(true)}></i>
                     </div>
                     {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} inventory={inventory}/>}
-                    {showAddNewInventoryItemModal && <AddNewInventoryItemModal setShowAddNewInventoryItemModal={setShowAddNewInventoryItemModal}/>}
+                    {showAddNewInventoryItemModal && <AddNewInventoryItemModal getInventoryData={getInventoryData} setShowAddNewInventoryItemModal={setShowAddNewInventoryItemModal}/>}
                     <div>
                         <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
                             <AgGridReact rowData={inventory} columnDefs={columnDefs} onCellClicked={handleCellClicked} />

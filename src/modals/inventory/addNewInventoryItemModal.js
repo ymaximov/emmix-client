@@ -16,7 +16,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import toast from 'react-hot-toast'
 
-export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVendorsData}) => {
+export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getInventoryData}) => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = JSON.parse(localStorage.getItem('token')).tenant_id
     const dispatch = useDispatch()
@@ -242,6 +242,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getVe
             if (res.status === 200) {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
+                getInventoryData()
                 setShowAddNewInventoryItemModal(false)
                 console.log('Form submitted successfully!');
             } else {

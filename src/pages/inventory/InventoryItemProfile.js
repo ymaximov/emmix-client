@@ -17,8 +17,7 @@ import 'ag-grid-enterprise';
 export const InventoryItemProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = JSON.parse(localStorage.getItem('token')).tenant_id
-    const customer = useSelector((state) => state.customer).customer
-    const id = useSelector((state) => state.customer).customer.id
+    const id = useSelector((state) => state.item).item.id
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [vendors, setVendors] = useState()
@@ -164,34 +163,6 @@ export const InventoryItemProfile = () => {
         console.log('AG GRID cell clicked', params);
     };
 
-    const handleSubmit = async (values, { setSubmitting }) => {
-        setSubmitting(false)
-        console.log('form data', values)
-        try {
-            values.id = id;
-            values.tenant_id = tenant;
-            const res = await axios.put("/api/crm/update-customer", values,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-
-                    }
-                });
-
-            if (res.status === 200) {
-                // Form data submitted successfully, handle success case here
-                toast.success(res.data.message);
-                console.log('Form submitted successfully!');
-                navigate('/crm')
-            } else {
-                toast.error(res.data.message)
-                console.error('Form submission failed.');
-            }
-        } catch (error) {
-            // Handle any other errors that occurred during the submission process
-            console.error('An error occurred:', error);
-        }
-    };
 
     const usStates = [
         { label: 'Not Applicable', value: 'NONE' },
@@ -251,6 +222,35 @@ export const InventoryItemProfile = () => {
         return { label: countryName, value: countryCode };
     });
 
+    const handleSubmit = async (values, { setSubmitting }) => {
+        setSubmitting(false)
+        console.log('form data', values)
+        try {
+            values.id = id;
+            values.tenant_id = tenant;
+            const res = await axios.put("/api/inventory/update-inventory-item", values,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+
+                    }
+                });
+
+            if (res.status === 200) {
+                // Form data submitted successfully, handle success case here
+                toast.success(res.data.message);
+                console.log('Form submitted successfully!');
+                navigate('/inventory')
+            } else {
+                toast.error(res.data.message)
+                console.error('Form submission failed.');
+            }
+        } catch (error) {
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    };
+
     useEffect(() => {
         getVendors()
         getWarehouses()
@@ -272,7 +272,7 @@ export const InventoryItemProfile = () => {
                 <div className='mt-6 font-bold'>Item No. {item.id}</div>
                 <Formik
                     initialValues={item}
-                    onSubmit={"addItem"}
+                    onSubmit={handleSubmit}
                 >
                     <Form layout="vertical" >
                         <Tabs rootClassName='overflow-hidden'>
