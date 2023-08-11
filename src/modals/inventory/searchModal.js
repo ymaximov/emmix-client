@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, formik } from 'formik';
 import {Row, Col} from 'antd'
 import {setCustomer} from "../../redux/slices/customerSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -488,7 +488,10 @@ export const SearchModal = ({setShowSearchModal, inventory}) => {
                                         <button
                                             type="button"
                                             className="mt-4 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                            onClick={() => clearForm(formik)}
+                                            onClick={() => {
+                                                clearForm(formik);
+                                                setSearchResults([]); // Clear search results as well
+                                            }}
                                         >
                                             Clear Form
                                         </button>
