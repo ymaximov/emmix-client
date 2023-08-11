@@ -12,7 +12,7 @@ import 'ag-grid-enterprise';
 import {setVendor} from "../../redux/slices/vendorSlice";
 import {useNavigate} from "react-router-dom";
 import {setItem} from "../../redux/slices/inventoryItemSlice";
-
+import {SearchModal} from '../../modals/inventory/searchModal'
 export const Inventory = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
@@ -20,6 +20,7 @@ export const Inventory = () => {
     const [showAddNewInventoryItemModal, setShowAddNewInventoryItemModal] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [showSearchModal, setShowSearchModal] = useState(false)
 
     const getInventoryData = async () => {
         try {
@@ -90,8 +91,9 @@ export const Inventory = () => {
                 <div className='inv-top mb-4'>
                     <div className='actions'>
                         <i className="ri-user-add-line" onClick={() => setShowAddNewInventoryItemModal(true)}></i>
-                        <i className="ri-search-line ml-1" onClick={() => {}}></i>
+                        <i className="ri-search-line ml-1" onClick={() => setShowSearchModal(true)}></i>
                     </div>
+                    {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} inventory={inventory}/>}
                     {showAddNewInventoryItemModal && <AddNewInventoryItemModal setShowAddNewInventoryItemModal={setShowAddNewInventoryItemModal}/>}
                     <div>
                         <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
