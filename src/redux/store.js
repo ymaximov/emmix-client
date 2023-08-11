@@ -7,6 +7,7 @@ import tenantProfileSlice from "./slices/admin/tenantProfileSlice";
 import customerSlice from "./slices/customerSlice";
 import vendorSlice from "./slices/vendorSlice";
 import filteredResultsSlice from "./slices/filteredResultsSlice";
+import inventoryItemSlice from "./slices/inventoryItemSlice";
 
 const persistConfig = {
     key: 'root', // The key under which the state will be saved
@@ -20,6 +21,7 @@ const persistedTenantReducer = persistReducer(persistConfig, tenantProfileSlice)
 const persistedCustomerReducer = persistReducer(persistConfig, customerSlice);
 const persistedVendorReducer = persistReducer(persistConfig, vendorSlice);
 const persistedFilteredResultsReducer = persistReducer(persistConfig, filteredResultsSlice);
+const persistedInventoryItemReducer = persistReducer(persistConfig, inventoryItemSlice);
 
 const rootReducer = {
     alerts: persistedAlertsReducer,
@@ -27,7 +29,8 @@ const rootReducer = {
     tenant: persistedTenantReducer,
     customer: persistedCustomerReducer,
     vendor: persistedVendorReducer,
-    filteredResults: persistedFilteredResultsReducer
+    filteredResults: persistedFilteredResultsReducer,
+    item: persistedInventoryItemReducer
 };
 
 const store = configureStore({

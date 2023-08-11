@@ -11,6 +11,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {setVendor} from "../../redux/slices/vendorSlice";
 import {useNavigate} from "react-router-dom";
+import {setItem} from "../../redux/slices/inventoryItemSlice";
 
 export const Inventory = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -74,8 +75,8 @@ export const Inventory = () => {
     ];
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
-        dispatch(setVendor(params.data))
-        navigate('/vendors/vendorprofile')
+        dispatch(setItem(params.data))
+        navigate('/inventory/itemprofile')
     };
 
     useEffect(() => {
