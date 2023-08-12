@@ -25,6 +25,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
     const [itemProperties, setItemProperties] = useState()
     const [warehouses, setWarehouses] = useState()
     const [manufacturers, setManufacturers] = useState()
+    const [isItemSelected, setIsItemSelected] = useState(false)
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = JSON.parse(localStorage.getItem('token')).tenant_id
     const selectedItem = useSelector((state) => state.purchaseOrder).selectedItem
@@ -172,9 +173,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
         const rowData = params.data
         console.log('AG GRID cell clicked', params);
         dispatch(setSelectedItem(params.data))
-        // navigate('/purchasing/createpo')
-        const clickedRowData = params.data;
-        setSelectedRowData(clickedRowData);
+        setIsItemSelected(true)
     }
     console.log(selectedRowData, 'ROW SELECTED DATA')
     const getVendors = async () => {
@@ -507,7 +506,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                             <AgGridReact rowData={searchResults} columnDefs={columnDefs} getRowStyle={getRowStyle} onCellClicked={handleCellClicked} />
                         </div>
                     </div>
-                    <Formik
+                    {isItemSelected && <Formik
                         initialValues={{
                             price: null,
                             quantity: null,
@@ -566,7 +565,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                                 </div>
                             </Row>
                         </Form>
-                    </Formik>
+                    </Formik>}
 
                 </div>
             </div>

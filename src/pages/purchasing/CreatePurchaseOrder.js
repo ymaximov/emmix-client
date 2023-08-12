@@ -16,6 +16,7 @@ import {SearchItemModal} from "../../modals/purchasing/SearchItemModal";
 import {addItem, removeItem} from "../../redux/slices/purchaseOrderSlice";
 import {selectedItemModal} from "../../modals/inventory/selectedItemDetails";
 import {selectedItem} from '../../redux/slices/alertsSlice'
+import {clearOrder} from "../../redux/slices/purchaseOrderSlice";
 
 export const CreatePurchaseOrder = () => {
     const [showSearchVendorModal, setShowSearchVendorModal] = useState(false)
@@ -32,6 +33,7 @@ export const CreatePurchaseOrder = () => {
     const vendor = useSelector((state) => state.vendor).vendor
     const purchaseOrderItems = useSelector((state) => state.purchaseOrder).items
     console.log(vendor, 'VRNDOR')
+    const currency = '$'
 
     const handleAddToOrder = (item) => {
       dispatch(addItem(item))
@@ -74,7 +76,7 @@ export const CreatePurchaseOrder = () => {
             field: "selectedItemName",
         },
         {
-            headerName: "Price Per Unit",
+            headerName: `Price Per Unit ${currency}`,
             field: "price",
             editable: true
         },
@@ -173,7 +175,7 @@ export const CreatePurchaseOrder = () => {
                 <div className="d-flex justify-content-end">
                     <button
                         type="button"
-                        className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="mt-10 mb-4 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={() => setShowSearchItemModal(true)}
                     >
                         Add Item

@@ -13,6 +13,7 @@
 
 .selected-item {
     font-weight: bold;
+    font-size: 1rem;
     margin-bottom: 1px;
     display: flex;
     justify-content: center;
