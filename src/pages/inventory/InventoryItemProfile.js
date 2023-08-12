@@ -303,11 +303,10 @@ export const InventoryItemProfile = () => {
                                         <Col span={8} xs={240} s={24} lg={8} className='mt-5'>
                                             <div>
                                                 <label>
-                                                    <Field type="checkbox" name="sales_tax_liable" />
-                                                    Sales Tax/VAT Liable
+                                                    <Field type="checkbox" name="sales_tax" />
+                                                    Sales Tax
                                                 </label>
                                             </div>
-
                                         </Col>
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div className='mt-2 item-type'>

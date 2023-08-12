@@ -9,9 +9,12 @@ export const vendorSlice = createSlice({
         setVendor: (state, action) => {
             state.vendor = action.payload
         },
+        clearVendor: (state, action) => {
+            state.vendor = {}
+        },
     },
 });
 
-export const {setVendor} = vendorSlice.actions;
+export const {setVendor, clearVendor} = vendorSlice.actions;
 
 export default vendorSlice.reducer

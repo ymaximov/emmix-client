@@ -6,3 +6,15 @@
 .vendor-details-title {
     font-weight: bold;
 }
+
+.heading {
+    font-size: 1.5rem;
+}
+
+.selected-item {
+    font-weight: bold;
+    margin-bottom: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

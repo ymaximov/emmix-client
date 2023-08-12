@@ -276,7 +276,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                             inventory_item: false,
                             sales_item: false,
                             purchasing_item: false,
-                            sales_tax_liable: false,
+                            sales_tax: false,
                             item_type: null,
                             item_group_id: null,
                             item_management: null,
@@ -352,7 +352,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                                             <Col span={8} xs={240} s={24} lg={8} className='mt-5'>
                                                 <div>
                                                     <label>
-                                                        <Field type="checkbox" name="sales_tax_liable" />
+                                                        <Field type="checkbox" name="sales_tax" />
                                                         Sales Tax/VAT Liable
                                                     </label>
                                                 </div>

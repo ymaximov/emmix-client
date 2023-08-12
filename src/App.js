@@ -22,6 +22,7 @@ import {Inventory} from "./pages/inventory/Inventory";
 import {InventoryItemProfile} from "./pages/inventory/InventoryItemProfile";
 import {Purchasing} from "./pages/purchasing/Purchasing";
 import {CreatePurchaseOrder} from "./pages/purchasing/CreatePurchaseOrder";
+import {TokenExpirationHandler} from "./pages/login/TokenExpirationHandler";
 
 const router = createBrowserRouter([
   {
