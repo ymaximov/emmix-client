@@ -31,9 +31,22 @@ export const CreatePurchaseOrder = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const vendor = useSelector((state) => state.vendor).vendor
+
     const purchaseOrderItems = useSelector((state) => state.purchaseOrder).items
     console.log(vendor, 'VENDOR')
     const currency = '$'
+    const items = useSelector(state => state.purchaseOrder.items);
+
+
+    // Calculate the total price using reduce()
+    const salesTax = 17
+    const salesTaxRate = vendor.sales_tax == 'liable' ? salesTax : 0
+    const subTotal = items.reduce((total, item) => total + parseFloat(item.price), 0);
+    const salesTaxAmount = (subTotal * salesTaxRate) / 100;
+    const grandTotal = subTotal + salesTaxAmount;
+    const formattedSubTotal = subTotal.toFixed(2);
+    const formattedSalesTaxAmount = salesTaxAmount.toFixed(2);
+    const formattedGrandTotal = grandTotal.toFixed(2);
 
     const handleAddToOrder = (item) => {
       dispatch(addItem(item))
@@ -63,6 +76,7 @@ export const CreatePurchaseOrder = () => {
     };
     const activeVendors = vendors?.filter(vendor => vendor.status === 'active');
     console.log(activeVendors, 'ACTIVE VENDORTS')
+
 
     const columnDefs = [
         // {
@@ -177,6 +191,11 @@ export const CreatePurchaseOrder = () => {
                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
                         <AgGridReact rowData={purchaseOrderItems} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
                     </div>
+                </div>
+                <div className={'totals mt-2'}>
+                    <div>Subtotal: {currency}{formattedSubTotal}</div>
+                    <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
+                    <div>Total: {currency}{formattedGrandTotal}</div>
                 </div>
             </div>
         </>

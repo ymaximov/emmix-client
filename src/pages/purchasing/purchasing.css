@@ -25,3 +25,10 @@
     cursor: pointer;
 
 }
+
+.totals {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+}

@@ -346,10 +346,51 @@ export const VendorProfile = () => {
                                 </Row>
 
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab='Purchasing History' key={2}></Tabs.TabPane>
-                            <Tabs.TabPane tab='Inventory' key={3}></Tabs.TabPane>
-                            <Tabs.TabPane tab='Contracts' key={4}></Tabs.TabPane>
-                            <Tabs.TabPane tab='Attachments' key={5}>
+                            <Tabs.TabPane tab='Billing Details' key={2}>
+                                <Row gutter={20}>
+                                    <Col span={8} xs={240} s={24} lg={8}>
+                                        <div>
+                                            <label htmlFor="sales_tax" className="block text-sm font-medium leading-6 text-gray-900">
+                                                Sales Tax
+                                            </label>
+                                            <Field
+                                                as="select"
+                                                id="sales_tax"
+                                                name="sales_tax"
+                                                className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            >
+                                                <option value="">--Please Select an Option--</option>
+                                                <option value="liable">Liable</option>
+                                                <option value="exempt">Exempt</option>
+                                            </Field>
+                                            <ErrorMessage name="sales_tax" component="div" className="text-red-600" />
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row gutter={20}>
+                                    <Col span={8} xs={240} s={24} lg={8}>
+                                        <div>
+                                            <label htmlFor="payment_terms" className="block text-sm font-medium leading-6 text-gray-900">
+                                                Payment Terms
+                                            </label>
+                                            <div className="mt-2">
+                                                <Field
+                                                    type="text"
+                                                    name="payment_terms"
+                                                    id="payment_terms"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    placeholder="e.g. NET30"
+                                                />
+                                                <ErrorMessage name="payment_terms" component="div" className="text-red-600" />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Tabs.TabPane>
+                            <Tabs.TabPane tab='Purchasing History' key={3}></Tabs.TabPane>
+                            <Tabs.TabPane tab='Inventory' key={4}></Tabs.TabPane>
+                            <Tabs.TabPane tab='Contracts' key={5}></Tabs.TabPane>
+                            <Tabs.TabPane tab='Attachments' key={6}>
                                 <Row gutter={20}>
 
                                     <div className="flex flex-col">
@@ -368,7 +409,7 @@ export const VendorProfile = () => {
                                     </div>
                                 </Row>
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab='Remarks' key={6}>
+                            <Tabs.TabPane tab='Remarks' key={7}>
                                 <Row gutter={20}>
 
                                     <div className="flex flex-col">

@@ -503,7 +503,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                         )}
                     </Formik>
                     <div className='mt-3'>
-                        <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
+                        <div className="ag-theme-alpine" style={{ height: '10rem', width: '100%' }}>
                             <AgGridReact rowData={searchResults} columnDefs={columnDefs} getRowStyle={getRowStyle} onCellClicked={handleCellClicked} />
                         </div>
                     </div>
