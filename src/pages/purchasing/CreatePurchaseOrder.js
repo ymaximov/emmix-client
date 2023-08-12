@@ -40,8 +40,9 @@ export const CreatePurchaseOrder = () => {
 
     // Calculate the total price using reduce()
     const salesTax = 17
+    const quantity = useSelector((state) => state.purchaseOrder.items)
     const salesTaxRate = vendor.sales_tax == 'liable' ? salesTax : 0
-    const subTotal = items.reduce((total, item) => total + parseFloat(item.price), 0);
+    const subTotal = items.reduce((total, item) => total + parseFloat(item.price) * parseInt(item.quantity), 0);
     const salesTaxAmount = (subTotal * salesTaxRate) / 100;
     const grandTotal = subTotal + salesTaxAmount;
     const formattedSubTotal = subTotal.toFixed(2);
