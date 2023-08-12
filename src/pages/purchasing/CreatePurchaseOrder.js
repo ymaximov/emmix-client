@@ -32,7 +32,7 @@ export const CreatePurchaseOrder = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const vendor = useSelector((state) => state.vendor).vendor
     const purchaseOrderItems = useSelector((state) => state.purchaseOrder).items
-    console.log(vendor, 'VRNDOR')
+    console.log(vendor, 'VENDOR')
     const currency = '$'
 
     const handleAddToOrder = (item) => {
@@ -61,6 +61,8 @@ export const CreatePurchaseOrder = () => {
             console.log(error)
         }
     };
+    const activeVendors = vendors?.filter(vendor => vendor.status === 'active');
+    console.log(activeVendors, 'ACTIVE VENDORTS')
 
     const columnDefs = [
         // {
@@ -86,8 +88,8 @@ export const CreatePurchaseOrder = () => {
             editable: true
         },
         {
-            headerName: "Warehouse",
-            field: "wh_id",
+            headerName: "Warehouse ID",
+            field: "warehouse",
             editable: true
         },
         {
@@ -133,6 +135,7 @@ export const CreatePurchaseOrder = () => {
             console.log(error)
         }
     };
+    const activeInventory = inventory?.filter(vendor => vendor.status === 'active');
     useEffect(() => {
         getVendorsData()
         getInventoryData()
@@ -143,43 +146,32 @@ export const CreatePurchaseOrder = () => {
         <>
             <Layout />
             <div className="layout">
-                <h1 className={'heading'}>Create Purchase Order</h1>
-                {showSearchVendorModal && <SearchVendorModal setShowSearchVendorModal={setShowSearchVendorModal} vendors={vendors}/>}
-                {showSearchItemModal && <SearchItemModal inventory={inventory} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
+                <h1 className={'heading mb-3'}>Create Purchase Order</h1>
+                {showSearchVendorModal && <SearchVendorModal setShowSearchVendorModal={setShowSearchVendorModal} vendors={activeVendors}/>}
+                {showSearchItemModal && <SearchItemModal inventory={activeInventory} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
                 {showSelectedItemModal && <selectedItemModal />}
                 <div className="d-flex justify-content-end">
-                    <button
-                        type="button"
-                        className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        onClick={() => setShowSearchVendorModal(true)}
-                    >
-                        Select Vendor
-                    </button>
+                    <i className="ri-user-add-line" onClick={() => setShowSearchVendorModal(true)}></i>
                 </div>
-                <Row gutter={20} className='mt-3'>
+                <Row gutter={20} className='mt-5 mb-4'>
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div className='vendor-details-title'>Vendor Name</div>
                         <div>{vendor?.company_name}</div>
                         <div className='vendor-details-title'>Contact Name</div>
-                        <div>{vendor?.first_name}</div>
-                        <div className='vendor-details-title'>Contact Email</div>
-                        <div>{vendor?.email}</div>
+                        <div>{vendor?.first_name} {vendor?.last_name}</div>
                     </Col>
                     <Col span={8} xs={240} s={24} lg={8}>
-                        <div>Vendor Name</div>
-                        <div>Contact Name</div>
-                        <div>Contact Email</div>
+                        <div className='vendor-details-title'>Contact Email</div>
+                        <div>{vendor?.email}</div>
+                        <div className='vendor-details-title'>Contact Phone</div>
+                        <div>{vendor?.contact_phone}</div>
                     </Col>
+
 
                 </Row>
                 <div className="d-flex justify-content-end">
-                    <button
-                        type="button"
-                        className="mt-10 mb-4 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        onClick={() => setShowSearchItemModal(true)}
-                    >
-                        Add Item
-                    </button>
+                    <i className="ri-add-circle-line" onClick={() => setShowSearchItemModal(true)}></i>
+
                 </div>
                 <div className='mt-3'>
                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>

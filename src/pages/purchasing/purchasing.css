@@ -19,3 +19,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.ri-add-circle-line {
+    font-size: 1.8rem;
+    cursor: pointer;
+
+}

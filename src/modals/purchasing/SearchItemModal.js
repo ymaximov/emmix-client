@@ -176,6 +176,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
         setIsItemSelected(true)
     }
     console.log(selectedRowData, 'ROW SELECTED DATA')
+
     const getVendors = async () => {
         try {
             dispatch(showLoading());
@@ -459,7 +460,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                                     </Col>
                                     <Col span={8} xs={240} s={24} lg={8}>
                                         <div>
-                                            <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900">
+                                            <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900 mt-2">
                                                 Item Status
                                             </label>
                                             <Field
@@ -545,10 +546,14 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                                         <Field
                                             as="select"
                                             id="warehouse_id"
-                                            name="warehouse_id"
+                                            name="warehouse"
                                             className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         >
                                             <option value="">Please Select an Option</option>
+                                            {warehouses?.map((wh) => (
+                                                <option key={wh.id} value={wh.id}>WH No. {wh.id} {wh.warehouse_name}
+                                                </option>
+                                            ))}
                                         </Field>
                                     </div>
                                     <ErrorMessage name="warehouse_id" component="div" className="text-red-600" />
