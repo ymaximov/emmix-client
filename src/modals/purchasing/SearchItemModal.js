@@ -514,9 +514,20 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                             warehouse: null,
 
                         }}
-                        onSubmit={(values, {resetForm}) => {
-                            dispatch(addItem({price: values.price, quantity: values.quantity, warehouse: values.warehouse, selectedItemId: selectedItem.id, selectedItemName: selectedItem.item_name}))
-                            setShowSearchItemModal(false)
+                        onSubmit={(values, { resetForm }) => {
+                            const price = parseFloat(values.price);
+                            const quantity = parseFloat(values.quantity);
+
+                            dispatch(
+                                addItem({
+                                    price: price,
+                                    quantity: quantity,
+                                    inv_item_id: selectedItem.id,
+                                    selectedItemName: selectedItem.item_name,
+                                })
+                            );
+
+                            setShowSearchItemModal(false);
                         }}
                     >
                         <Form>

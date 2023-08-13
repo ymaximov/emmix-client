@@ -4,7 +4,7 @@ import './purchasing.css'
 import {useNavigate} from "react-router-dom";
 import {clearVendor} from "../../redux/slices/vendorSlice";
 import {useDispatch} from "react-redux";
-import {clearOrder} from "../../redux/slices/purchaseOrderSlice";
+import {clearOrder, clearSelectedItem, clearPrice, clearWarehouse, clearQuantity, clearDueDate} from "../../redux/slices/purchaseOrderSlice";
 
 export const Purchasing = () => {
     const navigate = useNavigate()
@@ -17,6 +17,11 @@ export const Purchasing = () => {
                     <i className="ri-file-add-line add-po" onClick={() => {
                         dispatch(clearVendor())
                         dispatch(clearOrder())
+                        dispatch(clearWarehouse())
+                        dispatch(clearDueDate())
+                        dispatch(clearSelectedItem())
+                        dispatch(clearPrice())
+                        dispatch(clearQuantity())
                         navigate('/purchasing/createpo')}
                     }></i>
                     <i className="ri-search-line ml-1" onClick={''}></i>

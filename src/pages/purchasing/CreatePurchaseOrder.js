@@ -13,30 +13,68 @@ import {SearchVendorModal} from '../../modals/purchasing/SearchVendorModal'
 import './purchasing.css'
 // import {addItemToOrder, removeItemFromOrder, clearOrder} from '../../redux/slices/purchaseOrderSlice'
 import {SearchItemModal} from "../../modals/purchasing/SearchItemModal";
-import {addItem, removeItem} from "../../redux/slices/purchaseOrderSlice";
+import {addItem, removeItem, setDueDate, setWarehouse, updateItem} from "../../redux/slices/purchaseOrderSlice";
 import {selectedItemModal} from "../../modals/inventory/selectedItemDetails";
 import {selectedItem} from '../../redux/slices/alertsSlice'
 import {clearOrder} from "../../redux/slices/purchaseOrderSlice";
+// import { Formik, Form, Field, ErrorMessage} from "formik";
+import { setDefaultLocale } from 'date-fns';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'tailwindcss/tailwind.css';
+import toast from "react-hot-toast";
 
 export const CreatePurchaseOrder = () => {
     const [showSearchVendorModal, setShowSearchVendorModal] = useState(false)
     const [showSearchItemModal, setShowSearchItemModal] = useState(false)
     const [showSelectedItemModal, setShowSelectedItemModal] = useState(false)
+    const [warehouses, setWarehouses] = useState()
     const [vendors, setVendors] = useState([]);
     const dispatch = useDispatch()
     const purchaseOrder = useSelector(state => state.purchaseOrder)
     const [inventory, setInventory] = useState()
+    const [dueDate, setDueDate] = useState(new Date());
+    const handleDueDateChange = (date, dateString) => {
+        setDueDate(date);
+        // dispatch(setDueDate(dueDate))
+    };
+
 
 
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const vendor = useSelector((state) => state.vendor).vendor
+    const handleWarehouseChange = (event) => {
+        const value = parseInt(event.target.value);
+        dispatch(setWarehouse(value))
+    };
+
+    console.log(warehouses, 'WAREHOUSES')
 
     const purchaseOrderItems = useSelector((state) => state.purchaseOrder).items
     console.log(vendor, 'VENDOR')
     const currency = '$'
     const items = useSelector(state => state.purchaseOrder.items);
 
+    const getWarehouses = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-warehouses/${tenantId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setWarehouses(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
 
     // Calculate the total price using reduce()
     const salesTax = 17
@@ -78,6 +116,10 @@ export const CreatePurchaseOrder = () => {
     const activeVendors = vendors?.filter(vendor => vendor.status === 'active');
     console.log(activeVendors, 'ACTIVE VENDORTS')
 
+    const removeRow = (rowId) => {
+        // Dispatch an action to remove the item from Redux state
+        dispatch(removeItem(rowId)); // You need to create the removeItem action
+    };
 
     const columnDefs = [
         // {
@@ -86,32 +128,24 @@ export const CreatePurchaseOrder = () => {
         // },
         {
             headerName: "Item No.",
-            field: "selectedItemId",
+            field: "inv_item_id",
         },
         {
             headerName: "Item Name",
             field: "selectedItemName",
         },
         {
-            headerName: `Price Per Unit ${currency}`,
-            field: "price",
-            editable: true
-        },
-        {
             headerName: "Quantity",
             field: "quantity",
-            editable: true
+        },
+        {
+            headerName: `Price Per Unit ${currency}`,
+            field: "price",
         },
         {
             headerName: "Warehouse ID",
             field: "warehouse",
             editable: true
-        },
-        {
-            headerName: 'Actions',
-            cellRendererFramework: (params) => (
-                <button onClick={"() => onRemoveItem(params.data.id)"}>Remove</button>
-            ),
         },
     ];
 
@@ -131,6 +165,8 @@ export const CreatePurchaseOrder = () => {
         console.log('AG GRID cell clicked', params);
 
     }
+
+
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
@@ -151,9 +187,48 @@ export const CreatePurchaseOrder = () => {
         }
     };
     const activeInventory = inventory?.filter(vendor => vendor.status === 'active');
+
+    const dataToPost = {
+        tenant_id: tenantId,
+        vendor_id: vendor.id,
+        warehouse_id: purchaseOrder.warehouse,
+        due_date: dueDate,
+        items: purchaseOrderItems,
+        subtotal: formattedSubTotal,
+        sales_tax: formattedSalesTaxAmount,
+        total_amount: formattedGrandTotal
+    }
+
+    const handleSubmit = async () => {
+
+        try {
+            const res = await axios.post("/api/purchasing/create-purchase-order", dataToPost,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+
+                    }
+                });
+
+            if (res.status === 200) {
+                // Form data submitted successfully, handle success case here
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message)
+                console.error('Form submission failed.');
+            }
+        } catch (error) {
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    };
+
+    console.log(dataToPost, 'DATATOPOST' )
+
     useEffect(() => {
         getVendorsData()
         getInventoryData()
+        getWarehouses()
     }, []);
 
 
@@ -182,22 +257,70 @@ export const CreatePurchaseOrder = () => {
                         <div>{vendor?.contact_phone}</div>
                     </Col>
 
+                    <Col span={8} xs={240} s={24} lg={8}>
+                        <div>
+                            <label htmlFor="warehouse_id" className="block text-sm font-medium leading-6 text-gray-900">
+                               Ship-to Warehouse
+                            </label>
+                            <select
+                                id="warehouse_id"
+                                name="warehouse"
+                                value={purchaseOrder.warehouse}
+                                onChange={handleWarehouseChange}
+                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            >
+                                <option value="">Please Select an Option</option>
+                                {warehouses?.map((wh) => (
+                                    <option key={wh.id} value={wh.id}>
+                                        {wh.warehouse_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="order_date" className="block text-sm font-medium leading-6 text-gray-900">
+                                Due Date
+                            </label>
+                            <DatePicker
+                                id="due_date"
+                                selected={dueDate}
+                                onChange={handleDueDateChange}
+                                dateFormat="yyyy-MM-dd" // Adjust the date format as needed
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            />
+                        </div>
+
+                    </Col>
+
+
 
                 </Row>
                 <div className="d-flex justify-content-end">
                     <i className="ri-add-circle-line" onClick={() => setShowSearchItemModal(true)}></i>
 
                 </div>
-                <div className='mt-3'>
+                <div className=''>
                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                        <AgGridReact rowData={purchaseOrderItems} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                        <AgGridReact rowData={purchaseOrderItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
                 </div>
-                <div className={'totals mt-2'}>
-                    <div>Subtotal: {currency}{formattedSubTotal}</div>
-                    <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
-                    <div>Total: {currency}{formattedGrandTotal}</div>
+                <div className="flex justify-between">
+                    <div className={'mt-6'}>
+                        <button
+                            type="button"
+                            className="mt-4 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={handleSubmit}
+                        >
+                            Add PO
+                        </button>
+                    </div>
+                    <div className="totals mt-2">
+                        <div>Subtotal: {currency}{formattedSubTotal}</div>
+                        <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
+                        <div>Total: {currency}{formattedGrandTotal}</div>
+                    </div>
                 </div>
+
             </div>
         </>
     )
