@@ -13,7 +13,16 @@ import {SearchVendorModal} from '../../modals/purchasing/SearchVendorModal'
 import './purchasing.css'
 // import {addItemToOrder, removeItemFromOrder, clearOrder} from '../../redux/slices/purchaseOrderSlice'
 import {SearchItemModal} from "../../modals/purchasing/SearchItemModal";
-import {addItem, removeItem, setDueDate, setWarehouse, updateItem} from "../../redux/slices/purchaseOrderSlice";
+import {useNavigate} from "react-router-dom";
+import {
+    addItem,
+    removeItem,
+    setDueDate,
+    setSelectedItem,
+    setWarehouse,
+    updatePriceAndQuantity
+} from "../../redux/slices/purchaseOrderSlice";
+import {setPoID} from "../../redux/slices/createdPoSlice";
 import {selectedItemModal} from "../../modals/inventory/selectedItemDetails";
 import {selectedItem} from '../../redux/slices/alertsSlice'
 import {clearOrder} from "../../redux/slices/purchaseOrderSlice";
@@ -23,6 +32,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'tailwindcss/tailwind.css';
 import toast from "react-hot-toast";
+import {SelectedItemModal} from "../../modals/purchasing/SelectedItemModal";
 
 export const CreatePurchaseOrder = () => {
     const [showSearchVendorModal, setShowSearchVendorModal] = useState(false)
@@ -34,6 +44,7 @@ export const CreatePurchaseOrder = () => {
     const purchaseOrder = useSelector(state => state.purchaseOrder)
     const [inventory, setInventory] = useState()
     const [dueDate, setDueDate] = useState(new Date());
+    const navigate = useNavigate()
     const handleDueDateChange = (date, dateString) => {
         setDueDate(date);
         // dispatch(setDueDate(dueDate))
@@ -78,7 +89,8 @@ export const CreatePurchaseOrder = () => {
 
     // Calculate the total price using reduce()
     const salesTax = 17
-    const quantity = useSelector((state) => state.purchaseOrder.items)
+    const quantity = useSelector((state) => state.purchaseOrder.items[0]?.quantity)
+    console.log(quantity, "quantity")
     const salesTaxRate = vendor.sales_tax == 'liable' ? salesTax : 0
     const subTotal = items.reduce((total, item) => total + parseFloat(item.price) * parseInt(item.quantity), 0);
     const salesTaxAmount = (subTotal * salesTaxRate) / 100;
@@ -143,11 +155,19 @@ export const CreatePurchaseOrder = () => {
             field: "price",
         },
         {
-            headerName: "Warehouse ID",
-            field: "warehouse",
-            editable: true
+            headerName: `SKU`,
+            field: "manuf_sju",
         },
     ];
+
+    const onCellValueChanged = ({ data, colDef, newValue, rowIndex }) => {
+        console.log(data, "data")
+        if (colDef.field === 'price') {
+            dispatch(updatePriceAndQuantity({ itemIndex: rowIndex, newPrice: newValue, newQuantity: data?.quantity }));
+        } else if (colDef.field === 'quantity') {
+            dispatch(updatePriceAndQuantity({ itemIndex: rowIndex, newPrice: data.price, newQuantity: newValue }));
+        }
+    };
 
     // const handleAddToOrder = (item) => {
     //     dispatch(addItemToOrder(item));
@@ -161,8 +181,15 @@ export const CreatePurchaseOrder = () => {
     //     dispatch(clearOrder());
     // };
 
-    const handleCellClicked = (params) => {
-        console.log('AG GRID cell clicked', params);
+    const handleCellClicked = (event) => {
+        const selectedRowData = event.data;
+
+        // Find the index of the selected row data in the items array
+        const selectedIndex = items.findIndex(item => item.id === selectedRowData.id);
+
+        // Dispatch to setSelectedItem with both the selectedRowData and the index
+        dispatch(setSelectedItem({ data: selectedRowData, index: selectedIndex }));
+        setShowSelectedItemModal(true)
 
     }
 
@@ -186,7 +213,8 @@ export const CreatePurchaseOrder = () => {
             console.log(error)
         }
     };
-    const activeInventory = inventory?.filter(vendor => vendor.status === 'active');
+    const activeInventory = inventory?.filter(inventory => inventory.status === 'active');
+    const inventoryList = activeInventory?.filter(inventory => inventory.purchasing_item === true);
 
     const dataToPost = {
         tenant_id: tenantId,
@@ -213,11 +241,15 @@ export const CreatePurchaseOrder = () => {
             if (res.status === 200) {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
+                console.log('PO ID', res.data)
+                dispatch(setPoID(res.data.data))
+                navigate('/purchasing/purchaseorder')
             } else {
-                toast.error(res.data.message)
-                console.error('Form submission failed.');
+                toast.error(res.response.data.error)
+                console.error('Please fill out all required data');
             }
         } catch (error) {
+            toast.error('Please fill out all required fields')
             // Handle any other errors that occurred during the submission process
             console.error('An error occurred:', error);
         }
@@ -238,8 +270,8 @@ export const CreatePurchaseOrder = () => {
             <div className="layout">
                 <h1 className={'heading mb-3'}>Create Purchase Order</h1>
                 {showSearchVendorModal && <SearchVendorModal setShowSearchVendorModal={setShowSearchVendorModal} vendors={activeVendors}/>}
-                {showSearchItemModal && <SearchItemModal inventory={activeInventory} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
-                {showSelectedItemModal && <selectedItemModal />}
+                {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
+                {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
                 <div className="d-flex justify-content-end">
                     <i className="ri-user-add-line" onClick={() => setShowSearchVendorModal(true)}></i>
                 </div>
@@ -260,23 +292,29 @@ export const CreatePurchaseOrder = () => {
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div>
                             <label htmlFor="warehouse_id" className="block text-sm font-medium leading-6 text-gray-900">
-                               Ship-to Warehouse
+                                Ship-to Warehouse
                             </label>
                             <select
                                 id="warehouse_id"
                                 name="warehouse"
                                 value={purchaseOrder.warehouse}
                                 onChange={handleWarehouseChange}
+                                required // Add the required attribute
                                 className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             >
-                                <option value="">Please Select an Option</option>
+                                <option value=''>Please Select an Option</option>
                                 {warehouses?.map((wh) => (
                                     <option key={wh.id} value={wh.id}>
                                         {wh.warehouse_name}
                                     </option>
                                 ))}
                             </select>
+                            {/* Conditional rendering for error message */}
+                            {purchaseOrder.warehouse === '' && (
+                                <div className="text-red-500 text-sm mt-1">Warehouse is required</div>
+                            )}
                         </div>
+
                         <div>
                             <label htmlFor="order_date" className="block text-sm font-medium leading-6 text-gray-900">
                                 Due Date
@@ -301,7 +339,7 @@ export const CreatePurchaseOrder = () => {
                 </div>
                 <div className=''>
                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                        <AgGridReact rowData={purchaseOrderItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
+                        <AgGridReact onCellValueChanged={onCellValueChanged} rowData={purchaseOrderItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
                 </div>
                 <div className="flex justify-between">

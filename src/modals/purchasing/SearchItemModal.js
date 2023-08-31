@@ -29,6 +29,9 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = JSON.parse(localStorage.getItem('token')).tenant_id
     const selectedItem = useSelector((state) => state.purchaseOrder).selectedItem
+    const currency = '$'
+    const costPlaceHolder = 'Last Recorded Cost' + ' ' + currency + selectedItem.cost
+
 
     console.log(inventory, 'INV DATA')
     // const filterCustomers = (values) => {
@@ -319,6 +322,7 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
     const clearForm = (formik) => {
         formik.resetForm();
     };
+    const priceAsNumber = parseFloat(selectedItem.price);
     return (
         <>
             <div className="modal">
@@ -354,39 +358,6 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                                         <ErrorMessage name="item_name" component="div" className="text-red-600" />
                                     </Col>
                                     <Col span={8} xs={240} s={24} lg={8}>
-                                        <div className='mt-2 item-type'>
-                                            <div>
-                                                <label>
-                                                    <Field type="checkbox" name="inventory_item" />
-                                                    Inventory Item
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <Field type="checkbox" name="sales_item" />
-                                                    Sales Item
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <Field type="checkbox" name="purchasing_item" />
-                                                    Purchasing Item
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row gutter={20}>
-
-                                    <Col span={8} xs={240} s={24} lg={8}>
-                                        <div>
-                                            <label htmlFor="item_description" className='block text-sm font-medium leading-6 text-gray-900'>Item Description</label>
-                                            <Field type="text" placeholder='Item Description' name="item_description" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                            <ErrorMessage name="item_description" component="div" />
-                                        </div>
-                                        <ErrorMessage name="item_name" component="div" className="text-red-600" />
-                                    </Col>
-                                    <Col span={8} xs={240} s={24} lg={8}>
                                         <div>
                                             <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900">
                                                 Item Type
@@ -405,6 +376,9 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                                             </Field>
                                         </div>
                                     </Col>
+                                </Row>
+                                <Row gutter={20}>
+
                                     <Col span={8} xs={240} s={24} lg={8}>
                                         <div>
                                             <label htmlFor="manuf_sku" className='block text-sm font-medium leading-6 text-gray-900'>Manufacturer SKU</label>
@@ -413,9 +387,6 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                                         </div>
                                         <ErrorMessage name="manuf_sku" component="div" className="text-red-600" />
                                     </Col>
-                                </Row>
-
-                                <Row gutter={20}>
                                     <Col span={8} xs={240} s={24} lg={8}>
                                         <div>
                                             <label htmlFor="vendor" className="block text-sm font-medium leading-6 text-gray-900">
@@ -458,24 +429,6 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                                         </div>
                                         <ErrorMessage name="vendor2" component="div" className="text-red-600" />
                                     </Col>
-                                    <Col span={8} xs={240} s={24} lg={8}>
-                                        <div>
-                                            <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900 mt-2">
-                                                Item Status
-                                            </label>
-                                            <Field
-                                                as="select"
-                                                id="status"
-                                                name="status"
-                                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            >
-                                                <option value="">Please Select an Option</option>
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
-                                            </Field>
-                                        </div>
-                                        <ErrorMessage name="customer_type" component="div" className="text-red-600" />
-                                    </Col>
                                 </Row>
                                 <div className='crm-search-modal-buttons'>
                                     <div className="d-flex justify-content-end">
@@ -503,15 +456,13 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                         )}
                     </Formik>
                     <div className='mt-3'>
-                        <div className="ag-theme-alpine" style={{ height: '10rem', width: '100%' }}>
+                        <div className="ag-theme-alpine" style={{ height: '12.5rem', width: '100%' }}>
                             <AgGridReact rowData={searchResults} columnDefs={columnDefs} getRowStyle={getRowStyle} onCellClicked={handleCellClicked} />
                         </div>
                     </div>
                     {isItemSelected && <Formik
                         initialValues={{
                             price: null,
-                            quantity: null,
-                            warehouse: null,
 
                         }}
                         onSubmit={(values, { resetForm }) => {
@@ -532,42 +483,36 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
                     >
                         <Form>
                             <Row gutter={20}>
-                                <div className='ml-3 selected-item'>{selectedItem.item_name}</div>
+                                <div className='ml-3 mt-2 selected-item'>{selectedItem.item_name}</div>
                             </Row>
                             <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
                                         <label htmlFor="price" className='block text-sm font-medium leading-6 text-gray-900'>Price Per Unit</label>
-                                        <Field type="text" placeholder='Price Per Unit' name="price" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
-                                        <ErrorMessage name="id" component="div" />
+                                        <Field
+                                            type="text"
+                                            placeholder={costPlaceHolder}
+                                            name="price"
+                                            className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                            required // Add the required attribute
+                                            validate={value => (value ? undefined : 'Price is required')} // Validation function
+                                        />
+                                        <ErrorMessage name="price" component="div" /> {/* Use the correct field name for the ErrorMessage */}
                                     </div>
                                 </Col>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
-                                        <label htmlFor="id" className='block text-sm font-medium leading-6 text-gray-900'>Quantity</label>
-                                        <Field type="text" placeholder='Quantity' name="quantity" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                        <label htmlFor="quantity" className='block text-sm font-medium leading-6 text-gray-900'>Quantity</label>
+                                        <Field
+                                            type="text"
+                                            placeholder='Quantity'
+                                            name="quantity"
+                                            required // Add the required attribute
+                                            validate={value => (value ? undefined : 'Quantity is required')} // Validation function
+                                            className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                        />
                                         <ErrorMessage name="quantity" component="div" />
                                     </div>
-                                </Col>
-                                <Col span={8} xs={240} s={24} lg={8}>
-                                    <div>
-                                        <label htmlFor="customer_type" className="block text-sm font-medium leading-6 text-gray-900">
-                                            Warehouse
-                                        </label>
-                                        <Field
-                                            as="select"
-                                            id="warehouse_id"
-                                            name="warehouse"
-                                            className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        >
-                                            <option value="">Please Select an Option</option>
-                                            {warehouses?.map((wh) => (
-                                                <option key={wh.id} value={wh.id}>WH No. {wh.id} {wh.warehouse_name}
-                                                </option>
-                                            ))}
-                                        </Field>
-                                    </div>
-                                    <ErrorMessage name="warehouse_id" component="div" className="text-red-600" />
                                 </Col>
                             </Row>
                             <Row gutter={20}>

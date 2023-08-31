@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import {useSelector, useDispatch} from "react-redux";
 import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import {setUser} from "../../redux/slices/userSlice";
+import logo from './emmixlogo.png'
 
 export function Login() {
     const dispatch = useDispatch();
@@ -50,7 +51,7 @@ export function Login() {
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
                         className="mx-auto h-10 w-auto"
-                        src="https://s5p1b8.n3cdn1.secureserver.net/wp-content/uploads/2023/07/cropped-cropped-cropped-Logo-1@2x-100-1-scaled-1.jpg"
+                        src={logo}
                         alt="Your Company"
                     />
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">

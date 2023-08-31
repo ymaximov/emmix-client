@@ -23,6 +23,7 @@ import {InventoryItemProfile} from "./pages/inventory/InventoryItemProfile";
 import {Purchasing} from "./pages/purchasing/Purchasing";
 import {CreatePurchaseOrder} from "./pages/purchasing/CreatePurchaseOrder";
 import {TokenExpirationHandler} from "./pages/login/TokenExpirationHandler";
+import {PurchaseOrder} from "./pages/purchasing/PurchaseOrder";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
     {
         path: '/purchasing/createpo',
         element: <ProtectedRoute><CreatePurchaseOrder /></ProtectedRoute>
+    },
+    {
+        path: '/purchasing/purchaseorder',
+        element: <ProtectedRoute><PurchaseOrder /></ProtectedRoute>
     },
 ])
 function App() {

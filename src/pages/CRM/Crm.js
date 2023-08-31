@@ -27,7 +27,7 @@ export const CRM = () => {
     const dispatch = useDispatch()
     const token = JSON.parse(localStorage.getItem('token')).access_token;
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
-    console.log(tenantId)
+    console.log(tenantId, "Tenant ID")
     const [customers, setCustomers] = useState([]);
     const [showAddNewCustomerModal, setShowAddNewCustomerModal] = useState(false)
     const [showSearchModal, setShowSearchModal] = useState(false)

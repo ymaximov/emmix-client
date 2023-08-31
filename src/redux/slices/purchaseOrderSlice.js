@@ -14,21 +14,28 @@ const purchaseOrderSlice = createSlice({
     },
     reducers: {
         addItem: (state, action) => {
-            const { price, quantity, inv_item_id, selectedItemName, warehouse } = action.payload;
-            state.items.push({ price, quantity, inv_item_id, selectedItemName, warehouse });
+            const {price, quantity, inv_item_id, selectedItemName, warehouse} = action.payload;
+            state.items.push({price, quantity, inv_item_id, selectedItemName, warehouse});
         },
         removeItem: (state, action) => {
             state.items = state.items.filter(item => item.id !== action.payload);
         },
-        updateItem(state, action) {
-            const { id, key, value } = action.payload;
-            const updatedItems = state.items.map(item => {
-                if (item.id === id) {
-                    return { ...item, [key]: value };
-                }
-                return item;
-            });
-            return { ...state, items: updatedItems };
+        updatePriceAndQuantity: (state, action) => {
+            const { itemIndex, newPrice, newQuantity } = action.payload;
+            if (itemIndex >= 0 && itemIndex < state.items.length) {
+                const itemToUpdate = state.items[itemIndex];
+                const updatedItem = {
+                    ...itemToUpdate,
+                    price: newPrice,
+                    quantity: newQuantity
+                };
+                const updatedItems = [
+                    ...state.items.slice(0, itemIndex), // Previous items before the updated item
+                    updatedItem,
+                    ...state.items.slice(itemIndex + 1) // Items after the updated item
+                ];
+                state.items = updatedItems;
+            }
         },
         clearOrder: (state) => {
             state.items = [];
@@ -66,5 +73,5 @@ const purchaseOrderSlice = createSlice({
     },
 });
 
-export const { addItem, removeItem, updateItem, clearOrder, clearWarehouse, clearQuantity, clearPrice, clearDueDate, clearSelectedItem, setSelectedItem, setDueDate, setPrice, setQuantity, setWarehouse } = purchaseOrderSlice.actions;
+export const { addItem, removeItem, updateItem, updatePriceAndQuantity, clearWarehouse, clearQuantity, clearPrice, clearDueDate, clearSelectedItem, setSelectedItem, setDueDate, setPrice, setQuantity, setWarehouse, clearOrder } = purchaseOrderSlice.actions;
 export default purchaseOrderSlice.reducer;

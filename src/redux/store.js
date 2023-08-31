@@ -9,6 +9,7 @@ import vendorSlice from "./slices/vendorSlice";
 import filteredResultsSlice from "./slices/filteredResultsSlice";
 import inventoryItemSlice from "./slices/inventoryItemSlice";
 import purchaseOrderSlice from "./slices/purchaseOrderSlice";
+import createdPoSlice from "./slices/createdPoSlice";
 
 const persistConfig = {
     key: 'root', // The key under which the state will be saved
@@ -24,6 +25,7 @@ const persistedVendorReducer = persistReducer(persistConfig, vendorSlice);
 const persistedFilteredResultsReducer = persistReducer(persistConfig, filteredResultsSlice);
 const persistedInventoryItemReducer = persistReducer(persistConfig, inventoryItemSlice);
 const persistedPurchaseOrderReducer = persistReducer(persistConfig, purchaseOrderSlice);
+const persistedCreatedPoSlice = persistReducer(persistConfig, createdPoSlice);
 
 const rootReducer = {
     alerts: persistedAlertsReducer,
@@ -33,7 +35,8 @@ const rootReducer = {
     vendor: persistedVendorReducer,
     filteredResults: persistedFilteredResultsReducer,
     item: persistedInventoryItemReducer,
-    purchaseOrder: persistedPurchaseOrderReducer
+    purchaseOrder: persistedPurchaseOrderReducer,
+    createdPo: persistedCreatedPoSlice,
 };
 
 const store = configureStore({

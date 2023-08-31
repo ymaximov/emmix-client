@@ -5,6 +5,7 @@ import {Badge} from "antd";
 import '../../Layout.css'
 import {useNavigate, useLocation, Link} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
+import logo from './emmixlogo.png'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -123,8 +124,8 @@ const menuToBeRendered = role === 'admin' ? adminMenu : userMenu
                                         alt="Your Company"
                                     />
                                     <img
-                                        className="hidden h-8 w-auto lg:block"
-                                        src="https://s5p1b8.n3cdn1.secureserver.net/wp-content/uploads/2023/07/cropped-cropped-cropped-Logo-1@2x-100-1-scaled-1.jpg"
+                                        className="hidden h-6 w-auto lg:block"
+                                        src={logo}
                                         alt="Your Company"
                                     />
                                 </div>
