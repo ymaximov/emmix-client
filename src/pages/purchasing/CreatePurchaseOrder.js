@@ -20,9 +20,9 @@ import {
     setDueDate,
     setSelectedItem,
     setWarehouse,
-    updatePriceAndQuantity
+    updatePriceAndQuantity,
+    setPoId
 } from "../../redux/slices/purchaseOrderSlice";
-import {setPoID} from "../../redux/slices/createdPoSlice";
 import {selectedItemModal} from "../../modals/inventory/selectedItemDetails";
 import {selectedItem} from '../../redux/slices/alertsSlice'
 import {clearOrder} from "../../redux/slices/purchaseOrderSlice";
@@ -242,7 +242,7 @@ export const CreatePurchaseOrder = () => {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
                 console.log('PO ID', res.data)
-                dispatch(setPoID(res.data.data))
+                dispatch(setPoId(res.data.data))
                 navigate('/purchasing/purchaseorder')
             } else {
                 toast.error(res.response.data.error)
