@@ -9,23 +9,33 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
-import {setSelectedItem, setPoDetails, setWarehouse, addItem} from "../../redux/slices/purchaseOrderSlice";
+import {setSelectedItem, setPoDetails, addItem, setPoId} from "../../redux/slices/purchaseOrderSlice";
 import {SearchItemModal} from "../../modals/purchasing/SearchItemModal";
+import toast from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
+import './purchasing.css'
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import generatePDF from "./generatePDF";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
 export const PurchaseOrder = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
-
+const navigate = useNavigate()
     const poData = useSelector((state) => state.purchaseOrder.poDetails)
     console.log(poData, 'PO DATA')
     const POID = useSelector((state) => state.purchaseOrder.po_id)
     const dispatch = useDispatch()
     const currency = '$'
     const [warehouses, setWarehouses] = useState()
+    const [selectedWarehouse, setSelectedWarehouse] = useState()
     const [vendors, setVendors] = useState([]);
     const [dueDate, setDueDate] = useState(new Date());
     const [showSearchItemModal, setShowSearchItemModal] = useState(false)
     const salesTaxRate = 17
+    const purchaseOrder = useSelector(state => state.purchaseOrder)
 
     const [inventory, setInventory] = useState()
     const [showSelectedItemModal, setShowSelectedItemModal] = useState(false)
@@ -130,8 +140,9 @@ export const PurchaseOrder = () => {
         }
     };
     const handleWarehouseChange = (event) => {
-        const value = parseInt(event.target.value);
-        dispatch(setWarehouse(value))
+        console.log(event.target.value, 'Event')
+        // const value = parseInt(event.target.value);
+        setSelectedWarehouse(event.target.value)
     };
     const vendor = poData.vendor
 
@@ -180,6 +191,59 @@ export const PurchaseOrder = () => {
     // const POItems = poData.purchase_order_items
     // console.log(POItems)
 
+    const dataToPost = {
+        tenant_id: tenantId,
+        warehouse_id: selectedWarehouse,
+        due_date: dueDate,
+        subtotal: formattedSubTotal,
+        sales_tax: formattedSalesTaxAmount,
+        total_amount: formattedGrandTotal
+    }
+    console.log(selectedWarehouse, 'Selected Warehouse')
+    const handleSubmit = async () => {
+
+        try {
+            const res = await axios.post("/api/purchasing/create-purchase-order", dataToPost,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+
+                    }
+                });
+
+            if (res.status === 200) {
+                // Form data submitted successfully, handle success case here
+                toast.success(res.data.message);
+                console.log('PO ID', res.data)
+                dispatch(setPoId(res.data.data))
+                navigate('/purchasing/purchaseorder')
+            } else {
+                toast.error(res.response.data.error)
+                console.error('Please fill out all required data');
+            }
+        } catch (error) {
+            toast.error('Please fill out all required fields')
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    };
+
+    const handleGeneratePDF = async () => {
+        if (!poData) {
+            return;
+        }
+
+        try {
+            const pdfBlob = await generatePDF(poData);
+            const pdfObjectURL = URL.createObjectURL(pdfBlob);
+
+            // Open the PDF in a new tab
+            window.open(pdfObjectURL, '_blank');
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        }
+    };
+
     useEffect(() => {
         getPOData()
         getWarehouses()
@@ -192,8 +256,11 @@ export const PurchaseOrder = () => {
             <Layout />
             <div className="layout">
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
-                <h1 className={'mt-9'}>Purchase Order No. {poData.id}</h1>
-                <Row gutter={20} className='mt-5 mb-10'>
+                <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
+                <i className="ri-mail-send-line"></i>
+                <i className="ri-delete-bin-line"></i>
+                <h1 className={'mt-4'}>Purchase Order No. {poData.id}</h1>
+                <Row gutter={20} className='mt-5 mb-7'>
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div className='vendor-details-title'>Vendor Name</div>
                         <div>{vendor?.company_name}</div>
@@ -210,17 +277,17 @@ export const PurchaseOrder = () => {
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div>
                             <label htmlFor="warehouse_id" className="block text-sm font-medium leading-6 text-gray-900">
-                                Ship-to Warehouse
+                                Ship-to Warehouse: {poData.warehouse.warehouse_name}
                             </label>
                             <select
                                 id="warehouse_id"
                                 name="warehouse"
-                                value={poData.warehouse_id}
+                                // value={poData.warehouse_id}
                                 onChange={handleWarehouseChange}
                                 required // Add the required attribute
                                 className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             >
-                                <option value=''>Please Select an Option</option>
+                                <option value=''>Update Warehouse (Select an Option)</option>
                                 {warehouses?.map((wh) => (
                                     <option key={wh.id} value={wh.id}>
                                         {wh.warehouse_name}
@@ -260,10 +327,21 @@ export const PurchaseOrder = () => {
                         <AgGridReact rowData={poData.purchase_order_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
                 </div>
-                <div className="totals mt-2">
-                    <div>Subtotal: {currency}{formattedSubTotal}</div>
-                    <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
-                    <div>Total: {currency}{formattedGrandTotal}</div>
+                <div className="flex justify-between">
+                    <div className={'mt-4'}>
+                        <button
+                            type="button"
+                            className="mt-6 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            onClick={handleSubmit}
+                        >
+                            Update PO
+                        </button>
+                    </div>
+                    <div className="totals mt-2">
+                        <div>Subtotal: {currency}{formattedSubTotal}</div>
+                        <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
+                        <div>Total: {currency}{formattedGrandTotal}</div>
+                    </div>
                 </div>
             </div>
         </>

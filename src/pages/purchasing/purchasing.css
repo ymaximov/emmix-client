@@ -60,3 +60,20 @@
     overflow: visible;
     z-index: 9999;
 }
+
+.ri-printer-line  {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.ri-mail-send-line {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+.ri-delete-bin-line {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
