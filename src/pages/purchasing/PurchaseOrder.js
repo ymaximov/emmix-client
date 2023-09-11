@@ -106,6 +106,7 @@ const navigate = useNavigate()
             dispatch(hideLoading());
             if (res.status === 200) {
                 console.log(res.data, 'RES')
+                // setDueDate(poData?.due_date)
                 dispatch(setPoDetails(res.data.purchaseOrder))
 
             }
@@ -114,6 +115,8 @@ const navigate = useNavigate()
             console.log(error)
         }
     };
+
+
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
@@ -255,6 +258,37 @@ const navigate = useNavigate()
         }
     };
 
+    console.log(dueDate, 'DUE DATE')
+    const updatePO = async() => {
+        const updatedData = {
+            warehouse_id: selectedWarehouse == undefined ? poData.warehouse_id : selectedWarehouse,
+            due_date: dueDate == undefined ? poData.due_date : dueDate,
+            po_id: POID
+        }
+        try {
+            const res = await axios.put("/api/purchasing/update-po", updatedData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+
+                    }
+                });
+
+            if (res.status === 200) {
+                // Form data submitted successfully, handle success case here
+                toast.success(res.data.message);
+                getPOData()
+            } else {
+                toast.error(res.response.data.error)
+                // console.error('Please fill out all required data');
+            }
+        } catch (error) {
+            toast.error('')
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    }
+
     useEffect(() => {
         getPOData()
         getWarehouses()
@@ -317,11 +351,13 @@ const navigate = useNavigate()
 
                         <div>
                             <label htmlFor="order_date" className="block text-sm font-medium leading-6 text-gray-900">
-                                Due Date
+                                Due Date: {poData.due_date}
                             </label>
                             <DatePicker
                                 id="due_date"
+                                // selected={dueDate}
                                 selected={dueDate}
+
                                 onChange={handleDueDateChange}
                                 dateFormat="yyyy-MM-dd" // Adjust the date format as needed
                                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -347,7 +383,7 @@ const navigate = useNavigate()
                         <button
                             type="button"
                             className="mt-6 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            onClick={handleSubmit}
+                            onClick={updatePO}
                         >
                             Update PO
                         </button>

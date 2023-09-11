@@ -23,20 +23,10 @@ const purchaseOrderSlice = createSlice({
             state.items = state.items.filter(item => item.id !== action.payload);
         },
         updatePriceAndQuantity: (state, action) => {
-            const { itemIndex, newPrice, newQuantity } = action.payload;
-            if (itemIndex >= 0 && itemIndex < state.items.length) {
-                const itemToUpdate = state.items[itemIndex];
-                const updatedItem = {
-                    ...itemToUpdate,
-                    price: newPrice,
-                    quantity: newQuantity
-                };
-                const updatedItems = [
-                    ...state.items.slice(0, itemIndex), // Previous items before the updated item
-                    updatedItem,
-                    ...state.items.slice(itemIndex + 1) // Items after the updated item
-                ];
-                state.items = updatedItems;
+            const { index, quantity, price } = action.payload;
+            if (index >= 0 && index < state.length) {
+                state[index].quantity = Number(quantity);
+                state[index].price = Number(price);
             }
         },
         clearOrder: (state) => {

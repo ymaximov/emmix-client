@@ -7,6 +7,8 @@ import {updatePriceAndQuantity} from "../../redux/slices/purchaseOrderSlice";
 
 export const SelectedItemModal = ({setShowSelectedItemModal}) => {
     const selectedItem = useSelector((state) => state.purchaseOrder.selectedItem)
+    const index = selectedItem.index
+    console.log(index, 'INDEX')
     const dispatch = useDispatch()
     console.log(selectedItem, 'SEELCTEDITEM')
     const handleClose = () => {
@@ -14,18 +16,16 @@ export const SelectedItemModal = ({setShowSelectedItemModal}) => {
     }
 
     const initialValues = {
-        price: selectedItem?.price,
-        quantity: selectedItem?.quantity
+        price: selectedItem?.data.price,
+        quantity: selectedItem?.data.quantity
     };
 
     // Define form submission function
     const handleSubmit = (values) => {
         console.log('Form submitted with values:', values);
-        dispatch(updatePriceAndQuantity({
-            // itemIndex: selectedItem.index, // Assuming you include index when dispatching setSelectedItem
-            // newPrice: parseFloat(newPrice),
-            // newQuantity: parseInt(newQuantity),
-        }));
+        const quantity = Number(values.quantity);
+        const price = Number(values.price);
+        dispatch(updatePriceAndQuantity({ index, quantity, price }))
 
     };
 
