@@ -69,7 +69,7 @@ code {
   border: 1px solid black;
   height: 45rem;
   width: 65rem;
-  border-radius: 1rem;
+  /*border-radius: 1rem;*/
   overflow: visible;
   z-index: 9999;
 }

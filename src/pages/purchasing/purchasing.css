@@ -54,9 +54,9 @@
     padding: 2.5rem !important;
     box-shadow: 0 2px 4px slategray;
     border: 1px solid black;
-    height: 20rem;
-    width: 45rem;
-    border-radius: 1rem;
+    height: 15rem;
+    width: 30rem;
+    /*border-radius: 1rem;*/
     overflow: visible;
     z-index: 9999;
 }

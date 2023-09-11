@@ -9,7 +9,14 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
-import {setSelectedItem, setPoDetails, addItem, setPoId} from "../../redux/slices/purchaseOrderSlice";
+import {
+    setSelectedItem,
+    setPoDetails,
+    addItem,
+    setPoId,
+    setQuantity,
+    setPrice
+} from "../../redux/slices/purchaseOrderSlice";
 import {AddItemModal} from "../../modals/purchasing/AddItemModal";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
@@ -17,6 +24,7 @@ import './purchasing.css'
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import generatePDF from "./generatePDF";
+import {UpdateLineItemModal} from "../../modals/purchasing/UpdateLineItemModal";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -39,6 +47,11 @@ const navigate = useNavigate()
 
     const [inventory, setInventory] = useState()
     const [showSelectedItemModal, setShowSelectedItemModal] = useState(false)
+    const [showUpdateLineItemModal, setShowUpdateLineItemModal] = useState(false)
+    const [selectedPrice, setSelectedPrice] = useState()
+    const [selectedQuantity, setSelectedQuantity] = useState()
+    const [itemKey, setItemKey] = useState()
+    const [itemName, setItemName] = useState()
 
     const totalPrices = poData.purchase_order_items.map((item) => item.total_price);
 
@@ -178,14 +191,12 @@ const navigate = useNavigate()
 
     ];
     const handleCellClicked = (event) => {
-        // const selectedRowData = event.data;
-        //
-        // // Find the index of the selected row data in the items array
-        // const selectedIndex = items.findIndex(item => item.id === selectedRowData.id);
-        //
-        // // Dispatch to setSelectedItem with both the selectedRowData and the index
-        // dispatch(setSelectedItem({ data: selectedRowData, index: selectedIndex }));
-        // setShowSelectedItemModal(true)
+        console.log(event, 'EVENT')
+        setItemKey(event.data.id)
+        setItemName(event.data.inventory_item.item_name)
+        setSelectedQuantity(event.data.quantity)
+        setSelectedPrice(event.data.unit_price)
+     setShowUpdateLineItemModal(true)
 
     }
     // const POItems = poData.purchase_order_items
@@ -256,6 +267,7 @@ const navigate = useNavigate()
             <Layout />
             <div className="layout">
                 {showAddItemModal && <AddItemModal inventory={inventoryList} getPOData={getPOData} tenantID={tenantId} POID={POID} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal} handleAddToOrder={handleAddToOrder}/>}
+                {showUpdateLineItemModal && <UpdateLineItemModal getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line"></i>

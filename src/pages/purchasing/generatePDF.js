@@ -5,7 +5,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const generatePDF = (purchaseOrderData) => {
     const items = purchaseOrderData.purchase_order_items.map((item) => [
-        item.id, // Item No.
+        item.inv_item_id, // Item No.
         item.inventory_item.item_name, // Item Name (Replace with actual item name property)
         item.inventory_item.manuf_sku, // SKU (Replace with actual SKU property)
         item.quantity, // Quantity (Replace with actual quantity property)
