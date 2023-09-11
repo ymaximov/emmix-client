@@ -77,3 +77,8 @@
     margin-left: 0.5rem;
     cursor: pointer;
 }
+
+.po-details {
+    display: flex;
+    justify-content: space-between;
+}

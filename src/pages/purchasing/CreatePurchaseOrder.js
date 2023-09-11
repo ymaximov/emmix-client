@@ -53,6 +53,11 @@ export const CreatePurchaseOrder = () => {
 
 
     const token = JSON.parse(localStorage.getItem('token')).access_token
+    const userID = JSON.parse(localStorage.getItem('token')).user_id
+    const email = JSON.parse(localStorage.getItem('token')).email
+    const firstName = JSON.parse(localStorage.getItem('token')).first_name
+    const lastName = JSON.parse(localStorage.getItem('token')).last_name
+    const phone = JSON.parse(localStorage.getItem('token')).phone
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const vendor = useSelector((state) => state.vendor).vendor
     const handleWarehouseChange = (event) => {
@@ -219,6 +224,7 @@ export const CreatePurchaseOrder = () => {
     const dataToPost = {
         tenant_id: tenantId,
         vendor_id: vendor.id,
+        user_id: userID,
         warehouse_id: purchaseOrder.warehouse,
         due_date: dueDate,
         items: purchaseOrderItems,
@@ -349,7 +355,7 @@ export const CreatePurchaseOrder = () => {
                             className="mt-4 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleSubmit}
                         >
-                            Add PO
+                            Execute
                         </button>
                     </div>
                     <div className="totals mt-2">

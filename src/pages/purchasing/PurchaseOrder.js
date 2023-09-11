@@ -10,7 +10,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {setSelectedItem, setPoDetails, addItem, setPoId} from "../../redux/slices/purchaseOrderSlice";
-import {SearchItemModal} from "../../modals/purchasing/SearchItemModal";
+import {AddItemModal} from "../../modals/purchasing/AddItemModal";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 import './purchasing.css'
@@ -33,7 +33,7 @@ const navigate = useNavigate()
     const [selectedWarehouse, setSelectedWarehouse] = useState()
     const [vendors, setVendors] = useState([]);
     const [dueDate, setDueDate] = useState(new Date());
-    const [showSearchItemModal, setShowSearchItemModal] = useState(false)
+    const [showAddItemModal, setShowAddItemModal] = useState(false)
     const salesTaxRate = 17
     const purchaseOrder = useSelector(state => state.purchaseOrder)
 
@@ -255,12 +255,15 @@ const navigate = useNavigate()
         <>
             <Layout />
             <div className="layout">
-                {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
+                {showAddItemModal && <AddItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal} handleAddToOrder={handleAddToOrder}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line"></i>
-                <h1 className={'mt-4'}>Purchase Order No. {poData.id}</h1>
-                <Row gutter={20} className='mt-5 mb-7'>
+                <div className={'po-details'}>
+                <h1 className={'mt-1'}>Purchase Order No. {poData.id}</h1>
+                <h1 className={'mt-1'}>Status: {poData.status}</h1>
+                </div>
+                <Row gutter={20} className='mt-7 mb-3'>
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div className='vendor-details-title'>Vendor Name</div>
                         <div>{vendor?.company_name}</div>
@@ -318,8 +321,8 @@ const navigate = useNavigate()
 
 
                 </Row>
-                <div className="d-flex justify-content-end">
-                    <i className="ri-add-circle-line" onClick={() => setShowSearchItemModal(true)}></i>
+                <div className="d-flex justify-content-end mt-7">
+                    <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>
 
                 </div>
                 <div className=''>
