@@ -11,6 +11,7 @@ export const UpdateLineItemModal = ({setShowUpdateLineItemModal, getPOData, sele
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const dispatch = useDispatch()
+    console.log(itemKey, 'ITEM KEY')
     console.log(selectedPrice, selectedQuantity, 'SELECTED')
     const handleClose = () => {
         setShowUpdateLineItemModal(false)
@@ -54,6 +55,33 @@ export const UpdateLineItemModal = ({setShowUpdateLineItemModal, getPOData, sele
         }
     };
 
+    const deleteLineItem = async() => {
+        console.log(itemKey, 'ITEMKEY')
+            try {
+                const res = await axios.delete(`/api/purchasing/delete-line-item/${itemKey}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+
+                        }
+                    });
+
+                if (res.status === 200) {
+            // Form data submitted successfully, handle success case here
+            // toast.success(res.data.message);
+            getPOData()
+            handleClose()
+        } else {
+            // toast.error(res.response.data.error)
+            // console.error('Please fill out all required data');
+        }
+    } catch (error) {
+            toast.error('Please fill out all required fields')
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    }
+
     return (
         <>
             <div className={'po-modal'}>
@@ -89,6 +117,7 @@ export const UpdateLineItemModal = ({setShowUpdateLineItemModal, getPOData, sele
                                 <button
                                     type="button"
                                     className="mt-4 mb-3 ml-2 rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                onClick={deleteLineItem}
                                 >
                                     Delete Item
                                 </button>
