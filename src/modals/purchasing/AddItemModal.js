@@ -13,10 +13,18 @@ import '../../pages/purchasing/purchasing.css'
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {setItem} from "../../redux/slices/inventoryItemSlice";
-import {setSelectedItem, setPrice, setQuantity, setWarehouse, addItem} from "../../redux/slices/purchaseOrderSlice";
+import {
+    setSelectedItem,
+    setPrice,
+    setQuantity,
+    setWarehouse,
+    addItem,
+    setPoId
+} from "../../redux/slices/purchaseOrderSlice";
 import {blueGrey, yellow} from "@mui/material/colors";
+import toast from "react-hot-toast";
 
-export const AddItemModal = ({setShowAddItemModal, inventory, handleAddToOrder, setShowSelectedItemModal}) => {
+export const AddItemModal = ({setShowAddItemModal, inventory, getPOData, handleAddToOrder, setShowSelectedItemModal, tenantID, POID}) => {
     const [searchResults, setSearchResults] = useState([]);
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -310,7 +318,6 @@ export const AddItemModal = ({setShowAddItemModal, inventory, handleAddToOrder, 
     };
 
 
-
     useEffect(() => {
         getVendors()
         getWarehouses()
@@ -468,17 +475,42 @@ export const AddItemModal = ({setShowAddItemModal, inventory, handleAddToOrder, 
                         onSubmit={(values, { resetForm }) => {
                             const price = parseFloat(values.price);
                             const quantity = parseFloat(values.quantity);
+                            const dataToPost = {
+                                unit_price: price,
+                                quantity,
+                                tenant_id: tenantID,
+                                po_id: POID,
+                                inv_item_id: selectedItem.id
 
-                            dispatch(
-                                addItem({
-                                    price: price,
-                                    quantity: quantity,
-                                    inv_item_id: selectedItem.id,
-                                    selectedItemName: selectedItem.item_name,
-                                })
-                            );
+                            }
+                            const handleSubmit = async () => {
 
-                            setShowAddItemModal(false);
+                                try {
+                                    const res = await axios.post("/api/purchasing/add-item-to-po", dataToPost,
+                                        {
+                                            headers: {
+                                                Authorization: `Bearer ${token}`,
+
+                                            }
+                                        });
+
+                                    if (res.status === 200) {
+                                        // Form data submitted successfully, handle success case here
+                                        setShowAddItemModal(false)
+                                        getPOData()
+
+
+                                    } else {
+                                        console.error('Please fill out all required data');
+                                    }
+                                } catch (error) {
+                                    toast.error('Please fill out all required fields')
+                                    // Handle any other errors that occurred during the submission process
+                                    console.error('An error occurred:', error);
+                                }
+                            };
+                            handleSubmit()
+
                         }}
                     >
                         <Form>
