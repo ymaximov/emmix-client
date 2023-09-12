@@ -7,7 +7,7 @@ import {setPoId, updatePriceAndQuantity} from "../../redux/slices/purchaseOrderS
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const UpdateLineItemModal = ({setShowUpdateLineItemModal, getPOData, selectedPrice, selectedQuantity, itemName, itemKey}) => {
+export const UpdateLineItemModal = ({setShowUpdateLineItemModal, invItemNo, warehouse, getPOData, selectedPrice, selectedQuantity, itemName, itemKey, }) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const dispatch = useDispatch()
@@ -26,9 +26,12 @@ export const UpdateLineItemModal = ({setShowUpdateLineItemModal, getPOData, sele
     // Define form submission function
     const handleSubmit = async (values, { resetForm, setSubmitting }) => {
         const dataToPost = {
-            line_item_id: itemKey,
+            item_id: itemKey,
+            inv_item_id: invItemNo,
             unit_price: values.price,
-            quantity: values.quantity
+            quantity: values.quantity,
+            warehouse_id: warehouse,
+            tenant_id: tenantId
         }
         try {
             const res = await axios.put("/api/purchasing/update-line-item", dataToPost,

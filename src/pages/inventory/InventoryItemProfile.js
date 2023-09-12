@@ -16,9 +16,8 @@ import 'ag-grid-enterprise';
 
 export const InventoryItemProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
-    const tenant = JSON.parse(localStorage.getItem('token')).tenant_id
-    const id = useSelector((state) => state.item).item.id
-    console.log(id, "IDDD")
+    const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
+    const itemId = useSelector((state) => state.item).item.id
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [vendors, setVendors] = useState()
@@ -29,21 +28,24 @@ export const InventoryItemProfile = () => {
     const [stockData, setStockData] = useState()
     const item = useSelector((state) => state.item).item
 
-    const getStockData = async() => {
-
+    const getStockData = async (tenantId, itemId) => {
         try {
-            // Make a GET request to the API endpoint
-            dispatch(showLoading())
-            const res = await axios.get(`/api/inventory/get-stock-data-by-item-id/${id}`, {
+            // Make a GET request to the API endpoint with query parameters
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-stock-data-by-item-id`, {
+                params: {
+                    item_id: itemId,
+                    tenant_id: tenantId,
+                },
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            })
+            });
 
             dispatch(hideLoading());
             if (res.status === 200) {
-                console.log(res, 'Stock Data')
-                setStockData(res)
+                console.log(res, 'Stock Data');
+                setStockData(res.data.data);
             }
             // Handle the response data
             // You can now use the data in your application
@@ -51,11 +53,12 @@ export const InventoryItemProfile = () => {
             dispatch(hideLoading());
             console.error('Error fetching inventory data:', error);
         }
-    }
+    };
+
     const getVendors = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-vendors/${tenant}`, {
+            const res = await axios.get(`/api/inventory/get-vendors/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -74,7 +77,7 @@ export const InventoryItemProfile = () => {
     const getItemGroups = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-groups/${tenant}`, {
+            const res = await axios.get(`/api/inventory/get-item-groups/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -94,7 +97,7 @@ export const InventoryItemProfile = () => {
     const getItemProperties = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-properties/${tenant}`, {
+            const res = await axios.get(`/api/inventory/get-item-properties/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -113,7 +116,7 @@ export const InventoryItemProfile = () => {
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-warehouses/${tenant}`, {
+            const res = await axios.get(`/api/inventory/get-warehouses/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -132,7 +135,7 @@ export const InventoryItemProfile = () => {
     const getManufacturers = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-manufacturers/${tenant}`, {
+            const res = await axios.get(`/api/inventory/get-manufacturers/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -155,32 +158,24 @@ export const InventoryItemProfile = () => {
         //     field: "tenant_id",
         // },
         {
-            headerName: "Company Name",
-            field: "company_name",
+            headerName: "Warehouse",
+            field: "warehouse.warehouse_name",
         },
         {
-            headerName: "First Name",
-            field: "first_name",
+            headerName: "In Stock",
+            field: "in_stock",
         },
         {
-            headerName: "Last Name",
-            field: "last_name",
+            headerName: "Available",
+            field: "available",
         },
         {
-            headerName: "Email",
-            field: "email",
+            headerName: "Committed",
+            field: "committed",
         },
         {
-            headerName: "Phone Number",
-            field: "phone_1",
-        },
-        {
-            headerName: "Customer Type",
-            field: "customer_type",
-        },
-        {
-            headerName: "Status",
-            field: "status",
+            headerName: "Ordered",
+            field: "ordered",
         },
     ];
     const handleCellClicked = (params) => {
@@ -250,8 +245,8 @@ export const InventoryItemProfile = () => {
         setSubmitting(false)
         console.log('form data', values)
         try {
-            values.id = id;
-            values.tenant_id = tenant;
+            values.id = itemId;
+            values.tenant_id = tenantId;
             const res = await axios.put("/api/inventory/update-inventory-item", values,
                 {
                     headers: {
@@ -281,7 +276,7 @@ export const InventoryItemProfile = () => {
         getItemGroups()
         getItemProperties()
         getManufacturers()
-        getStockData()
+        getStockData(tenantId, itemId)
     }, []);
 
     return (
@@ -733,7 +728,7 @@ export const InventoryItemProfile = () => {
                                 {warehouses && warehouses.length > 0 ? (
                                     <div>
                                         <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
-                                            <AgGridReact rowData={warehouses} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                                            <AgGridReact rowData={stockData} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
                                         </div>
                                     </div>
                                 ) : (

@@ -52,7 +52,7 @@ const navigate = useNavigate()
     const [selectedQuantity, setSelectedQuantity] = useState()
     const [itemKey, setItemKey] = useState()
     const [itemName, setItemName] = useState()
-
+    const [invItemNo, setInvItemNo] = useState()
     const totalPrices = poData.purchase_order_items.map((item) => item.total_price);
 
 // Use the reduce function to calculate the sum of total_prices
@@ -196,6 +196,7 @@ const navigate = useNavigate()
     const handleCellClicked = (event) => {
         console.log(event, 'EVENT')
         setItemKey(event.data.id)
+        setInvItemNo(event.data.inv_item_id)
         setItemName(event.data.inventory_item.item_name)
         setSelectedQuantity(event.data.quantity)
         setSelectedPrice(event.data.unit_price)
@@ -301,7 +302,7 @@ const navigate = useNavigate()
             <Layout />
             <div className="layout">
                 {showAddItemModal && <AddItemModal inventory={inventoryList} getPOData={getPOData} tenantID={tenantId} POID={POID} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal} handleAddToOrder={handleAddToOrder}/>}
-                {showUpdateLineItemModal && <UpdateLineItemModal getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
+                {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} warehouse={poData.warehouse_id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line"></i>
