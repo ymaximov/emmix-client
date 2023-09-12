@@ -18,6 +18,7 @@ export const InventoryItemProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenant = JSON.parse(localStorage.getItem('token')).tenant_id
     const id = useSelector((state) => state.item).item.id
+    console.log(id, "IDDD")
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [vendors, setVendors] = useState()
@@ -25,9 +26,32 @@ export const InventoryItemProfile = () => {
     const [itemProperties, setItemProperties] = useState()
     const [warehouses, setWarehouses] = useState()
     const [manufacturers, setManufacturers] = useState()
+    const [stockData, setStockData] = useState()
     const item = useSelector((state) => state.item).item
-    console.log(item, 'ITEMMM')
 
+    const getStockData = async() => {
+
+        try {
+            // Make a GET request to the API endpoint
+            dispatch(showLoading())
+            const res = await axios.get(`/api/inventory/get-stock-data-by-item-id/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res, 'Stock Data')
+                setStockData(res)
+            }
+            // Handle the response data
+            // You can now use the data in your application
+        } catch (error) {
+            dispatch(hideLoading());
+            console.error('Error fetching inventory data:', error);
+        }
+    }
     const getVendors = async () => {
         try {
             dispatch(showLoading());
@@ -257,6 +281,7 @@ export const InventoryItemProfile = () => {
         getItemGroups()
         getItemProperties()
         getManufacturers()
+        getStockData()
     }, []);
 
     return (

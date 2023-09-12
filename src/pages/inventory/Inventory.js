@@ -62,7 +62,7 @@ export const Inventory = () => {
         },
 
         {
-            headerName: "In Stock",
+            headerName: "Available In Stock",
             field: "email",
         },
         // {
