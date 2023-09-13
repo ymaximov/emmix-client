@@ -7,7 +7,7 @@ import {setPoId, updatePriceAndQuantity} from "../../redux/slices/purchaseOrderS
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const UpdateLineItemModal = ({setShowUpdateLineItemModal, invItemNo, warehouse, getPOData, selectedPrice, selectedQuantity, itemName, itemKey, }) => {
+export const UpdateLineItemModal = ({setShowUpdateLineItemModal, invItemNo, warehouse, getPOData, selectedPrice, selectedQuantity, itemName, itemKey}) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const dispatch = useDispatch()
@@ -58,32 +58,39 @@ export const UpdateLineItemModal = ({setShowUpdateLineItemModal, invItemNo, ware
         }
     };
 
-    const deleteLineItem = async() => {
-        console.log(itemKey, 'ITEMKEY')
-            try {
-                const res = await axios.delete(`/api/purchasing/delete-line-item/${itemKey}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
+    const deleteLineItem = async () => {
+        console.log(itemKey, 'ITEMKEY');
 
-                        }
-                    });
+        try {
+            const res = await axios.delete(`/api/purchasing/delete-line-item`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    inv_item_id: invItemNo,
+                    warehouse_id: warehouse,
+                    tenant_id: tenantId,
+                    quantity: selectedQuantity,
+                    itemId: itemKey
+                },
+            });
 
-                if (res.status === 200) {
-            // Form data submitted successfully, handle success case here
-            // toast.success(res.data.message);
-            getPOData()
-            handleClose()
-        } else {
-            // toast.error(res.response.data.error)
-            // console.error('Please fill out all required data');
-        }
-    } catch (error) {
-            toast.error('Please fill out all required fields')
-            // Handle any other errors that occurred during the submission process
+            if (res.status === 200) {
+                // Form data submitted successfully, handle success case here
+                // toast.success(res.data.message);
+                getPOData();
+                handleClose();
+            } else {
+                // Handle error response here
+                // toast.error(res.response.data.error);
+                // console.error('An error occurred');
+            }
+        } catch (error) {
+            toast.error('Please fill out all required fields');
+            // Handle any other errors that occurred during the deletion process
             console.error('An error occurred:', error);
         }
-    }
+    };
 
     return (
         <>

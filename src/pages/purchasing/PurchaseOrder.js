@@ -302,13 +302,13 @@ const navigate = useNavigate()
             <Layout />
             <div className="layout">
                 {showAddItemModal && <AddItemModal inventory={inventoryList} getPOData={getPOData} tenantID={tenantId} POID={POID} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal} handleAddToOrder={handleAddToOrder}/>}
-                {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} warehouse={poData.warehouse_id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
+                {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={poData.warehouse_id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line"></i>
                 <div className={'po-details'}>
                 <h1 className={'mt-1'}>Purchase Order No. {poData.id}</h1>
-                <h1 className={'mt-1'}>Status: {poData.status}</h1>
+                <h1 className={'mt-1'}>Status: {poData.status} | not invoiced</h1>
                 </div>
                 <Row gutter={20} className='mt-7 mb-3'>
                     <Col span={8} xs={240} s={24} lg={8}>
