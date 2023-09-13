@@ -301,7 +301,7 @@ const navigate = useNavigate()
         <>
             <Layout />
             <div className="layout">
-                {showAddItemModal && <AddItemModal inventory={inventoryList} getPOData={getPOData} tenantID={tenantId} POID={POID} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal} handleAddToOrder={handleAddToOrder}/>}
+                {showAddItemModal && <AddItemModal warehouse={poData.warehouse_id} inventory={inventoryList} getPOData={getPOData} tenantID={tenantId} POID={POID} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal} handleAddToOrder={handleAddToOrder}/>}
                 {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={poData.warehouse_id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>

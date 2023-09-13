@@ -24,7 +24,7 @@ import {
 import {blueGrey, yellow} from "@mui/material/colors";
 import toast from "react-hot-toast";
 
-export const AddItemModal = ({setShowAddItemModal, inventory, getPOData, handleAddToOrder, setShowSelectedItemModal, tenantID, POID}) => {
+export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPOData, handleAddToOrder, setShowSelectedItemModal, tenantID, POID}) => {
     const [searchResults, setSearchResults] = useState([]);
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -480,7 +480,8 @@ export const AddItemModal = ({setShowAddItemModal, inventory, getPOData, handleA
                                 quantity,
                                 tenant_id: tenantID,
                                 po_id: POID,
-                                inv_item_id: selectedItem.id
+                                inv_item_id: selectedItem.id,
+                                warehouse_id: warehouse
 
                             }
                             const handleSubmit = async () => {
