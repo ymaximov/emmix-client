@@ -24,6 +24,8 @@ import {Purchasing} from "./pages/purchasing/Purchasing";
 import {CreatePurchaseOrder} from "./pages/purchasing/CreatePurchaseOrder";
 import {TokenExpirationHandler} from "./pages/login/TokenExpirationHandler";
 import {PurchaseOrder} from "./pages/purchasing/PurchaseOrder";
+import {GoodsReceipt} from "./pages/purchasing/GoodsReceipt";
+import {Receiving} from "./pages/purchasing/Receiving";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +87,14 @@ const router = createBrowserRouter([
     {
         path: '/purchasing/purchaseorder',
         element: <ProtectedRoute><PurchaseOrder /></ProtectedRoute>
+    },
+    {
+        path: '/purchasing/goodsreceipt',
+        element: <ProtectedRoute><GoodsReceipt /></ProtectedRoute>
+    },
+    {
+        path: '/purchasing/goodsreceipt/receiving',
+        element: <ProtectedRoute><Receiving /></ProtectedRoute>
     },
 ])
 function App() {

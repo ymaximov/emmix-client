@@ -81,7 +81,7 @@ export const Purchasing = () => {
         <Layout />
             <div className="layout">
                 <div className='actions'>
-                    <i className="ri-file-add-line add-po" onClick={() => {
+                    <i className="ri-file-add-line add-po mr-2" onClick={() => {
                         dispatch(clearVendor())
                         dispatch(clearOrder())
                         dispatch(clearWarehouse())
@@ -91,9 +91,11 @@ export const Purchasing = () => {
                         dispatch(clearQuantity())
                         navigate('/purchasing/createpo')}
                     }></i>
-                    <i className="ri-search-line ml-1" onClick={''}></i>
+                    <i className="ri-search-line" onClick={''}></i>
+                    <i className="ri-download-line"
+                    onClick={()=> navigate('/purchasing/goodsreceipt')}
+                    ></i>
                 </div>
-                <h1 className={'mt-2 mb-3'}>Open Purchase Orders</h1>
                 <div>
                     <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
                         <AgGridReact rowData={PO} columnDefs={columnDefs} onCellClicked={handleCellClicked} />

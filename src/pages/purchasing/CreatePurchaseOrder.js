@@ -274,7 +274,7 @@ export const CreatePurchaseOrder = () => {
         <>
             <Layout />
             <div className="layout">
-                <h1 className={'heading mb-3'}>Create Purchase Order</h1>
+                <h1 className={'mb-3 title'}>Create Purchase Order</h1>
                 {showSearchVendorModal && <SearchVendorModal setShowSearchVendorModal={setShowSearchVendorModal} vendors={activeVendors}/>}
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}

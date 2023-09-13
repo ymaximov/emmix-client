@@ -3,6 +3,11 @@
     cursor: pointer;
 }
 
+.title {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
 .vendor-details-title {
     font-weight: bold;
 }
@@ -24,6 +29,10 @@
     font-size: 1.8rem;
     cursor: pointer;
 
+}
+
+.ri-search-line {
+    font-size: 1.7rem !important;
 }
 
 .totals {
@@ -74,6 +83,12 @@
 
 .ri-delete-bin-line {
     font-size: 1.5rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+.ri-download-line {
+    font-size: 1.7rem;
     margin-left: 0.5rem;
     cursor: pointer;
 }
