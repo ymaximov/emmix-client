@@ -12,8 +12,10 @@ import {hi} from "date-fns/locale";
 export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
+    const user = JSON.parse(localStorage.getItem('token')).user_id
     const dispatch = useDispatch()
     const goodsReceiptData = useSelector((state) => state.purchaseOrder).GR.goodsReceipt
+    const poID = goodsReceiptData.po_id
     const itemId = goodsReceiptData.items.id
     console.log(goodsReceiptData, 'GR DAATA')
 
@@ -25,41 +27,39 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
         received_quantity: selectedItem.quantity
     };
 
-    // const getPurchaseOrderDataAndItems = async (event) => {
-    //     event.preventDefault(); // Prevent the default form submission behavior
-    //
-    //     const requestData = {
-    //         tenant_id: tenantId,
-    //         poNo: poNo,
-    //         receiver_id:userId
-    //     };
-    //
-    //     try {
-    //         dispatch(showLoading())
-    //         const res = await axios.post(`/api/purchasing/get-po-data-for-gr`, requestData, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         });
-    //
-    //         if (res.status === 200) {
-    //             dispatch(hideLoading())
-    //             const data = res.data.data;
-    //             console.log('Purchase Order Data and Items:', data);
-    //             dispatch(setGRDetails(data))
-    //             navigate('/purchasing/goodsreceipt/receiving')
-    //             // Handle the data as needed in your application
-    //         } else {
-    //             dispatch(hideLoading())
-    //             console.error('Error fetching purchase order data and items');
-    //             toast.error(res.response.data.messsage)
-    //         }
-    //     } catch (error) {
-    //         dispatch(hideLoading())
-    //         console.error('An error occurred:', error);
-    //         toast.error("No Open PO's Found")
-    //     }
-    // };
+    const getPurchaseOrderDataAndItems = async (event) => {
+
+        const requestData = {
+            tenant_id: tenantId,
+            poNo: poID,
+            receiver_id: user
+        };
+
+        try {
+            dispatch(showLoading())
+            const res = await axios.post(`/api/purchasing/get-po-data-for-gr`, requestData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (res.status === 200) {
+                dispatch(hideLoading())
+                const data = res.data.data;
+                console.log('Purchase Order Data and Items:', data);
+                dispatch(setGRDetails(data))
+                // Handle the data as needed in your application
+            } else {
+                dispatch(hideLoading())
+                console.error('Error fetching purchase order data and items');
+                toast.error(res.response.data.messsage)
+            }
+        } catch (error) {
+            dispatch(hideLoading())
+            console.error('An error occurred:', error);
+            toast.error("No Open PO's Found")
+        }
+    };
 
     const handleSubmit = async (values) => {
         try {
@@ -79,6 +79,8 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
 
             if (res.status === 200) {
                 dispatch(hideLoading())
+                getPurchaseOrderDataAndItems()
+                setShowModal(false)
                 toast.success(res.data.message);
 
             } else {
