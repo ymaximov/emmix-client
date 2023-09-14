@@ -8,6 +8,8 @@ import { Row, Col } from 'antd';
 import { hideLoading, showLoading } from '../../redux/slices/alertsSlice';
 import axios from 'axios';
 import {useDispatch} from "react-redux";
+import {setPoId} from "../../redux/slices/purchaseOrderSlice";
+import {useNavigate} from "react-router-dom";
 
 export const SearchPO = ({ setShowSearchPO, POData }) => {
     const [searchResults, setSearchResults] = useState([]);
@@ -16,6 +18,7 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
     const [buyers, setBuyers] = useState()
     const token = JSON.parse(localStorage.getItem('token')).access_token;
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id;
+    const navigate = useNavigate()
     console.log(POData, 'PO DATA')
     const filterPO = (values) => {
         const filteredPOData = POData.filter((order) => {
@@ -122,6 +125,8 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
 
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
+        dispatch(setPoId(params.data.id))
+        navigate('/purchasing/purchaseorder')
     };
 
     const clearForm = (formik) => {

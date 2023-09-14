@@ -46,6 +46,8 @@ const navigate = useNavigate()
     const [showAddItemModal, setShowAddItemModal] = useState(false)
     const salesTaxRate = 17
     const purchaseOrder = useSelector(state => state.purchaseOrder)
+    const poStatus = poData.status
+
 
     const [inventory, setInventory] = useState()
     const [showSelectedItemModal, setShowSelectedItemModal] = useState(false)
@@ -89,6 +91,7 @@ const navigate = useNavigate()
             console.log(error)
         }
     };
+    console.log(poData.status, 'PO STST')
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
@@ -373,7 +376,7 @@ const navigate = useNavigate()
 
                 </Row>
                 <div className="d-flex justify-content-end mt-7">
-                    <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>
+                    {poData.status !== 'closed' && <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>}
 
                 </div>
                 <div className=''>

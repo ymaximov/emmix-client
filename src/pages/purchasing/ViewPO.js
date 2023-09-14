@@ -35,6 +35,7 @@ export const ViewPO = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const navigate = useNavigate()
     const poData = useSelector((state) => state.purchaseOrder.poData)
+
     console.log(poData, 'PO DATA')
     const POID = useSelector((state) => state.purchaseOrder.po_id)
     console.log(POID)
@@ -322,7 +323,7 @@ export const ViewPO = () => {
                             <label htmlFor="warehouse_id" className="block text-sm font-medium leading-6 text-gray-900">
                                 Ship-to Warehouse: {poData.warehouse.warehouse_name}
                             </label>
-                            <select
+                            {  poData.status !== 'closed' &&  <select
                                 id="warehouse_id"
                                 name="warehouse"
                                 // value={poData.warehouse_id}
@@ -336,7 +337,7 @@ export const ViewPO = () => {
                                         {wh.warehouse_name}
                                     </option>
                                 ))}
-                            </select>
+                            </select>}
                             {/* Conditional rendering for error message */}
                             {/*{purchaseOrder.warehouse === '' && (*/}
                             {/*    <div className="text-red-500 text-sm mt-1">Warehouse is required</div>*/}
@@ -347,7 +348,7 @@ export const ViewPO = () => {
                             <label htmlFor="order_date" className="block text-sm font-medium leading-6 text-gray-900">
                                 Due Date: {poData.due_date}
                             </label>
-                            <DatePicker
+                            { poData.status !== 'closed' && <DatePicker
                                 id="due_date"
                                 // selected={dueDate}
                                 selected={dueDate}
@@ -355,7 +356,7 @@ export const ViewPO = () => {
                                 onChange={handleDueDateChange}
                                 dateFormat="yyyy-MM-dd" // Adjust the date format as needed
                                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            />
+                            />}
                         </div>
 
                     </Col>
@@ -364,7 +365,7 @@ export const ViewPO = () => {
 
                 </Row>
                 <div className="d-flex justify-content-end mt-7">
-                    <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>
+                    {poData.status !== 'closed' && <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>}
 
                 </div>
                 <div className=''>
@@ -372,15 +373,15 @@ export const ViewPO = () => {
                         <AgGridReact rowData={poData.purchase_order_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
                 </div>
-                <div className="flex justify-between">
-                    <div className={'mt-4'}>
-                        <button
+                <div className="flex justify-between"><div className={'mt-4'}>
+                    { poData.status !== 'closed' &&  <button
                             type="button"
                             className="mt-6 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             onClick={updatePO}
                         >
                             Update PO
-                        </button>
+                        </button>}
+
                     </div>
                     <div className="totals mt-2">
                         <div>Subtotal: {currency}{formattedSubTotal}</div>

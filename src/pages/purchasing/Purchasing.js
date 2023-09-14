@@ -4,7 +4,15 @@ import './purchasing.css'
 import {useNavigate} from "react-router-dom";
 import {clearVendor, setVendor} from "../../redux/slices/vendorSlice";
 import {useDispatch} from "react-redux";
-import {clearOrder, clearSelectedItem, clearPrice, clearWarehouse, clearQuantity, clearDueDate} from "../../redux/slices/purchaseOrderSlice";
+import {
+    clearOrder,
+    clearSelectedItem,
+    clearPrice,
+    clearWarehouse,
+    clearQuantity,
+    clearDueDate,
+    setPoId
+} from "../../redux/slices/purchaseOrderSlice";
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -51,8 +59,8 @@ export const Purchasing = () => {
     ];
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
-        dispatch(setVendor(params.data))
-        navigate('/vendors/vendorprofile')
+        dispatch(setPoId(params.data.id))
+        navigate('/purchasing/purchaseorder')
     };
 
     const getPOData = async () => {
