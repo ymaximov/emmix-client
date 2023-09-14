@@ -74,13 +74,16 @@ export const Receiving = () => {
 
     ];
     const handleCellClicked = (event) => {
-        setSelectedItem(event.data)
-        setSelectedItemID(event.data.id)
-        setShowRQModal(true)
-        console.log(event.data.id, 'event data ID')
-
-    }
-
+        if (goodsReceiptData.status === 'open') {
+            setSelectedItem(event.data);
+            setSelectedItemID(event.data.id);
+            setShowRQModal(true);
+            console.log(event.data.id, 'event data ID');
+        } else {
+            // Optionally, you can provide some feedback or prevent the action here
+            console.log('Cannot perform the action when status is not "open".');
+        }
+    };
     const handleSubmit = async () => {
         const dataToPost = {
             warehouseId: goodsReceiptData.warehouse_id,
@@ -175,16 +178,18 @@ export const Receiving = () => {
                 </div>
                 <div className="flex justify-between">
                     <div className={'mt-4'}>
-                        <button
-                            type="button"
-                            className="mt-6 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            onClick={handleSubmit}
-                            // onClick={getPurchaseOrderDataAndItems}
-                        >
-                           Execute
-                        </button>
+                        {goodsReceiptData.status === 'open' && (
+                            <button
+                                type="button"
+                                className="mt-6 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                onClick={handleSubmit}
+                            >
+                                Execute
+                            </button>
+                        )}
                     </div>
-    <div className={'mt-2'}>
+
+                    <div className={'mt-2'}>
         <h1>Based on PO No. {goodsReceiptData?.po_id}</h1>
         {/*<h1>Buyer: {goodsReceiptData?.user.first_name} {goodsReceiptData?.user.last_name}</h1>*/}
 
