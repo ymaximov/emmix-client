@@ -45,6 +45,7 @@ export const Purchasing = () => {
             headerName: "Invoiced",
             field: "invoice_status",
         },
+
     ];
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
