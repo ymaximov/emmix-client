@@ -68,7 +68,27 @@ const navigate = useNavigate()
     console.log(POID, 'PO ID')
     const handleAddToOrder = (item) => {
     };
+    const getPOData = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/purchasing/get-po-by-id/${POID}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res.data, 'RES')
+                // setDueDate(poData?.due_date)
+                dispatch(setPoData(res.data.purchaseOrder))
 
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
@@ -96,27 +116,7 @@ const navigate = useNavigate()
     };
 
 
-    const getPOData = async () => {
-        try {
-            dispatch(showLoading());
-            const res = await axios.get(`/api/purchasing/get-po-by-id/${POID}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(res, 'response')
-            dispatch(hideLoading());
-            if (res.status === 200) {
-                console.log(res.data, 'RES')
-                // setDueDate(poData?.due_date)
-                dispatch(setPoData(res.data.purchaseOrder))
 
-            }
-        } catch (error) {
-            dispatch(hideLoading());
-            console.log(error)
-        }
-    };
 
 
     const getWarehouses = async () => {

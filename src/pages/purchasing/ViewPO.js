@@ -67,6 +67,25 @@ export const ViewPO = () => {
     const formattedGrandTotal = grandTotal.toFixed(2);
     const vendor = poData.vendor
 
+    const getInventoryData = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setInventory(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
 
     const getPOData = async () => {
         try {
@@ -268,6 +287,7 @@ export const ViewPO = () => {
         getPOData()
         getWarehouses()
         getVendorsData()
+        getInventoryData()
 
     }, []);
     return (
