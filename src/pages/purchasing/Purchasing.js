@@ -11,6 +11,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
+import {SearchPO} from '../../modals/purchasing/SearchPO'
 
 export const Purchasing = () => {
     const navigate = useNavigate()
@@ -18,6 +19,7 @@ export const Purchasing = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const [PO, setPO] = useState()
+    const [showSearchPO, setShowSearchPO] = useState(false)
 
     const columnDefs = [
 
@@ -81,6 +83,7 @@ export const Purchasing = () => {
         <>
         <Layout />
             <div className="layout">
+                {showSearchPO && <SearchPO setShowSearchPO={setShowSearchPO} POData={PO} />}
                 <div className='actions'>
                     <i className="ri-file-add-line add-po mr-2" onClick={() => {
                         dispatch(clearVendor())
@@ -92,7 +95,7 @@ export const Purchasing = () => {
                         dispatch(clearQuantity())
                         navigate('/purchasing/createpo')}
                     }></i>
-                    <i className="ri-search-line" onClick={''}></i>
+                    <i className="ri-search-line" onClick={() => setShowSearchPO(true)}></i>
                     <i className="ri-download-line"
                     onClick={()=> navigate('/purchasing/goodsreceipt')}
                     ></i>
