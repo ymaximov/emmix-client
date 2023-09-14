@@ -24,7 +24,7 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
     }
 
     const initialValues = {
-        received_quantity: selectedItem.quantity
+        received_quantity: null
     };
 
     const getPurchaseOrderDataAndItems = async (event) => {

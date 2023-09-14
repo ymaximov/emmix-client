@@ -81,6 +81,38 @@ export const Receiving = () => {
 
     }
 
+    const handleSubmit = async () => {
+        const dataToPost = {
+            warehouseId: goodsReceiptData.warehouse_id,
+            goodsReceiptId: goodsReceiptData.id
+        }
+
+        try {
+            const res = await axios.put("/api/inventory/update-inventory-gr", dataToPost,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+
+                    }
+                });
+
+            if (res.status === 200) {
+                // Form data submitted successfully, handle success case here
+                toast.success('Inventory Has Been Received');
+                navigate('/purchasing')
+            } else {
+                toast.error(res.response.data.error)
+                console.error('Please fill out all required data');
+            }
+        } catch (error) {
+            toast.error('Please fill out all required fields')
+            console.log(error, 'error')
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    };
+
+
 
     useEffect(() => {
 
@@ -146,6 +178,7 @@ export const Receiving = () => {
                         <button
                             type="button"
                             className="mt-6 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            onClick={handleSubmit}
                             // onClick={getPurchaseOrderDataAndItems}
                         >
                            Execute
