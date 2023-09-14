@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from 'formik';
 import { Row, Col } from 'antd';
 import { hideLoading, showLoading } from '../../redux/slices/alertsSlice';
 import axios from 'axios';
@@ -13,6 +13,7 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
     const [searchResults, setSearchResults] = useState([]);
     const dispatch = useDispatch();
     const [warehouses, setWarehouses] = useState();
+    const [buyers, setBuyers] = useState()
     const token = JSON.parse(localStorage.getItem('token')).access_token;
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id;
     console.log(POData, 'PO DATA')
@@ -38,7 +39,7 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
             return (
                 fieldValueMatches(values.po_id, order.id) && // Use order.id for PO No.
                 fieldValueMatches(values.warehouse, order.warehouse_name) && // Use order.warehouse_name for Warehouse
-                fieldValueMatches(values.buyer, order.first_name) && // Use order.first_name for Buyer
+                fieldValueMatches(values.buyer, order.user_id) && // Use order.first_name for Buyer
                 fieldValueMatches(values.vendor_name, order.vendor_name) && // Use order.vendor_name for Vendor
                 fieldValueMatches(values.reference, order.reference) &&
                 fieldValueMatches(values.po_status, order.status) &&
@@ -70,6 +71,27 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
             console.error(error);
         }
     };
+
+    const getBuyers = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`/api/user/get-users-by-tenant/${tenantId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response');
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res);
+                setBuyers(res.data.data);
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.error(error);
+        }
+    };
+
 
     const handleClose = () => {
         setShowSearchPO(false);
@@ -103,11 +125,16 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
     };
 
     const clearForm = (formik) => {
+        // Add a console log to check if the function is called
+        console.log("Clearing form");
         formik.resetForm();
     };
 
+    console.log(buyers, 'buyers')
+
     useEffect(() => {
         getWarehouses();
+        getBuyers()
     }, []);
 
     return (
@@ -180,9 +207,9 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
                                                 className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             >
                                                 <option value="">Please Select a Buyer</option>
-                                                {warehouses?.map((warehouse, index) => (
-                                                    <option key={index} value={warehouse.warehouse_name}>
-                                                        {warehouse.warehouse_name}
+                                                {buyers?.map((buyer, index) => (
+                                                    <option key={index} value={buyer.id}>
+                                                        {buyer.first_name} {buyer.last_name}
                                                     </option>
                                                 ))}
                                             </Field>
@@ -263,15 +290,6 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
                                             className="mt-4 mb-3 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                         >
                                             Search
-                                        </button>
-                                    </div>
-                                    <div className="d-flex justify-content-end">
-                                        <button
-                                            type="button"
-                                            className="mt-4 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                            onClick={() => clearForm(formik)}
-                                        >
-                                            Clear Form
                                         </button>
                                     </div>
                                 </div>
