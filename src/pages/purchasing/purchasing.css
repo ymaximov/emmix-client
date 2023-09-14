@@ -12,6 +12,11 @@
     font-weight: bold;
 }
 
+.rq {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
 .heading {
     font-size: 1.5rem;
 }
@@ -58,6 +63,19 @@
 }
 
 .po-form-content {
+    background-color: white;
+    margin: 1rem 15rem 1rem 15rem;
+    padding: 2.5rem !important;
+    box-shadow: 0 2px 4px slategray;
+    border: 1px solid black;
+    height: 15rem;
+    width: 30rem;
+    /*border-radius: 1rem;*/
+    overflow: visible;
+    z-index: 9999;
+}
+
+.gr-form-content {
     background-color: white;
     margin: 1rem 15rem 1rem 15rem;
     padding: 2.5rem !important;

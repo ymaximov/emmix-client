@@ -13,6 +13,7 @@ import {useDispatch} from "react-redux";
 import {SearchModal} from '../../modals/vendors/SearchModal'
 import {setVendor} from "../../redux/slices/vendorSlice";
 import {useNavigate} from "react-router-dom";
+import {setPoData} from "../../redux/slices/purchaseOrderSlice";
 
 export const Vendors = () => {
     const [vendors, setVendors] = useState([]);
@@ -82,6 +83,7 @@ export const Vendors = () => {
 
     useEffect(() => {
         getVendorsData()
+
     }, []);
 
     return (

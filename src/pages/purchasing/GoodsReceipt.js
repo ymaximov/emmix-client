@@ -5,7 +5,7 @@ import {Row, Col} from 'antd'
 import toast from 'react-hot-toast'
 import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import {useSelector, useDispatch} from "react-redux";
-import {setPoDetails} from "../../redux/slices/purchaseOrderSlice";
+import {setGRDetails} from "../../redux/slices/purchaseOrderSlice";
 import {useNavigate} from "react-router-dom";
 
 export const GoodsReceipt = () => {
@@ -23,12 +23,12 @@ export const GoodsReceipt = () => {
         const requestData = {
             tenant_id: tenantId,
             poNo: poNo,
-            user_id:userId
+            receiver_id:userId
         };
 
         try {
             dispatch(showLoading())
-            const res = await axios.post(`/api/purchasing/get-po-by-id`, requestData, {
+            const res = await axios.post(`/api/purchasing/get-po-data-for-gr`, requestData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -38,7 +38,7 @@ export const GoodsReceipt = () => {
                 dispatch(hideLoading())
                 const data = res.data.data;
                 console.log('Purchase Order Data and Items:', data);
-                dispatch(setPoDetails(data))
+                dispatch(setGRDetails(data))
                 navigate('/purchasing/goodsreceipt/receiving')
                 // Handle the data as needed in your application
             } else {

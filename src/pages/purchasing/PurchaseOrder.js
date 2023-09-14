@@ -13,6 +13,7 @@ import {
     setSelectedItem,
     setPoDetails,
     addItem,
+    setPoData,
     setPoId,
     setQuantity,
     setPrice
@@ -32,9 +33,10 @@ export const PurchaseOrder = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
 const navigate = useNavigate()
-    const poData = useSelector((state) => state.purchaseOrder.poDetails)
+    const poData = useSelector((state) => state.purchaseOrder.poData)
     console.log(poData, 'PO DATA')
     const POID = useSelector((state) => state.purchaseOrder.po_id)
+    console.log(POID)
     const dispatch = useDispatch()
     const currency = '$'
     const [warehouses, setWarehouses] = useState()
@@ -107,7 +109,7 @@ const navigate = useNavigate()
             if (res.status === 200) {
                 console.log(res.data, 'RES')
                 // setDueDate(poData?.due_date)
-                dispatch(setPoDetails(res.data.purchaseOrder))
+                dispatch(setPoData(res.data.purchaseOrder))
 
             }
         } catch (error) {
