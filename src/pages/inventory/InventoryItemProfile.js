@@ -13,6 +13,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
+import {url} from '../../connections/toServer'
 
 export const InventoryItemProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -32,7 +33,7 @@ export const InventoryItemProfile = () => {
         try {
             // Make a GET request to the API endpoint with query parameters
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-stock-data-by-item-id`, {
+            const res = await axios.get(`${url}/api/inventory/get-stock-data-by-item-id`, {
                 params: {
                     item_id: itemId,
                     tenant_id: tenantId,
@@ -58,7 +59,7 @@ export const InventoryItemProfile = () => {
     const getVendors = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-vendors/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-vendors/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -77,7 +78,7 @@ export const InventoryItemProfile = () => {
     const getItemGroups = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-groups/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-item-groups/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -97,7 +98,7 @@ export const InventoryItemProfile = () => {
     const getItemProperties = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-properties/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-item-properties/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -116,7 +117,7 @@ export const InventoryItemProfile = () => {
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-warehouses/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -135,7 +136,7 @@ export const InventoryItemProfile = () => {
     const getManufacturers = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-manufacturers/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-manufacturers/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -247,7 +248,7 @@ export const InventoryItemProfile = () => {
         try {
             values.id = itemId;
             values.tenant_id = tenantId;
-            const res = await axios.put("/api/inventory/update-inventory-item", values,
+            const res = await axios.put(`${url}/api/inventory/update-inventory-item`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

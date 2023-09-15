@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import {setUser} from "../../redux/slices/userSlice";
 import logo from './emmixlogo.png'
+import {url} from "../../connections/toServer";
 
 export function Login() {
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export function Login() {
         console.log(email, password)
         try{
             // dispatch(showLoading())
-            const res = await axios.post('http://127.0.0.1:8080/api/user/login', formData);
+            const res = await axios.post(`${url}/api/user/login`, formData);
             // dispatch(hideLoading())
                 console.log(res.data)
             dispatch(setUser(res.data))

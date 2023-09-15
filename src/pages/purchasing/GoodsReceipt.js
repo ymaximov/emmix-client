@@ -7,6 +7,7 @@ import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import {useSelector, useDispatch} from "react-redux";
 import {setGRDetails} from "../../redux/slices/purchaseOrderSlice";
 import {useNavigate} from "react-router-dom";
+import {url} from "../../connections/toServer";
 
 export const GoodsReceipt = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token;
@@ -28,7 +29,7 @@ export const GoodsReceipt = () => {
 
         try {
             dispatch(showLoading())
-            const res = await axios.post(`/api/purchasing/get-po-data-for-gr`, requestData, {
+            const res = await axios.post(`${url}/api/purchasing/get-po-data-for-gr`, requestData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

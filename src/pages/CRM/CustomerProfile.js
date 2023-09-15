@@ -8,6 +8,7 @@ import {countries} from "countries-list";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useNavigate} from "react-router-dom";
 import './crm.css'
+import {url} from '../../connections/toServer'
 
 export const CustomerProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -65,7 +66,7 @@ export const CustomerProfile = () => {
         try {
             values.id = id;
             values.tenant_id = tenant;
-            const res = await axios.put("/api/crm/update-customer", values,
+            const res = await axios.put(`${url}/api/crm/update-customer`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

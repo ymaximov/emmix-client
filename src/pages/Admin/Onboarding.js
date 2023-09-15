@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import {url} from '../../connections/toServer'
 
 
 const usStates = [
@@ -77,7 +78,7 @@ export const Onboarding = () => {
         console.log("received values of form", values);
         try {
             dispatch(showLoading())
-            const res = await axios.post("/api/admin/create-tenant", values,
+            const res = await axios.post(`${url}/api/admin/create-tenant`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

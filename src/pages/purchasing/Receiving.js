@@ -11,6 +11,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {ReceivingQuantity} from "../../modals/purchasing/ReceivingQuantity";
 import './purchasing.css'
+import {url} from '../../connections/toServer'
 import {
     setSelectedItem,
     setPoDetails,
@@ -91,7 +92,7 @@ export const Receiving = () => {
         }
 
         try {
-            const res = await axios.put("/api/inventory/update-inventory-gr", dataToPost,
+            const res = await axios.put(`${url}/api/inventory/update-inventory-gr`, dataToPost,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

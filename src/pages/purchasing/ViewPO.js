@@ -9,6 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
+import {url} from '../../connections/toServer'
 import {
     setSelectedItem,
     setPoDetails,
@@ -71,7 +72,7 @@ export const ViewPO = () => {
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -91,7 +92,7 @@ export const ViewPO = () => {
     const getPOData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/purchasing/get-po-by-id/${POID}`, {
+            const res = await axios.get(`${url}/api/purchasing/get-po-by-id/${POID}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -113,7 +114,7 @@ export const ViewPO = () => {
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-warehouses/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -132,7 +133,7 @@ export const ViewPO = () => {
     const getVendorsData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/vendor/get-all-vendors-by-tenant-id/${tenantId}`, {
+            const res = await axios.get(`${url}/api/vendor/get-all-vendors-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -187,20 +188,22 @@ export const ViewPO = () => {
 
     ];
     const handleCellClicked = (event) => {
-        console.log(event, 'EVENT')
-        setItemKey(event.data.id)
-        setInvItemNo(event.data.inv_item_id)
-        setItemName(event.data.inventory_item.item_name)
-        setSelectedQuantity(event.data.quantity)
-        setSelectedPrice(event.data.unit_price)
-        setShowUpdateLineItemModal(true)
+        console.log(event, 'EVENT');
 
+        if (poData.status !== 'closed') {
+            setItemKey(event.data.id);
+            setInvItemNo(event.data.inv_item_id);
+            setItemName(event.data.inventory_item.item_name);
+            setSelectedQuantity(event.data.quantity);
+            setSelectedPrice(event.data.unit_price);
+            setShowUpdateLineItemModal(true);
+        }
     }
 
     const handleSubmit = async () => {
 
         try {
-            const res = await axios.post("/api/purchasing/create-purchase-order", dataToPost,
+            const res = await axios.post(`${url}/api/purchasing/create-purchase-order`, dataToPost,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -247,7 +250,7 @@ export const ViewPO = () => {
             po_id: POID
         }
         try {
-            const res = await axios.put("/api/purchasing/update-po", updatedData,
+            const res = await axios.put(`${url}/api/purchasing/update-po`, updatedData,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

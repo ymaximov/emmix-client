@@ -11,6 +11,7 @@ import {useState, useEffect} from "react";
 import axios from 'axios'
 import {TenantProfileModal} from "../../modals/admin/TenantProfileModal";
 import {setTenantProfile} from "../../redux/slices/admin/tenantProfileSlice";
+import {url} from '../../connections/toServer'
 
 export const Tenants = () => {
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ export const Tenants = () => {
     const getTenantsData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get("/api/admin/get-all-tenants", {
+            const res = await axios.get(`${url}/api/admin/get-all-tenants`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

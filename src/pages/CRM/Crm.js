@@ -19,6 +19,7 @@ import {SearchModal} from "../../modals/CRM/SearchModal";
 import ActiveInactiveChart from "../../components/crm/ActiveInactiveChart";
 import CustomerTypeChart from "../../components/crm/CustomerTypeChart";
 import {FilteredResultsModal} from "../../modals/CRM/FilteredResultsModal";
+import {url} from '../../connections/toServer'
 
 const formatter = (value) => <CountUp end={value} separator="," />;
 
@@ -39,7 +40,7 @@ export const CRM = () => {
     const getCustomersData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/crm/get-all-customers-by-tenant-id/${tenantId}`, {
+            const res = await axios.get(`${url}/api/crm/get-all-customers-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

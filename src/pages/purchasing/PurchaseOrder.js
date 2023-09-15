@@ -26,6 +26,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import generatePDF from "./generatePDF";
 import {UpdateLineItemModal} from "../../modals/purchasing/UpdateLineItemModal";
+import {url} from '../../connections/toServer'
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -73,7 +74,7 @@ const navigate = useNavigate()
     const getPOData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/purchasing/get-po-by-id/${POID}`, {
+            const res = await axios.get(`${url}/api/purchasing/get-po-by-id/${POID}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -95,7 +96,7 @@ const navigate = useNavigate()
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -125,7 +126,7 @@ const navigate = useNavigate()
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-warehouses/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -144,7 +145,7 @@ const navigate = useNavigate()
     const getVendorsData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/vendor/get-all-vendors-by-tenant-id/${tenantId}`, {
+            const res = await axios.get(`${url}/api/vendor/get-all-vendors-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -223,7 +224,7 @@ const navigate = useNavigate()
     const handleSubmit = async () => {
 
         try {
-            const res = await axios.post("/api/purchasing/create-purchase-order", dataToPost,
+            const res = await axios.post(`${url}/api/purchasing/create-purchase-order`, dataToPost,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -272,7 +273,7 @@ const navigate = useNavigate()
             po_id: POID
         }
         try {
-            const res = await axios.put("/api/purchasing/update-po", updatedData,
+            const res = await axios.put(`${url}/api/purchasing/update-po`, updatedData,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

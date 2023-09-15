@@ -13,6 +13,7 @@ import {setVendor} from "../../redux/slices/vendorSlice";
 import {useNavigate} from "react-router-dom";
 import {setItem} from "../../redux/slices/inventoryItemSlice";
 import {SearchModal} from '../../modals/inventory/searchModal'
+import {url} from '../../connections/toServer'
 export const Inventory = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
@@ -25,7 +26,7 @@ export const Inventory = () => {
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

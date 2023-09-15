@@ -14,6 +14,7 @@ import {SearchModal} from '../../modals/vendors/SearchModal'
 import {setVendor} from "../../redux/slices/vendorSlice";
 import {useNavigate} from "react-router-dom";
 import {setPoData} from "../../redux/slices/purchaseOrderSlice";
+import {url} from '../../connections/toServer'
 
 export const Vendors = () => {
     const [vendors, setVendors] = useState([]);
@@ -59,7 +60,7 @@ export const Vendors = () => {
     const getVendorsData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/vendor/get-all-vendors-by-tenant-id/${tenantId}`, {
+            const res = await axios.get(`${url}/api/vendor/get-all-vendors-by-tenant-id/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

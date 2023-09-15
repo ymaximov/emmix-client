@@ -8,6 +8,7 @@ import {countries} from "countries-list";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useNavigate} from "react-router-dom";
 import './vendors.css'
+import {url} from '../../connections/toServer'
 
 export const VendorProfile = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -65,7 +66,7 @@ export const VendorProfile = () => {
         try {
             values.id = id;
             values.tenant_id = tenant;
-            const res = await axios.put("/api/vendor/update-vendor", values,
+            const res = await axios.put(`${url}/api/vendor/update-vendor`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

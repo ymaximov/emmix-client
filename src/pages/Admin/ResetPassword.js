@@ -3,6 +3,7 @@ import {Layout} from "../layout/Layout";
 import React from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {url} from '../../connections/toServer'
 
 export const ResetPassword = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -10,7 +11,7 @@ export const ResetPassword = () => {
     const onFinish = async (values) => {
         console.log("received values of form", values);
         try {
-            const res = await axios.put("/api/admin/reset-password", values,
+            const res = await axios.put(`${url}/api/admin/reset-password`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

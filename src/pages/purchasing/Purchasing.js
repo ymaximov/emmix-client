@@ -20,6 +20,7 @@ import 'ag-grid-enterprise';
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {SearchPO} from '../../modals/purchasing/SearchPO'
+import {url} from '../../connections/toServer'
 
 export const Purchasing = () => {
     const navigate = useNavigate()
@@ -66,7 +67,7 @@ export const Purchasing = () => {
     const getPOData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/purchasing/get-all-po-by-tenant/${tenantId}`, {
+            const res = await axios.get(`${url}/api/purchasing/get-all-po-by-tenant/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

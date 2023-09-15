@@ -16,6 +16,7 @@ import axios from "axios";
 import {hi} from "date-fns/locale";
 import {AddNewUserModal} from "../../modals/admin/AddNewUserModal";
 import {UpdateUserModal} from "../../modals/admin/UpdateUserModal";
+import {url} from '../../connections/toServer'
 
 
 export const TenantProfile = () => {
@@ -29,7 +30,7 @@ export const TenantProfile = () => {
     const [users, setUsers] = useState([])
 
     const {isLoading: updateTenantLoading, err: updateTenantErr, onSubmit: updateTenantSubmit} = usePost({
-        api: `/api/admin/update-tenant-profile/${id}`,
+        api: `${url}/api/admin/update-tenant-profile/${id}`,
         method: 'put'
     })
 
@@ -56,7 +57,7 @@ export const TenantProfile = () => {
     const getUsersData = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/admin/get-user-accounts-by-tenant-id/${id}`, {
+            const res = await axios.get(`${url}/api/admin/get-user-accounts-by-tenant-id/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
