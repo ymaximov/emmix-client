@@ -21,15 +21,28 @@ import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {SearchPO} from '../../modals/purchasing/SearchPO'
 import {url} from '../../connections/toServer'
+import CountUp from 'react-countup';
+import { Col, Row, Statistic } from 'antd';
+const formatter = (value) => <CountUp end={value} separator="," />;
+const formatterMoney = (value) => {
+    return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+};
 
 export const Purchasing = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
+    const userID = JSON.parse(localStorage.getItem('token')).user_id
     const [PO, setPO] = useState()
     const [showSearchPO, setShowSearchPO] = useState(false)
+    const openPO = PO?.filter(item => item.status === 'open').length;
+    const notInvoicedPO = PO?.filter(item => !item.invoiced).length;
+    console.log(openPO, 'OPE PO')
+    const totalAmountOfNonInvoiced = PO?.filter(item => !item.invoiced).reduce((acc, item) => acc + item.total_amount, 0);
+    const openPOByUserID = PO?.filter(item => item.user_id === userID && item.status === 'open');
 
+    console.log(totalAmountOfNonInvoiced, 'TOTAL')
     const columnDefs = [
 
         {
@@ -53,8 +66,8 @@ export const Purchasing = () => {
             field: "total_amount",
         },
         {
-            headerName: "Invoiced",
-            field: "invoice_status",
+            headerName: "Status",
+            field: "status",
         },
 
     ];
@@ -108,6 +121,25 @@ export const Purchasing = () => {
                     <i className="ri-download-line"
                     onClick={()=> navigate('/purchasing/goodsreceipt')}
                     ></i>
+                </div>
+                <hr className={'mt-4'}/>
+                <div className={'mt-5 mb-9 ml-3'}>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Statistic title="Total Open Purchase Orders" value={openPO} formatter={formatter} />
+                    </Col>
+                    <Col span={12}>
+                        <Statistic title="Your Open Purchase Orders" value={openPOByUserID?.length} precision={2} formatter={formatter} />
+                    </Col>
+                </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Statistic title="Purchase Orders To Be Invoiced" value={notInvoicedPO} precision={2} formatter={formatter} />
+                        </Col>
+                        <Col span={12}>
+                            <Statistic title="Total to be Invoiced" value={totalAmountOfNonInvoiced} precision={2} formatter={formatterMoney} />
+                        </Col>
+                    </Row>
                 </div>
                 <div>
                     <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
