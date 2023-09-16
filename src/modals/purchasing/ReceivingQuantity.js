@@ -8,6 +8,7 @@ import {setGRDetails, setPoId, updatePriceAndQuantity} from "../../redux/slices/
 import axios from "axios";
 import toast from "react-hot-toast";
 import {hi} from "date-fns/locale";
+import {url} from '../../connections/toServer'
 
 export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
@@ -37,7 +38,7 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
 
         try {
             dispatch(showLoading())
-            const res = await axios.post(`/api/purchasing/get-po-data-for-gr`, requestData, {
+            const res = await axios.post(`${url}/api/purchasing/get-po-data-for-gr`, requestData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

@@ -244,6 +244,39 @@ export const ViewPO = () => {
         }
     };
 
+    const voidPO = async (values) => {
+        try {
+            dispatch(showLoading())
+            const URL = `${url}/api/purchasing/void-po`;
+
+            // Create the request body
+            const requestBody = {
+                tenant_id: tenantId,
+                warehouse_id: poData.warehouse_id,
+                purchaseOrderId: poData.id,
+                items: poData.purchase_order_items
+            };
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            const res = await axios.put(URL, requestBody, {headers});
+
+            if (res.status === 200) {
+                getPOData()
+                dispatch(hideLoading())
+                toast.success(res.data.message);
+
+            } else {
+                toast.error(res.response.data.error)
+                // console.error('Please fill out all required data');
+                dispatch(hideLoading())
+            }
+        } catch (err) {
+            console.error(err);
+            dispatch(hideLoading())
+        }
+    };
+
     const updatePO = async() => {
         const updatedData = {
             warehouse_id: selectedWarehouse == undefined ? poData.warehouse_id : selectedWarehouse,
@@ -303,7 +336,7 @@ export const ViewPO = () => {
                 {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={poData.warehouse_id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
-                <i className="ri-delete-bin-line"></i>
+                <i className="ri-delete-bin-line" onClick={voidPO}></i>
                 <div className={'po-details'}>
                     <h1 className={'mt-1'}>Purchase Order No. {poData.id}</h1>
                     <h1 className={'mt-1'}>Status: {poData.status} | not invoiced</h1>
