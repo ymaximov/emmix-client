@@ -89,6 +89,11 @@
     z-index: 9999;
 }
 
+.voided {
+    font-weight: bold;
+    color: red;
+}
+
 .gr-form-content-warning {
     background-color: white;
     margin: 1rem 15rem 1rem 15rem;

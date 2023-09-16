@@ -10,6 +10,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {url} from '../../connections/toServer'
+import {POVoidWarning} from "../../modals/purchasing/POVoidWarning";
 import {
     setSelectedItem,
     setPoDetails,
@@ -36,6 +37,7 @@ export const ViewPO = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const navigate = useNavigate()
     const poData = useSelector((state) => state.purchaseOrder.poData)
+    const POISVoid = poData.status == 'void'
 
     console.log(poData, 'PO DATA')
     const POID = useSelector((state) => state.purchaseOrder.po_id)
@@ -47,6 +49,7 @@ export const ViewPO = () => {
     const [vendors, setVendors] = useState([]);
     const [dueDate, setDueDate] = useState(new Date());
     const [showAddItemModal, setShowAddItemModal] = useState(false)
+    const [showPOVoidWarning, setShowPOVoidWarning] = useState(false)
     const salesTaxRate = 17
     const purchaseOrder = useSelector(state => state.purchaseOrder)
 
@@ -334,13 +337,16 @@ export const ViewPO = () => {
             <div className="layout">
                 {showAddItemModal && <AddItemModal warehouse={poData.warehouse_id} inventory={inventoryList} getPOData={getPOData} tenantID={tenantId} POID={POID} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal}/>}
                 {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={poData.warehouse_id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
+                {showPOVoidWarning && <POVoidWarning voidPO={voidPO()}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line" onClick={voidPO}></i>
                 <div className={'po-details'}>
                     <h1 className={'mt-1'}>Purchase Order No. {poData.id}</h1>
+                    {POISVoid && <div className={'voided'}>Purchase Order Is Void</div>}
                     <h1 className={'mt-1'}>Status: {poData.status} | not invoiced</h1>
                 </div>
+
                 <Row gutter={20} className='mt-7 mb-3'>
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div className='vendor-details-title'>Vendor Name</div>
