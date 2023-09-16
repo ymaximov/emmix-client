@@ -349,7 +349,7 @@ export const CreatePurchaseOrder = () => {
                     <div className={'mt-6'}>
                         <button
                             type="button"
-                            className="mt-4 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="mt-4 mb-3 ml-2 rounded-md bg-slate-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleSubmit}
                         >
                             Execute

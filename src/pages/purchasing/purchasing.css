@@ -94,6 +94,12 @@
     color: red;
 }
 
+.box {
+    height: 20rem;
+    width: 40rem;
+    border: 1px solid black;
+}
+
 .gr-form-content-warning {
     background-color: white;
     margin: 1rem 15rem 1rem 15rem;
