@@ -367,10 +367,8 @@ export const ViewPO = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="order_date" className="block text-sm font-medium leading-6 text-gray-900">
-                                Due Date: {poData.due_date}
-                            </label>
-                            { poData.status !== 'closed' && <DatePicker
+                           <div className={'font-bold'}>Due Date: {poData.due_date}</div>
+                            {poData.status === 'open' && <DatePicker
                                 id="due_date"
                                 // selected={dueDate}
                                 selected={dueDate}
@@ -387,7 +385,8 @@ export const ViewPO = () => {
 
                 </Row>
                 <div className="d-flex justify-content-end mt-7">
-                    {poData.status !== 'closed' && <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>}
+                    {poData.status === 'open' && <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>}
+
 
                 </div>
                 <div className=''>

@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {url} from '../../connections/toServer'
 
 
 export const AddNewUserModal = ({getUsersData}) => {
@@ -20,7 +21,7 @@ export const AddNewUserModal = ({getUsersData}) => {
         console.log("received values of form", values);
         try {
             values.tenant_id = tenant
-            const res = await axios.post("/api/user/add-new-user", values,
+            const res = await axios.post(`${url}/api/user/add-new-user`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

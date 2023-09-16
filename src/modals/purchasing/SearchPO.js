@@ -10,6 +10,7 @@ import axios from 'axios';
 import {useDispatch} from "react-redux";
 import {setPoId} from "../../redux/slices/purchaseOrderSlice";
 import {useNavigate} from "react-router-dom";
+import {url} from '../../connections/toServer'
 
 export const SearchPO = ({ setShowSearchPO, POData }) => {
     const [searchResults, setSearchResults] = useState([]);
@@ -58,7 +59,7 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-warehouses/${tenantId}`, {
+            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -78,7 +79,7 @@ export const SearchPO = ({ setShowSearchPO, POData }) => {
     const getBuyers = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/user/get-users-by-tenant/${tenantId}`, {
+            const res = await axios.get(`${url}/api/user/get-users-by-tenant/${tenantId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

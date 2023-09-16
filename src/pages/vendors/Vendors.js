@@ -120,11 +120,13 @@ export const Vendors = () => {
                     <i className="ri-user-add-line" onClick={() => setShowAddNewVendorModal(true)}></i>
                     <i className="ri-search-line ml-1" onClick={() => setShowSearchModal(true)}></i>
                 </div>
+                <hr className={'mt-3'} />
             </div>
+
                 {showAddNewVendorModal && <AddNewVendorModal setShowAddNewVendorModal={setShowAddNewVendorModal} getVendorsData={getVendorsData}/>}
                 {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} vendors={vendors}/>}
                 {/*{inventory && inventory.length > 0 ? (*/}
-                    <div>
+                    <div className={'mt-10'}>
                         <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
                             <AgGridReact rowData={vendors} gridOptions={gridOptions} onCellClicked={handleCellClicked} />
                         </div>

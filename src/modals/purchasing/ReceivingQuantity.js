@@ -66,7 +66,7 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
         try {
             dispatch(showLoading())
             // Replace 'http://localhost:3000' with the actual URL of your backend endpoint
-            const url = `/api/purchasing/receiving/update-rec-quantity/${itemID}`;
+            const url = `${url}/api/purchasing/receiving/update-rec-quantity/${itemID}`;
 
             // Create the request body
             const requestBody = {

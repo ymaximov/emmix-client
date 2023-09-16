@@ -8,6 +8,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import {useSelector} from "react-redux";
+import {url} from '../../connections/toServer'
 
 export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersData}) => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -123,7 +124,7 @@ export const AddNewCustomerModal = ({setShowAddNewCustomerModal, getCustomersDat
         console.log('1111')
         try {
             formData.tenant_id = tenant
-            const res = await axios.post("/api/crm/add-new-customer", formData,
+            const res = await axios.post(`${url}/api/crm/add-new-customer`, formData,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

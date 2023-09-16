@@ -155,17 +155,18 @@ export const CRM = () => {
         <>
         <Layout />
             <div className='layout'>
-                <div className='crm-top mb-4'>
+                <div className='crm-top mb-6'>
                     <div className='actions'>
                         <i className="ri-user-add-line" onClick={() => setShowAddNewCustomerModal(true)}></i>
                         <i className="ri-search-line ml-1" onClick={() => setShowSearchModal(true)}></i>
                     </div>
+                    <hr className={'mt-3 mb-3'}/>
                     {showAddNewCustomerModal && <AddNewCustomerModal  getCustomersData={getCustomersData} setShowAddNewCustomerModal={setShowAddNewCustomerModal}/>}
                     {showSearchModal && <SearchModal setShowSearchModal={setShowSearchModal} customers={customers}/>}
                     {showFilteredResultsModal && <FilteredResultsModal setShowFilteredResultsModal={setShowFilteredResultsModal}/>}
                 </div>
                 <div>
-                    <div className='crm-statistics mb-8'>
+                    <div className='crm-statistics mb-8 mt-5'>
                         {customers && customers.length > 0 ? <div>
                             <ActiveInactiveChart active={activeCustomers} inactive={inactiveCustomers} setShowFilteredResultsModal={setShowFilteredResultsModal}/>
                         </div>: (

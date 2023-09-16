@@ -15,6 +15,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import toast from 'react-hot-toast'
+import {url} from '../../connections/toServer'
 
 export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getInventoryData}) => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
@@ -29,7 +30,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
     const getVendors = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-vendors/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-vendors/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -48,7 +49,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
     const getItemGroups = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-groups/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-item-groups/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -68,7 +69,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
     const getItemProperties = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-properties/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-item-properties/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -87,7 +88,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-warehouses/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -106,7 +107,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
     const getManufacturers = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-manufacturers/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-manufacturers/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -231,7 +232,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
         values.tenant_id = tenant
 
         try {
-            const res = await axios.post("/api/inventory/add-new-inventory-item", values,
+            const res = await axios.post(`${url}/api/inventory/add-new-inventory-item`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

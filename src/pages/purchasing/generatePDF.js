@@ -4,6 +4,8 @@ import pdfFonts from 'pdfmake/build/vfs_fonts'; // Import pdfFonts
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const generatePDF = (purchaseOrderData) => {
+    const referenceValue = purchaseOrderData.reference ? purchaseOrderData.reference : 'None';
+
     const items = purchaseOrderData.purchase_order_items.map((item) => [
         item.inv_item_id, // Item No.
         item.inventory_item.item_name, // Item Name (Replace with actual item name property)
@@ -150,7 +152,21 @@ const generatePDF = (purchaseOrderData) => {
                     },
                     {
                         text: ``,
-                        margin: [0, 1],
+                        margin: [0, 1, 0, 0],
+                    },
+                ]
+            },
+            {
+                alignment: 'justify',
+                columns: [
+                    {
+                        text: `Payment Terms: ${purchaseOrderData.vendor.payment_terms}`,
+                        margin: [0, 9, 0, 0],
+                        bold: true
+                    },
+                    {
+                        text: `Reference: ${referenceValue}`,
+                        margin: [0, 9, 0, 0],
                     },
                 ]
             },
@@ -161,50 +177,51 @@ const generatePDF = (purchaseOrderData) => {
 
             // Add more purchase order details here
             {
+                alignment: 'justify',
+                columns: [
+                    {
+                        text: `Subtotal: $${purchaseOrderData.subtotal}`,
+                        margin: [0, 30, 0, 0],
+                    },
+                    {
+                        text: ``
+                    },
+                ]
+            },
+            {
+                alignment: 'justify',
+                columns: [
+                    {
+                        text: `Sales Tax/VAT: $${purchaseOrderData.sales_tax}`,
+                        margin: [0, 7, 0, 0],
+                    },
+                    {
+                        text: ``
+                    },
+                ]
+            },
+            {
+                alignment: 'justify',
+                columns: [
+                    {
+                        text: `Grand Total: $${purchaseOrderData.total_amount}`,
+                        margin: [0, 7, 0, 0],
+                    },
+                    {
+                        text: ``
+                    },
+                ]
+            },
+
+            {
                 style: 'tableExample',
-                margin: [0,200,10,0],
+                margin: [0,10,10,0],
                 table: {
                     body: [
                         ['Item No.', 'Item Name', 'SKU', 'Quantity', 'Price', 'Total Price'],
                         ...items
                     ]
                 }
-            },
-            {
-                alignment: 'justify',
-                columns: [
-                    {
-                        text: ``
-                    },
-                    {
-                        text: `Subtotal: $${purchaseOrderData.subtotal}`,
-                        margin: [65, 7, 0, 0],
-                    },
-                ]
-            },
-            {
-                alignment: 'justify',
-                columns: [
-                    {
-                        text: ``
-                    },
-                    {
-                        text: `Sales Tax/VAT: $${purchaseOrderData.sales_tax}`,
-                        margin: [65, 7, 0, 0],
-                    },
-                ]
-            },
-            {
-                alignment: 'justify',
-                columns: [
-                    {
-                        text: ``
-                    },
-                    {
-                        text: `Grand Total: $${purchaseOrderData.total_amount}`,
-                        margin: [65, 7, 0, 0],
-                    },
-                ]
             },
 
         ],

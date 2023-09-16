@@ -27,6 +27,7 @@ import {PurchaseOrder} from "./pages/purchasing/PurchaseOrder";
 import {GoodsReceipt} from "./pages/purchasing/GoodsReceipt";
 import {Receiving} from "./pages/purchasing/Receiving";
 import {ViewPO} from "./pages/purchasing/ViewPO";
+import {Sales} from "./pages/sales/Sales";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
     {
         path: '/purchasing/goodsreceipt/receiving',
         element: <ProtectedRoute><Receiving /></ProtectedRoute>
+    },
+    {
+        path: '/sales',
+        element: <ProtectedRoute><Sales /></ProtectedRoute>
     },
 ])
 function App() {

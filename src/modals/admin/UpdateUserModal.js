@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {ChangePasswordModal} from "../ChangePasswordModal";
+import {url} from '../../connections/toServer'
 
 
 export const UpdateUserModal = ({ isOpen, data, closeModal, setRowData, getUsersData }) => {
@@ -32,7 +33,7 @@ export const UpdateUserModal = ({ isOpen, data, closeModal, setRowData, getUsers
         console.log("received values of form", values);
         try {
             values.tenant_id = tenant
-            const res = await axios.put("/api/user/update-user", values,
+            const res = await axios.put(`${url}/api/user/update-user`, values,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

@@ -13,6 +13,7 @@ import '../../pages/purchasing/purchasing.css'
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {setItem} from "../../redux/slices/inventoryItemSlice";
+import {url} from '../../connections/toServer'
 import {
     setSelectedItem,
     setPrice,
@@ -191,7 +192,7 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
     const getVendors = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-vendors/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-vendors/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -210,7 +211,7 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
     const getItemGroups = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-groups/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-item-groups/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -230,7 +231,7 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
     const getItemProperties = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-item-properties/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-item-properties/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -249,7 +250,7 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
     const getWarehouses = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-warehouses/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -268,7 +269,7 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
     const getManufacturers = async () => {
         try {
             dispatch(showLoading());
-            const res = await axios.get(`/api/inventory/get-manufacturers/${tenant}`, {
+            const res = await axios.get(`${url}/api/inventory/get-manufacturers/${tenant}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

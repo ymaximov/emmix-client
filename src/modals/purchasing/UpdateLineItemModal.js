@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setPoId, updatePriceAndQuantity} from "../../redux/slices/purchaseOrderSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {url} from '../../connections/toServer'
 
 export const UpdateLineItemModal = ({setShowUpdateLineItemModal, invItemNo, warehouse, getPOData, selectedPrice, selectedQuantity, itemName, itemKey}) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
@@ -34,7 +35,7 @@ export const UpdateLineItemModal = ({setShowUpdateLineItemModal, invItemNo, ware
             tenant_id: tenantId
         }
         try {
-            const res = await axios.put("/api/purchasing/update-line-item", dataToPost,
+            const res = await axios.put(`${url}/api/purchasing/update-line-item`, dataToPost,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -62,7 +63,7 @@ export const UpdateLineItemModal = ({setShowUpdateLineItemModal, invItemNo, ware
         console.log(itemKey, 'ITEMKEY');
 
         try {
-            const res = await axios.delete(`/api/purchasing/delete-line-item`, {
+            const res = await axios.delete(`${url}/api/purchasing/delete-line-item`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
