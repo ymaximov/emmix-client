@@ -64,7 +64,7 @@ export const ReceivingWarning = ({showModal, GRData}) => {
             <div className={'po-modal-warning'}>
                 <div className={'gr-form-content-warning'}>
                     <i className="ri-close-circle-line" onClick={() => showModal(false)}></i>
-                    <div>The received quantity differs from the ordered quantity on the purchase order.
+                    <div>The received quantities differ from the quantities reflected on the purchase order.
                     Please make sure to update the purchase order and notify the buyer of the discrepancy to avoid billing errors.</div>
                     <div className="d-flex justify-content-end">
                         <button

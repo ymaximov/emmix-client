@@ -160,10 +160,6 @@ export const CreatePurchaseOrder = () => {
             headerName: `Price Per Unit ${currency}`,
             field: "price",
         },
-        {
-            headerName: `SKU`,
-            field: "manuf_sju",
-        },
     ];
 
     const onCellValueChanged = ({ data, colDef, newValue, rowIndex }) => {

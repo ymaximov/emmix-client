@@ -66,7 +66,7 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
         try {
             dispatch(showLoading())
             // Replace 'http://localhost:3000' with the actual URL of your backend endpoint
-            const url = `${url}/api/purchasing/receiving/update-rec-quantity/${itemID}`;
+            const URL = `${url}/api/purchasing/receiving/update-rec-quantity/${itemID}`;
 
             // Create the request body
             const requestBody = {
@@ -76,7 +76,7 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
-            const res = await axios.put(url, requestBody, {headers});
+            const res = await axios.put(URL, requestBody, {headers});
 
             if (res.status === 200) {
                 dispatch(hideLoading())

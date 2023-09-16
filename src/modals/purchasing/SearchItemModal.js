@@ -142,24 +142,12 @@ export const SearchItemModal = ({setShowSearchItemModal, inventory, handleAddToO
             field: "item_name",
         },
         {
-            headerName: "Last Name",
-            field: "last_name",
+            headerName: "Manufacturer SKU",
+            field: "manuf_sku",
         },
         {
-            headerName: "Email",
-            field: "email",
-        },
-        {
-            headerName: "Phone Number",
-            field: "phone_1",
-        },
-        {
-            headerName: "Customer Type",
-            field: "customer_type",
-        },
-        {
-            headerName: "Status",
-            field: "status",
+            headerName: "Cost",
+            field: "cost",
         },
     ];
 

@@ -5,6 +5,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const generatePDF = (purchaseOrderData) => {
     const referenceValue = purchaseOrderData.reference ? purchaseOrderData.reference : 'None';
+    const POIsVoid = purchaseOrderData.status == 'void' ? `Purchase order is ${purchaseOrderData.status}` : ''
 
     const items = purchaseOrderData.purchase_order_items.map((item) => [
         item.inv_item_id, // Item No.
@@ -32,8 +33,23 @@ const generatePDF = (purchaseOrderData) => {
                 alignment: 'justify',
                 columns: [
                     {
+                        text: `${POIsVoid}`,
+                        margin: [0, 3],
+                        bold: true,
+                        color: 'red'
+                    },
+                    {
+                        text: ``,
+                        margin: [0, 1, 0, 0],
+                    },
+                ]
+            },
+            {
+                alignment: 'justify',
+                columns: [
+                    {
                         text: `${purchaseOrderData.tenant.company_name}`,
-                        margin: [0, 9, 0, 1],
+                        margin: [0, 5, 0, 1],
                     },
                     {
                         text: `Ship-To:`,  style: "header", fontSize: 13,
