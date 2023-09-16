@@ -190,7 +190,7 @@ export const ViewPO = () => {
     const handleCellClicked = (event) => {
         console.log(event, 'EVENT');
 
-        if (poData.status !== 'closed') {
+        if (poData.status !== 'closed' && poData.status !== 'void') {
             setItemKey(event.data.id);
             setInvItemNo(event.data.inv_item_id);
             setItemName(event.data.inventory_item.item_name);
@@ -199,6 +199,7 @@ export const ViewPO = () => {
             setShowUpdateLineItemModal(true);
         }
     }
+
 
     const handleSubmit = async () => {
 
@@ -377,7 +378,7 @@ export const ViewPO = () => {
                     </div>
                 </div>
                 <div className="flex justify-between"><div className={'mt-4'}>
-                    { poData.status !== 'closed' &&  <button
+                    { (poData.status !== 'closed' && poData.status !== 'void') && <button
                             type="button"
                             className="mt-6 mb-3 ml-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             onClick={updatePO}

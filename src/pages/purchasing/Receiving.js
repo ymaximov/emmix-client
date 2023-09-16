@@ -12,6 +12,7 @@ import 'ag-grid-enterprise';
 import {ReceivingQuantity} from "../../modals/purchasing/ReceivingQuantity";
 import './purchasing.css'
 import {url} from '../../connections/toServer'
+import {ReceivingWarning} from "../../modals/purchasing/ReceivingWarning";
 import {
     setSelectedItem,
     setPoDetails,
@@ -41,6 +42,7 @@ export const Receiving = () => {
     const dispatch = useDispatch()
     const currency = '$'
     const [showRQModal, setShowRQModal] = useState(false)
+    const [showReceivingWarning, setShowReceivingWarning] = useState(false)
     const [selectedItem, setSelectedItem] = useState()
     const [selectedItemID, setSelectedItemID] = useState()
 
@@ -85,36 +87,54 @@ export const Receiving = () => {
             console.log('Cannot perform the action when status is not "open".');
         }
     };
+
     const handleSubmit = async () => {
-        const dataToPost = {
-            warehouseId: goodsReceiptData.warehouse_id,
-            goodsReceiptId: goodsReceiptData.id
+        let hasDiscrepancy = false; // Flag to track discrepancies
+
+        for (const item of goodsReceiptData.items) {
+            const { received_quantity, quantity } = item;
+
+            if (received_quantity !== quantity) {
+                // Quantity and received_quantity do not match for this item
+                hasDiscrepancy = true;
+                break; // Exit the loop since there's a discrepancy
+            }
         }
 
-        try {
-            const res = await axios.put(`${url}/api/inventory/update-inventory-gr`, dataToPost,
-                {
+        if (hasDiscrepancy) {
+            // Show a warning if there's a discrepancy
+            setShowReceivingWarning(true);
+        } else {
+            // If there are no discrepancies, proceed with the API request
+            const dataToPost = {
+                warehouseId: goodsReceiptData.warehouse_id,
+                goodsReceiptId: goodsReceiptData.id,
+            };
+
+            try {
+                const res = await axios.put(`${url}/api/inventory/update-inventory-gr`, dataToPost, {
                     headers: {
                         Authorization: `Bearer ${token}`,
-
-                    }
+                    },
                 });
 
-            if (res.status === 200) {
-                // Form data submitted successfully, handle success case here
-                toast.success('Inventory Has Been Received');
-                navigate('/purchasing')
-            } else {
-                toast.error(res.response.data.error)
-                console.error('Please fill out all required data');
+                if (res.status === 200) {
+                    // Form data submitted successfully, handle success case here
+                    toast.success('Inventory Has Been Received');
+                    navigate('/purchasing');
+                } else {
+                    toast.error(res.response.data.error);
+                    console.error('An error occurred:', res.response.data.error);
+                }
+            } catch (error) {
+                toast.error('An error occurred while submitting the form');
+                console.error('An error occurred:', error);
             }
-        } catch (error) {
-            toast.error('Please fill out all required fields')
-            console.log(error, 'error')
-            // Handle any other errors that occurred during the submission process
-            console.error('An error occurred:', error);
         }
     };
+
+
+
 
 
 
@@ -127,6 +147,7 @@ export const Receiving = () => {
             <Layout />
             <div className="layout">
                 {showRQModal && <ReceivingQuantity setShowModal={setShowRQModal} selectedItem={selectedItem} itemID={selectedItemID}/>}
+                {showReceivingWarning && <ReceivingWarning GRData={goodsReceiptData} handleSubmit={handleSubmit} showModal={setShowReceivingWarning}/>}
                 <h1 className={'mb-3 title'}>Goods Receipt PO</h1>
                 <div className={'po-details'}>
                     <h1 className={'mt-1'}>Goods Receipt No. {goodsReceiptData?.id}</h1>

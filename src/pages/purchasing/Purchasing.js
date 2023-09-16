@@ -43,34 +43,55 @@ export const Purchasing = () => {
     const openPOByUserID = PO?.filter(item => item.user_id === userID && item.status === 'open');
 
     console.log(totalAmountOfNonInvoiced, 'TOTAL')
-    const columnDefs = [
 
-        {
-            headerName: "PO No.",
-            field: "id",
+    const gridOptions = {
+        columnDefs: [
+            {
+                headerName: "PO No.",
+                field: "id",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Buyer",
+                field: "user.first_name",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Vendor",
+                field: "vendor.company_name",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Ship-To",
+                field: "warehouse.warehouse_name",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "PO Total",
+                field: "total_amount",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Status",
+                field: "status",
+                sortable: true,
+                filter: true
+            }
+            // Add more columns as needed
+        ],
+        defaultColDef: {
+            sortable: true,
+            filter: true,
         },
-        {
-            headerName: "Buyer",
-            field: "user.first_name",
-        },
-        {
-            headerName: "Vendor",
-            field: "vendor.company_name",
-        },
-        {
-            headerName: "Ship-To",
-            field: "warehouse.warehouse_name",
-        },
-        {
-            headerName: "PO Total",
-            field: "total_amount",
-        },
-        {
-            headerName: "Status",
-            field: "status",
-        },
+        // Add other grid options as needed
+    };
 
-    ];
+
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
         dispatch(setPoId(params.data.id))
@@ -143,7 +164,7 @@ export const Purchasing = () => {
                 </div>
                 <div>
                     <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
-                        <AgGridReact rowData={PO} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                        <AgGridReact rowData={PO} gridOptions={gridOptions} onCellClicked={handleCellClicked} />
                     </div>
                 </div>
             </div>

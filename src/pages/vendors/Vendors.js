@@ -20,37 +20,61 @@ export const Vendors = () => {
     const [vendors, setVendors] = useState([]);
     const [showAddNewVendorModal, setShowAddNewVendorModal] = useState(false)
     const [showSearchModal, setShowSearchModal] = useState(false)
-    const columnDefs = [
 
-        {
-            headerName: "Company Name",
-            field: "company_name",
+    const gridOptions = {
+        columnDefs: [
+            {
+                headerName: "Company Name",
+                field: "company_name",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "First Name",
+                field: "first_name",
+                sortable: true,
+                filter: true
+
+            },
+            {
+                headerName: "Last Name",
+                field: "last_name",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Email",
+                field: "email",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Phone Number",
+                field: "phone_1",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Vendor Type",
+                field: "vendor_type",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Status",
+                field: "status",
+                sortable: true,
+                filter: true
+            },
+            // Add more columns as needed
+        ],
+        defaultColDef: {
+            sortable: true,
+            filter: true,
         },
-        {
-            headerName: "First Name",
-            field: "first_name",
-        },
-        {
-            headerName: "Last Name",
-            field: "last_name",
-        },
-        {
-            headerName: "Email",
-            field: "email",
-        },
-        {
-            headerName: "Phone Number",
-            field: "phone_1",
-        },
-        {
-            headerName: "Vendor Type",
-            field: "vendor_type",
-        },
-        {
-            headerName: "Status",
-            field: "status",
-        },
-    ];
+        // Add other grid options as needed
+    };
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -102,7 +126,7 @@ export const Vendors = () => {
                 {/*{inventory && inventory.length > 0 ? (*/}
                     <div>
                         <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
-                            <AgGridReact rowData={vendors} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                            <AgGridReact rowData={vendors} gridOptions={gridOptions} onCellClicked={handleCellClicked} />
                         </div>
                     </div>
                 {/*) : (*/}

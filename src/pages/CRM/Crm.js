@@ -57,40 +57,61 @@ export const CRM = () => {
         }
     };
 
-    const columnDefs = [
-        // {
-        //     headerName: "Tenant ID",
-        //     field: "tenant_id",
-        // },
-        {
-            headerName: "Company Name",
-            field: "company_name",
+    const gridOptions = {
+        columnDefs: [
+            {
+                headerName: "Company Name",
+                field: "company_name",
+                sortable : true,
+                filter: true
+            },
+            {
+                headerName: "First Name",
+                field: "first_name",
+                sortable : true,
+                filter: true
+            },
+            {
+                headerName: "Last Name",
+                field: "last_name",
+                sortable : true,
+                filter: true
+            },
+            {
+                headerName: "Email",
+                field: "email",
+                sortable : true,
+                filter: true
+            },
+            {
+                headerName: "Phone Number",
+                field: "phone_1",
+                sortable : true,
+                filter: true
+            },
+            {
+                headerName: "Customer Type",
+                field: "customer_type",
+                sortable : true,
+                filter: true
+            },
+            {
+                headerName: "Status",
+                field: "status",
+                sortable : true,
+                filter: true
+            },
+            // Add more columns as needed
+        ],
+        defaultColDef: {
+            sortable: true,
+            filter: true,
         },
-        {
-            headerName: "First Name",
-            field: "first_name",
-        },
-        {
-            headerName: "Last Name",
-            field: "last_name",
-        },
-        {
-            headerName: "Email",
-            field: "email",
-        },
-        {
-            headerName: "Phone Number",
-            field: "phone_1",
-        },
-        {
-            headerName: "Customer Type",
-            field: "customer_type",
-        },
-        {
-            headerName: "Status",
-            field: "status",
-        },
-    ];
+        // Add other grid options as needed
+    };
+
+
+
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
         dispatch(setCustomer(params.data))
@@ -161,7 +182,7 @@ export const CRM = () => {
                     {customers && customers.length > 0 ? (
                         <div>
                             <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
-                                <AgGridReact rowData={customers} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                                <AgGridReact rowData={customers} gridOptions={gridOptions} onCellClicked={handleCellClicked} />
                             </div>
                         </div>
                     ) : (

@@ -318,7 +318,8 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                             warehouse_1: null,
                             warehouse_2: null,
                             warehouse_3: null,
-                            warehouse_4: null
+                            warehouse_4: null,
+                            default_wh: null
 
                         }}
                         onSubmit={addItem}
@@ -395,6 +396,29 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                                                     <label htmlFor="item_description" className='block text-sm font-medium leading-6 text-gray-900'>Desctiption</label>
                                                     <Field type="text" placeholder='Description' name="item_description" className='custom-input block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                                     <ErrorMessage name="item_description" component="div" />
+                                                </div>
+                                            </Col>
+                                            <Col span={8} xs={240} s={24} lg={8}>
+                                                <div>
+                                                    <label htmlFor="vendor" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Default Warehouse (Required)
+                                                    </label>
+                                                    <Field
+                                                        as="select"
+                                                        id="vendor"
+                                                        name="default_wh"
+                                                        required
+                                                        validate={value => (value ? undefined : 'Default Warehouse is required')}
+                                                        className=" block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    >
+                                                        <ErrorMessage name="default_wh" component="div" />
+                                                        <option value="">Please Select an Option</option>
+                                                        {warehouses?.map((group) => (
+                                                            <option key={group.id} value={group.id}>
+                                                                {group.warehouse_name}
+                                                            </option>
+                                                        ))}
+                                                    </Field>
                                                 </div>
                                             </Col>
                                         </Row>

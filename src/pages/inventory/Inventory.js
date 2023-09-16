@@ -43,38 +43,48 @@ export const Inventory = () => {
         }
     };
 
-    const columnDefs = [
+    const gridOptions = {
+        columnDefs: [
+            {
+                headerName: "Item Name",
+                field: "item_name",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Description",
+                field: "item_description",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Item Type",
+                field: "item_type",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "SKU",
+                field: "manuf_sku",
+                sortable: true,
+                filter: true
+            },
+            {
+                headerName: "Status",
+                field: "status",
+                sortable: true,
+                filter: true
+            },
+            // Add more columns as needed
+        ],
+        defaultColDef: {
+            sortable: true,
+            filter: true,
+        },
+        // Add other grid options as needed
+    };
 
-        {
-            headerName: "Item Name",
-            field: "item_name",
-        },
-        {
-            headerName: "Description",
-            field: "item_description",
-        },
-        {
-            headerName: "Item Type",
-            field: "item_type",
-        },
-        {
-            headerName: "SKU",
-            field: "manuf_sku",
-        },
 
-        {
-            headerName: "Available In Stock",
-            field: "email",
-        },
-        // {
-        //     headerName: "Vendor Type",
-        //     field: "vendor_type",
-        // },
-        {
-            headerName: "Status",
-            field: "status",
-        },
-    ];
     const handleCellClicked = (params) => {
         console.log('AG GRID cell clicked', params);
         dispatch(setItem(params.data))
@@ -98,7 +108,7 @@ export const Inventory = () => {
                     {showAddNewInventoryItemModal && <AddNewInventoryItemModal getInventoryData={getInventoryData} setShowAddNewInventoryItemModal={setShowAddNewInventoryItemModal}/>}
                     <div>
                         <div className="ag-theme-alpine" style={{ height: '300px', width: '100%' }}>
-                            <AgGridReact rowData={inventory} columnDefs={columnDefs} onCellClicked={handleCellClicked} />
+                            <AgGridReact rowData={inventory} gridOptions={gridOptions} onCellClicked={handleCellClicked} />
                         </div>
                     </div>
                 </div>
