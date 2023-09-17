@@ -243,6 +243,7 @@ export const CreatePurchaseOrder = () => {
     const handleSubmit = async () => {
 
         try {
+            dispatch(showLoading())
             const res = await axios.post(`${url}/api/purchasing/create-purchase-order`, dataToPost,
                 {
                     headers: {
@@ -252,16 +253,19 @@ export const CreatePurchaseOrder = () => {
                 });
 
             if (res.status === 200) {
+                dispatch(hideLoading())
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
                 console.log('PO ID', res.data)
                 dispatch(setPoId(res.data.data))
                 navigate('/purchasing/purchaseorder')
             } else {
+                dispatch(hideLoading())
                 toast.error(res.response.data.error)
                 console.error('Please fill out all required data');
             }
         } catch (error) {
+            dispatch(hideLoading())
             toast.error('Please fill out all required fields')
             // Handle any other errors that occurred during the submission process
             console.error('An error occurred:', error);
