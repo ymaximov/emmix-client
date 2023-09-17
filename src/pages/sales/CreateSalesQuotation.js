@@ -41,7 +41,7 @@ export const CreateSalesQuotation = () => {
     const handleSubmit = async () => {
         const dataToPost = {
             tenant_id: tenantId,
-            customer_id: selectedCustomer.id,
+            customer_id: selectedCustomer?.id,
             posting_date: postingDate,
             due_date: dueDate,
             user_id: userID,
@@ -67,6 +67,7 @@ export const CreateSalesQuotation = () => {
                 dispatch(setSqID(res.data.data))
                 toast.success(res.data.message);
                 console.log('SQ ID', res.data.data)
+                navigate('/sales/salesquotation')
 
             } else {
                 dispatch(hideLoading())
@@ -193,7 +194,7 @@ export const CreateSalesQuotation = () => {
                 <hr className={'mt-4 mb-4'}/>
                 <Row gutter={16}>
                     <Col span={8} xs={240} s={24} lg={8}>
-                        <div className='vendor-details-title'>Buyer</div>
+                        <div className='vendor-details-title'>Sales Representative</div>
                         <div>{salesRep?.first_name} {salesRep?.last_name}</div>
                         <div className='vendor-details-title'>Contact Information</div>
                         <div>{salesRep?.email} | {salesRep?.phone}</div>

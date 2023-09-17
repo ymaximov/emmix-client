@@ -1,0 +1,9 @@
+.so-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.po-details {
+    display: flex;
+    justify-content: space-between;
+}
