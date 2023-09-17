@@ -14,18 +14,11 @@ import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {setItem} from "../../redux/slices/inventoryItemSlice";
 import {url} from '../../connections/toServer'
-import {
-    setSelectedItem,
-    setPrice,
-    setQuantity,
-    setWarehouse,
-    addItem,
-    setPoId
-} from "../../redux/slices/purchaseOrderSlice";
+import {setSelectedItem} from '../../redux/slices/salesSlice';
 import {blueGrey, yellow} from "@mui/material/colors";
 import toast from "react-hot-toast";
 
-export const AddItemToSQModal = ({inventory, showModal, getSQData}) => {
+export const AddItemToSQModal = ({inventory, showModal, getSQData, sqData}) => {
     const [searchResults, setSearchResults] = useState([]);
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -37,7 +30,9 @@ export const AddItemToSQModal = ({inventory, showModal, getSQData}) => {
     const [isItemSelected, setIsItemSelected] = useState(false)
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantID = JSON.parse(localStorage.getItem('token')).tenant_id
-    const selectedItem = useSelector((state) => state.purchaseOrder).selectedItem
+    const salesRep = JSON.parse(localStorage.getItem('token')).user_id
+    const selectedItem = useSelector((state) => state.sales).selectedItem
+    console.log(selectedItem, 'SELECTEDD ITEMMMM')
     const currency = '$'
     const costPlaceHolder = 'Last Recorded Cost' + ' ' + currency + selectedItem.cost
 
@@ -479,14 +474,16 @@ export const AddItemToSQModal = ({inventory, showModal, getSQData}) => {
                             const dataToPost = {
                                 unit_price: price,
                                 quantity,
+                                user_id: salesRep,
                                 tenant_id: tenantID,
                                 inv_item_id: selectedItem.id,
+                                sq_id: sqData.id
 
                             }
                             const handleSubmit = async () => {
 
                                 try {
-                                    const res = await axios.post("/api/purchasing/add-item-to-po", dataToPost,
+                                    const res = await axios.post("/api/sales/add-item-to-sq", dataToPost,
                                         {
                                             headers: {
                                                 Authorization: `Bearer ${token}`,

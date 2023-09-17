@@ -24,6 +24,7 @@ export const CreateSalesQuotation = () => {
     const [showSearchCustomerModal, setShowSearchCustomerModal] = useState(false)
     const [dueDate, setDueDate] = useState(new Date());
     const [postingDate, setPostingDate] = useState(new Date());
+    const taxRate = 17
     const handleDueDateChange = (date, dateString) => {
         setDueDate(date);
         // dispatch(setDueDate(dueDate))
@@ -46,6 +47,7 @@ export const CreateSalesQuotation = () => {
             due_date: dueDate,
             user_id: userID,
             reference,
+            tax_rate: taxRate,
             sales_tax: 0,
             subtotal: 0,
             total_amount: 0

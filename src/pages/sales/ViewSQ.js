@@ -23,6 +23,13 @@ export const ViewSQ = () => {
     const [inventory, setInventory] = useState()
     console.log(SQData, 'SALES QUIOTE DATA')
     console.log(SQID, 'SQ ID')
+    const salesTax = SQData?.sales_tax
+    const subtotal = SQData?.subtotal
+    const grandTotal = SQData?.total_amount
+    const formattedSubTotal = subtotal?.toFixed(2);
+    const formattedSalesTaxAmount = salesTax?.toFixed(2);
+    const formattedGrandTotal = grandTotal?.toFixed(2);
+    const currency = '$'
 
     const handleCellClicked = (event) => {
         console.log(event, 'EVENT');
@@ -109,7 +116,7 @@ export const ViewSQ = () => {
         <>
         <Layout />
             <div className="layout">
-                {showAddItemModal && <AddItemToSQModal showModal={setShowAddItemModal} inventory={inventory} getSQData={getSQData}/>}
+                {showAddItemModal && <AddItemToSQModal showModal={setShowAddItemModal} inventory={inventory} getSQData={getSQData} sqData={SQData}/>}
                 <i className="ri-printer-line" onClick={''}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line" onClick={''}></i>
@@ -119,7 +126,7 @@ export const ViewSQ = () => {
                     {/*{POISVoid && <div className={'voided'}>Purchase Order Is Void</div>}*/}
                     <h1 className={'mt-1'}>Status: {SQData?.status} | not invoiced</h1>
                 </div>
-                <Row gutter={20} className='mt-7 mb-3'>
+                <Row gutter={20} className='mt-4 mb-1'>
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div className='vendor-details-title'>Customer Name</div>
                         <div>{SQData?.customer.company_name}</div>
@@ -145,15 +152,20 @@ export const ViewSQ = () => {
                         <div>{SQData?.reference}</div>
                     </Col>
                 </Row>
-                <div className="d-flex justify-content-end mt-7">
+                <div className="d-flex justify-content-end mt-1">
                     <i className="ri-add-circle-line" onClick={() => setShowAddItemModal(true)}></i>
 
 
                 </div>
-                <div className='mt-5'>
+                <div className='mt-1'>
                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
                         <AgGridReact rowData={SQData?.sales_quotation_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
+                </div>
+                <div className="totals mt-2">
+                    <div>Subtotal: {currency}{formattedSubTotal}</div>
+                    <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
+                    <div>Total: {currency}{formattedGrandTotal}</div>
                 </div>
             </div>
         </>
