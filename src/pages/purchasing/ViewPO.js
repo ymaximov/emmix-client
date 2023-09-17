@@ -341,6 +341,7 @@ export const ViewPO = () => {
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line" onClick={voidPO}></i>
+                <div className={'font-bold'}>Step 2/2: Add items to purchase order</div>
                 <div className={'po-details'}>
                     <h1 className={'mt-1'}>Purchase Order No. {poData.id}</h1>
                     {POISVoid && <div className={'voided'}>Purchase Order Is Void</div>}
@@ -368,15 +369,17 @@ export const ViewPO = () => {
 
                         <div>
                            <div className={'font-bold'}>Due Date: {poData.due_date}</div>
-                            {poData.status === 'open' && <DatePicker
-                                id="due_date"
-                                // selected={dueDate}
-                                selected={dueDate}
+                            <div className={'font-bold'}>Remarks: {poData.reference}</div>
 
-                                onChange={handleDueDateChange}
-                                dateFormat="yyyy-MM-dd" // Adjust the date format as needed
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            />}
+                            {/*{poData.status === 'open' && <DatePicker*/}
+                            {/*    id="due_date"*/}
+                            {/*    // selected={dueDate}*/}
+                            {/*    selected={dueDate}*/}
+
+                            {/*    onChange={handleDueDateChange}*/}
+                            {/*    dateFormat="yyyy-MM-dd" // Adjust the date format as needed*/}
+                            {/*    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"*/}
+                            {/*/>}*/}
                         </div>
 
                     </Col>
@@ -395,13 +398,13 @@ export const ViewPO = () => {
                     </div>
                 </div>
                 <div className="flex justify-between"><div className={'mt-4'}>
-                    { (poData.status !== 'closed' && poData.status !== 'void') && <button
-                            type="button"
-                            className="mt-6 mb-3 ml-2 rounded-md bg-blue-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            onClick={updatePO}
-                        >
-                            Update PO
-                        </button>}
+                    {/*{ (poData.status !== 'closed' && poData.status !== 'void') && <button*/}
+                    {/*        type="button"*/}
+                    {/*        className="mt-6 mb-3 ml-2 rounded-md bg-blue-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
+                    {/*        onClick={updatePO}*/}
+                    {/*    >*/}
+                    {/*        Update PO*/}
+                    {/*    </button>}*/}
 
                     </div>
                     <div className="totals mt-2">

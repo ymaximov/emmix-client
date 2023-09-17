@@ -28,6 +28,7 @@ import {GoodsReceipt} from "./pages/purchasing/GoodsReceipt";
 import {Receiving} from "./pages/purchasing/Receiving";
 import {ViewPO} from "./pages/purchasing/ViewPO";
 import {Sales} from "./pages/sales/Sales";
+import {CreateSalesQuotation} from "./pages/sales/CreateSalesQuotation";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
     {
         path: '/sales',
         element: <ProtectedRoute><Sales /></ProtectedRoute>
+    },
+    {
+        path: '/sales/createsq',
+        element: <ProtectedRoute><CreateSalesQuotation /></ProtectedRoute>
     },
 ])
 function App() {

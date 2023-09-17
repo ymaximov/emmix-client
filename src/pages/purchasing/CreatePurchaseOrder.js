@@ -34,6 +34,7 @@ import 'tailwindcss/tailwind.css';
 import toast from "react-hot-toast";
 import {SelectedItemModal} from "../../modals/purchasing/SelectedItemModal";
 import {url} from "../../connections/toServer";
+import {ErrorMessage, Field} from "formik";
 
 export const CreatePurchaseOrder = () => {
     const [showSearchVendorModal, setShowSearchVendorModal] = useState(false)
@@ -60,6 +61,7 @@ export const CreatePurchaseOrder = () => {
     const lastName = JSON.parse(localStorage.getItem('token')).last_name
     const phone = JSON.parse(localStorage.getItem('token')).phone
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
+    const buyer = JSON.parse(localStorage.getItem('token'))
     const vendor = useSelector((state) => state.vendor).vendor
     const handleWarehouseChange = (event) => {
         const value = parseInt(event.target.value);
@@ -133,6 +135,12 @@ export const CreatePurchaseOrder = () => {
     };
     const activeVendors = vendors?.filter(vendor => vendor.status === 'active');
     console.log(activeVendors, 'ACTIVE VENDORTS')
+    const [reference, setReference] = useState('');
+
+    const handleChange = (e) => {
+        setReference(e.target.value);
+    };
+
 
     const removeRow = (rowId) => {
         // Dispatch an action to remove the item from Redux state
@@ -196,6 +204,7 @@ export const CreatePurchaseOrder = () => {
     }
 
 
+
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
@@ -227,7 +236,8 @@ export const CreatePurchaseOrder = () => {
         items: purchaseOrderItems,
         subtotal: formattedSubTotal,
         sales_tax: formattedSalesTaxAmount,
-        total_amount: formattedGrandTotal
+        total_amount: formattedGrandTotal,
+        reference
     }
 
     const handleSubmit = async () => {
@@ -272,11 +282,22 @@ export const CreatePurchaseOrder = () => {
             <Layout />
             <div className="layout">
                 <h1 className={'mb-3 title'}>Create Purchase Order</h1>
+                <div className={'font-bold mb-2'}>Step 1/2: Define purchase order details</div>
                 {showSearchVendorModal && <SearchVendorModal setShowSearchVendorModal={setShowSearchVendorModal} vendors={activeVendors}/>}
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
                 <div className="d-flex justify-content-end">
-                    <i className="ri-user-add-line" onClick={() => setShowSearchVendorModal(true)}></i>
+                    {/*<i className="ri-user-add-line" onClick={() => setShowSearchVendorModal(true)}></i>*/}
+                    <div>Vendor Information</div>
+                    <div className={'mt-3'}>
+                        <button
+                            type="button"
+                            className="mt-2 mb-1 rounded-md bg-slate-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            onClick={() => setShowSearchVendorModal(true)}
+                        >
+                            + Vendor
+                        </button>
+                    </div>
                 </div>
                 <Row gutter={20} className='mt-5 mb-4'>
                     <Col span={8} xs={240} s={24} lg={8}>
@@ -291,6 +312,16 @@ export const CreatePurchaseOrder = () => {
                         <div className='vendor-details-title'>Contact Phone</div>
                         <div>{vendor?.contact_phone}</div>
                     </Col>
+                    <Col span={8} xs={240} s={24} lg={8}>
+                        <div className='vendor-details-title'>Payment Terms</div>
+                        <div>{vendor?.payment_terms}</div>
+                        <div className='vendor-details-title'>Tax/VAT ID</div>
+                        <div>{vendor?.tax_id}</div>
+                    </Col>
+                </Row>
+                <hr className={'mt-6 mb-6'}/>
+                <div className={'mb-4'}>Warehouse Details</div>
+                <Row gutter={16}>
 
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div>
@@ -317,7 +348,8 @@ export const CreatePurchaseOrder = () => {
                                 <div className="text-red-500 text-sm mt-1">Warehouse is required</div>
                             )}
                         </div>
-
+                    </Col>
+                    <Col>
                         <div>
                             <label htmlFor="order_date" className="block text-sm font-medium leading-6 text-gray-900">
                                 Due Date
@@ -327,39 +359,66 @@ export const CreatePurchaseOrder = () => {
                                 selected={dueDate}
                                 onChange={handleDueDateChange}
                                 dateFormat="yyyy-MM-dd" // Adjust the date format as needed
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
-
                     </Col>
-
-
-
                 </Row>
-                <div className="d-flex justify-content-end">
-                    <i className="ri-add-circle-line" onClick={() => setShowSearchItemModal(true)}></i>
+                <hr className={'mt-6 mb-6'}/>
+                <Row gutter={16}>
+                        <Col span={8} xs={240} s={24} lg={8}>
+                            <div>
+                                <div>
+                                    <label htmlFor="remarks" className='block text-sm font-medium leading-6 text-gray-900'>
+                                        Reference
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder='Remarks'
+                                        id="remarks"
+                                        value={reference}
+                                        onChange={handleChange}
+                                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                        style={{ width: `15rem` }}
+                                    />
 
-                </div>
-                <div className=''>
-                    <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                        <AgGridReact onCellValueChanged={onCellValueChanged} rowData={purchaseOrderItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
-                    </div>
-                </div>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col span={8} xs={240} s={24} lg={8}>
+                            <div className='vendor-details-title'>Buyer</div>
+                            <div>{buyer?.first_name} {buyer?.last_name}</div>
+                            <div className='vendor-details-title'>Contact Information</div>
+                            <div>{buyer?.email} | {buyer?.phone}</div>
+                        </Col>
+                </Row>
+
+
+
+                {/*<div className="d-flex justify-content-end">*/}
+                {/*    <i className="ri-add-circle-line" onClick={() => setShowSearchItemModal(true)}></i>*/}
+                
+                {/*</div>*/}
+                {/*<div className=''>*/}
+                {/*    <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>*/}
+                {/*        <AgGridReact onCellValueChanged={onCellValueChanged} rowData={purchaseOrderItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div className="flex justify-between">
                     <div className={'mt-6'}>
                         <button
                             type="button"
-                            className="mt-4 mb-3 ml-2 rounded-md bg-slate-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="mt-4 mb-3 ml-2 rounded-md bg-black px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleSubmit}
                         >
                             Execute
                         </button>
                     </div>
-                    <div className="totals mt-2">
-                        <div>Subtotal: {currency}{formattedSubTotal}</div>
-                        <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
-                        <div>Total: {currency}{formattedGrandTotal}</div>
-                    </div>
+                    {/*<div className="totals mt-2">*/}
+                    {/*    <div>Subtotal: {currency}{formattedSubTotal}</div>*/}
+                    {/*    <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>*/}
+                    {/*    <div>Total: {currency}{formattedGrandTotal}</div>*/}
+                    {/*</div>*/}
                 </div>
 
             </div>
