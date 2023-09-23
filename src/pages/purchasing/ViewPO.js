@@ -86,17 +86,17 @@ export const ViewPO = () => {
             console.log(error)
         }
     };
-    const totalPrices = poData?.purchase_order_items.map((item) => item.total_price);
+    // const totalPrices = poData?.purchase_order_items.map((item) => item.total_price);
     // const totalPrices = 0
     // const subTotal = 0
 
 // Use the reduce function to calculate the sum of total_prices
-    const subTotal = totalPrices.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    const salesTaxAmount = (subTotal * salesTaxRate) / 100;
-    const grandTotal = subTotal + salesTaxAmount;
-    const formattedSubTotal = subTotal.toFixed(2);
-    const formattedSalesTaxAmount = salesTaxAmount.toFixed(2);
-    const formattedGrandTotal = grandTotal.toFixed(2);
+//     const subTotal = totalPrices.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+//     const salesTaxAmount = (subTotal * salesTaxRate) / 100;
+//     const grandTotal = subTotal + salesTaxAmount;
+//     const formattedSubTotal = subTotal.toFixed(2);
+//     const formattedSalesTaxAmount = salesTaxAmount.toFixed(2);
+//     const formattedGrandTotal = grandTotal.toFixed(2);
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
@@ -319,9 +319,9 @@ export const ViewPO = () => {
         tenant_id: tenantId,
         warehouse_id: selectedWarehouse,
         due_date: dueDate,
-        subtotal: formattedSubTotal,
-        sales_tax: formattedSalesTaxAmount,
-        total_amount: formattedGrandTotal
+        // subtotal: formattedSubTotal,
+        // sales_tax: formattedSalesTaxAmount,
+        // total_amount: formattedGrandTotal
     }
     const activeInventory = inventory?.filter(inventory => inventory.status === 'active');
     const inventoryList = activeInventory?.filter(inventory => inventory.purchasing_item === true);
@@ -370,7 +370,7 @@ export const ViewPO = () => {
 
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div className={'font-bold'}>
-                            Ship-to Warehouse: {poData?.warehouse.warehouse_name}
+                            {/*Ship-to Warehouse: {poData?.warehouse.warehouse_name}*/}
                         </div>
 
                         <div>
@@ -414,9 +414,9 @@ export const ViewPO = () => {
 
                     </div>
                     <div className="totals mt-2">
-                        <div>Subtotal: {currency}{formattedSubTotal}</div>
-                        <div>Sales Tax/VAT: {currency}{formattedSalesTaxAmount}</div>
-                        <div>Total: {currency}{formattedGrandTotal}</div>
+                        <div>Subtotal: {currency}{poData?.subtotal}</div>
+                        <div>Sales Tax/VAT: {currency}{poData?.sales_tax}</div>
+                        <div>Total: {currency}{poData?.total_amount}</div>
                     </div>
                 </div>
             </div>

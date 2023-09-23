@@ -237,7 +237,8 @@ export const CreatePurchaseOrder = () => {
         subtotal: formattedSubTotal,
         sales_tax: formattedSalesTaxAmount,
         total_amount: formattedGrandTotal,
-        reference
+        reference,
+        tax_rate: salesTax
     }
 
     const handleSubmit = async () => {
