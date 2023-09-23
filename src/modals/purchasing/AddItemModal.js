@@ -488,7 +488,7 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
                             const handleSubmit = async () => {
 
                                 try {
-                                    const res = await axios.post("/api/purchasing/add-item-to-po", dataToPost,
+                                    const res = await axios.post(`${url}/api/purchasing/add-item-to-po`, dataToPost,
                                         {
                                             headers: {
                                                 Authorization: `Bearer ${token}`,

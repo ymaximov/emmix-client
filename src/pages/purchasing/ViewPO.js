@@ -37,6 +37,7 @@ export const ViewPO = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const navigate = useNavigate()
     const poData = useSelector((state) => state.purchaseOrder.poData)
+
     const POISVoid = poData.status == 'void'
 
     console.log(poData, 'PO DATA')
@@ -52,6 +53,7 @@ export const ViewPO = () => {
     const [showPOVoidWarning, setShowPOVoidWarning] = useState(false)
     const salesTaxRate = 17
     const purchaseOrder = useSelector(state => state.purchaseOrder)
+    console.log(purchaseOrder, 'PO DATA2')
 
     const [inventory, setInventory] = useState()
     const [showSelectedItemModal, setShowSelectedItemModal] = useState(false)
@@ -61,7 +63,32 @@ export const ViewPO = () => {
     const [itemKey, setItemKey] = useState()
     const [itemName, setItemName] = useState()
     const [invItemNo, setInvItemNo] = useState()
-    const totalPrices = poData.purchase_order_items.map((item) => item.total_price);
+
+    const vendor = poData.vendor
+    const getPOData = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`${url}/api/purchasing/get-po-by-id/${POID}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'responseee')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res.data, 'RESSSSS')
+                // setDueDate(poData?.due_date)
+                dispatch(setPoData(res.data.purchaseOrder))
+
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
+    const totalPrices = poData?.purchase_order_items.map((item) => item.total_price);
+    // const totalPrices = 0
+    // const subTotal = 0
 
 // Use the reduce function to calculate the sum of total_prices
     const subTotal = totalPrices.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -70,8 +97,6 @@ export const ViewPO = () => {
     const formattedSubTotal = subTotal.toFixed(2);
     const formattedSalesTaxAmount = salesTaxAmount.toFixed(2);
     const formattedGrandTotal = grandTotal.toFixed(2);
-    const vendor = poData.vendor
-
     const getInventoryData = async () => {
         try {
             dispatch(showLoading());
@@ -92,27 +117,7 @@ export const ViewPO = () => {
         }
     };
 
-    const getPOData = async () => {
-        try {
-            dispatch(showLoading());
-            const res = await axios.get(`${url}/api/purchasing/get-po-by-id/${POID}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(res, 'response')
-            dispatch(hideLoading());
-            if (res.status === 200) {
-                console.log(res.data, 'RES')
-                // setDueDate(poData?.due_date)
-                dispatch(setPoData(res.data.purchaseOrder))
 
-            }
-        } catch (error) {
-            dispatch(hideLoading());
-            console.log(error)
-        }
-    };
 
     const getWarehouses = async () => {
         try {
@@ -331,13 +336,14 @@ export const ViewPO = () => {
         getInventoryData()
 
     }, []);
+
     return (
         <>
             <Layout />
             <div className="layout">
                 {showAddItemModal && <AddItemModal warehouse={poData.warehouse_id} inventory={inventoryList} getPOData={getPOData} tenantID={tenantId} POID={POID} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal}/>}
                 {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={poData.warehouse_id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
-                {showPOVoidWarning && <POVoidWarning voidPO={voidPO()}/>}
+                {showPOVoidWarning && <POVoidWarning voidPO={voidPO}/>}
                 <i className="ri-printer-line" onClick={handleGeneratePDF}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line" onClick={voidPO}></i>
@@ -364,12 +370,12 @@ export const ViewPO = () => {
 
                     <Col span={8} xs={240} s={24} lg={8}>
                         <div className={'font-bold'}>
-                            Ship-to Warehouse: {poData.warehouse.warehouse_name}
+                            Ship-to Warehouse: {poData?.warehouse.warehouse_name}
                         </div>
 
                         <div>
-                           <div className={'font-bold'}>Due Date: {poData.due_date}</div>
-                            <div className={'font-bold'}>Remarks: {poData.reference}</div>
+                           <div className={'font-bold'}>Due Date: {poData?.due_date}</div>
+                            <div className={'font-bold'}>Remarks: {poData?.reference}</div>
 
                             {/*{poData.status === 'open' && <DatePicker*/}
                             {/*    id="due_date"*/}
@@ -394,7 +400,7 @@ export const ViewPO = () => {
                 </div>
                 <div className=''>
                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                        <AgGridReact rowData={poData.purchase_order_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
+                        <AgGridReact rowData={poData?.purchase_order_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
                 </div>
                 <div className="flex justify-between"><div className={'mt-4'}>

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import './purchasing.css'
 import {useNavigate} from "react-router-dom";
 import {clearVendor, setVendor} from "../../redux/slices/vendorSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     clearOrder,
     clearSelectedItem,
