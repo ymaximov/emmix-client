@@ -60,23 +60,20 @@ export const UpdateLineItemSQ = ({showModal, quantity, price, itemID, getSQData}
     const deleteLineItem = async () => {
 
         try {
-            const res = await axios.delete(`${url}/api/sales/delete-line-item-sq`, {
+            const res = await axios.delete(`${url}/api/sales/delete-item-sq`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
                 params: {
-                    // inv_item_id: invItemNo,
-                    // warehouse_id: warehouse,
+                    item_id: itemID,
                     tenant_id: tenantId,
-                    // quantity: selectedQuantity,
-                    // itemId: itemKey
                 },
             });
 
             if (res.status === 200) {
                 // Form data submitted successfully, handle success case here
                 // toast.success(res.data.message);
-
+                getSQData()
                 handleClose();
             } else {
                 // Handle error response here
