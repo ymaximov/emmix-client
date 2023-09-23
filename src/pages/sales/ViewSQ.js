@@ -12,6 +12,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {AddItemToSQModal} from "../../modals/sales/AddItemToSQ";
+import {UpdateLineItemSQ} from "../../modals/sales/UpdateLineItemSQ";
 
 export const ViewSQ = () => {
     const dispatch = useDispatch()
@@ -20,6 +21,7 @@ export const ViewSQ = () => {
     const SQID = useSelector((state) => state.sales).sqID
     const [SQData, setSQData] = useState()
     const [showAddItemModal, setShowAddItemModal] = useState(false)
+    const [showUpdateItemModal, setShowUpdateItemModal] = useState(false)
     const [inventory, setInventory] = useState()
     console.log(SQData, 'SALES QUIOTE DATA')
     console.log(SQID, 'SQ ID')
@@ -30,9 +32,16 @@ export const ViewSQ = () => {
     const formattedSalesTaxAmount = salesTax?.toFixed(2);
     const formattedGrandTotal = grandTotal?.toFixed(2);
     const currency = '$'
+    const [selectedQuantity, setSelectedQuantity] = useState()
+    const [selectedPrice, setSelectedPrice] = useState()
+    const [lineItemID, setLineItemID] = useState()
 
     const handleCellClicked = (event) => {
         console.log(event, 'EVENT');
+        setSelectedQuantity(event.data.quantity)
+        setSelectedPrice(event.data.unit_price)
+        setLineItemID(event.data.id)
+        setShowUpdateItemModal(true)
 
     }
 
@@ -117,6 +126,7 @@ export const ViewSQ = () => {
         <Layout />
             <div className="layout">
                 {showAddItemModal && <AddItemToSQModal showModal={setShowAddItemModal} inventory={inventory} getSQData={getSQData} sqData={SQData}/>}
+                {showUpdateItemModal && <UpdateLineItemSQ getSQData={getSQData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <i className="ri-printer-line" onClick={''}></i>
                 <i className="ri-mail-send-line"></i>
                 <i className="ri-delete-bin-line" onClick={''}></i>

@@ -483,7 +483,7 @@ export const AddItemToSQModal = ({inventory, showModal, getSQData, sqData}) => {
                             const handleSubmit = async () => {
 
                                 try {
-                                    const res = await axios.post("/api/sales/add-item-to-sq", dataToPost,
+                                    const res = await axios.post(`${url}/api/sales/add-item-to-sq`, dataToPost,
                                         {
                                             headers: {
                                                 Authorization: `Bearer ${token}`,
