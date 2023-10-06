@@ -6,12 +6,12 @@ import axios from "axios";
 import {url} from "../../connections/toServer";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {SearchCustomerSQ} from "../../modals/sales/SearchCustomerSQ";
+import {SearchCustomerSO} from "../../modals/sales/SearchCustomerSO";
 import DatePicker from "react-datepicker";
 import toast from "react-hot-toast";
 import {setSqID} from "../../redux/slices/salesSlice";
 
-export const CreateSalesQuotation = () => {
+export const CreateSalesOrder = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const token = JSON.parse(localStorage.getItem('token')).access_token;
@@ -110,9 +110,9 @@ export const CreateSalesQuotation = () => {
         <>
             <Layout />
             <div className="layout">
-                {showSearchCustomerModal && <SearchCustomerSQ setSelectedCustomer={setSelectedCustomer} customers={customers} showModal={setShowSearchCustomerModal}/>}
-                <h1 className={'mb-3 title'}>Create Sales Quotation</h1>
-                <div className={'font-bold mb-2'}>Step 1/2: Define sales quotation details</div>
+                {showSearchCustomerModal && <SearchCustomerSO setSelectedCustomer={setSelectedCustomer} customers={customers} showModal={setShowSearchCustomerModal}/>}
+                <h1 className={'mb-3 title'}>Create Sales Order</h1>
+                <div className={'font-bold mb-2'}>Step 1/2: Define sales order details</div>
                 <button
                     onClick={() => setShowSearchCustomerModal(true)}
                     type="button"

@@ -30,6 +30,7 @@ import {ViewPO} from "./pages/purchasing/ViewPO";
 import {Sales} from "./pages/sales/Sales";
 import {CreateSalesQuotation} from "./pages/sales/CreateSalesQuotation";
 import {ViewSQ} from "./pages/sales/ViewSQ";
+import {CreateSalesOrder} from "./pages/sales/CreateSalesOrder";
 
 const router = createBrowserRouter([
   {
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
     {
         path: '/sales/salesquotation',
         element: <ProtectedRoute><ViewSQ /></ProtectedRoute>
+    },
+    {
+        path: '/sales/createso',
+        element: <ProtectedRoute><CreateSalesOrder /></ProtectedRoute>
     },
 ])
 function App() {
