@@ -187,3 +187,7 @@
 .ri-add-line {
     font-size: 1.4rem;
 }
+
+.crown {
+    justify-content: space-between;
+}

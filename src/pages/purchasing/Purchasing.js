@@ -39,8 +39,19 @@ export const Purchasing = () => {
     const openPO = PO?.filter(item => item.status === 'open').length;
     const notInvoicedPO = PO?.filter(item => !item.invoiced && item.status !== 'void').length;
 
-    console.log(openPO, 'OPE PO')
-    const totalAmountOfNonInvoiced = PO?.filter(item => !item.invoiced).reduce((acc, item) => acc + item.total_amount, 0);
+    console.log(openPO, 'OPEN PO')
+
+    const totalAmountOfNonInvoiced = PO
+        ?.filter(item => !item.invoiced)
+        .reduce((acc, item) => {
+            const totalAmount = parseFloat(item.total_amount);
+            if (!isNaN(totalAmount)) {
+                return acc + totalAmount;
+            }
+            return acc;
+        }, 0);
+
+
     const openPOByUserID = PO?.filter(item => item.user_id === userID && item.status === 'open');
 
     console.log(totalAmountOfNonInvoiced, 'TOTAL')

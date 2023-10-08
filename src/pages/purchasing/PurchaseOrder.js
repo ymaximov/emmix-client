@@ -16,6 +16,9 @@ import './purchasing.css'
 import {SearchItemModal} from "../../modals/purchasing/SearchItemModal";
 import {useNavigate} from "react-router-dom";
 import {AddItemModal} from "../../modals/purchasing/AddItemModal";
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import generatePDF from "./generatePDF";
 import {
     addItem,
     removeItem,
@@ -320,7 +323,55 @@ export const PurchaseOrder = () => {
         }
     };
 
+    const voidPO = async (values) => {
+        try {
+            dispatch(showLoading())
+            const URL = `${url}/api/purchasing/void-po`;
+
+            // Create the request body
+            const requestBody = {
+                tenant_id: tenantId,
+                warehouse_id: PO.warehouse.id,
+                purchaseOrderId: PO.id,
+                items: PO.purchase_order_items
+            };
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            const res = await axios.put(URL, requestBody, {headers});
+
+            if (res.status === 200) {
+                getPOData()
+                dispatch(hideLoading())
+                toast.success(res.data.message);
+
+            } else {
+                toast.error(res.response.data.error)
+                // console.error('Please fill out all required data');
+                dispatch(hideLoading())
+            }
+        } catch (err) {
+            console.error(err);
+            dispatch(hideLoading())
+        }
+    };
+
     console.log(items, 'ITYEMS')
+    const handleGeneratePDF = async () => {
+        if (!PO) {
+            return;
+        }
+
+        try {
+            const pdfBlob = await generatePDF(PO);
+            const pdfObjectURL = URL.createObjectURL(pdfBlob);
+
+            // Open the PDF in a new tab
+            window.open(pdfObjectURL, '_blank');
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        }
+    };
 
     console.log(PO?.subtotal, 'Sub')
     useEffect(() => {
@@ -337,12 +388,16 @@ export const PurchaseOrder = () => {
             <Layout />
             {showAddItemModal && <AddItemModal getPOData={getPOData} warehouse={PO?.warehouse?.id} inventory={inventoryList} tenantID={tenantId} POID={PO?.id} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal}/>}
             {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={PO?.warehouse?.id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
+            <div className={'flex crown'}>
             <h1 className={'mb-1 mt-1 title ml-5'}>Purchase Order {PO?.id}</h1>
+                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {PO?.status}</h3>
+            </div>
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1"></i>
                 <div className={'flex mt-2'}>
                     <button
                         type="submit"
+                        onClick={handleGeneratePDF}
                         className="mb-2 bg-slate-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Print
@@ -355,6 +410,7 @@ export const PurchaseOrder = () => {
                     </button>
                     <button
                         type="submit"
+                        onClick={voidPO}
                         className="mb-2 ml-1 bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Void
@@ -430,7 +486,7 @@ export const PurchaseOrder = () => {
                 </div>
                 <hr className={'mt-3'}/>
                 <div className={'mt-3'}>
-                    <i className="ri-add-line" onClick={() => setShowAddItemModal(true)}></i>
+                    {PO?.status == 'open' ? <i className="ri-add-line" onClick={() => setShowAddItemModal(true)}></i> : null}
                     <div className=''>
                         <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
                             <AgGridReact rowData={PO?.purchase_order_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
