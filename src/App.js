@@ -31,6 +31,8 @@ import {Sales} from "./pages/sales/Sales";
 import {CreateSalesQuotation} from "./pages/sales/CreateSalesQuotation";
 import {ViewSQ} from "./pages/sales/ViewSQ";
 import {CreateSalesOrder} from "./pages/sales/CreateSalesOrder";
+import {APInvoice} from "./pages/purchasing/APInvoice";
+import {Invoice} from "./pages/purchasing/Invoice";
 
 const router = createBrowserRouter([
   {
@@ -95,7 +97,7 @@ const router = createBrowserRouter([
     // },
     {
         path: '/purchasing/purchaseorder',
-        element: <ProtectedRoute><ViewPO /></ProtectedRoute>
+        element: <ProtectedRoute><PurchaseOrder /></ProtectedRoute>
     },
     {
         path: '/purchasing/goodsreceipt',
@@ -104,6 +106,14 @@ const router = createBrowserRouter([
     {
         path: '/purchasing/goodsreceipt/receiving',
         element: <ProtectedRoute><Receiving /></ProtectedRoute>
+    },
+    {
+        path: '/purchasing/apinvoice',
+        element: <ProtectedRoute><APInvoice /></ProtectedRoute>
+    },
+    {
+        path: '/purchasing/apinvoice/invoice',
+        element: <ProtectedRoute><Invoice /></ProtectedRoute>
     },
     {
         path: '/sales',

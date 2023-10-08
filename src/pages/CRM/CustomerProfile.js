@@ -162,7 +162,7 @@ export const CustomerProfile = () => {
                 initialValues={customer}
                 onSubmit={handleSubmit}
             >
-            <Form layout="vertical">
+                <Form layout="vertical">
                 <Tabs>
                     <Tabs.TabPane tab="Customer Information" key={0}>
                         <div>

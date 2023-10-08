@@ -25,7 +25,7 @@ import {
 import {blueGrey, yellow} from "@mui/material/colors";
 import toast from "react-hot-toast";
 
-export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPOData, handleAddToOrder, setShowSelectedItemModal, tenantID, POID}) => {
+export const AddItemModal = ({inventory, setShowAddItemModal, tenantID, POID, warehouse, getPOData}) => {
     const [searchResults, setSearchResults] = useState([]);
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -135,6 +135,8 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
         { label: 'Wisconsin', value: 'WI' },
         { label: 'Wyoming', value: 'WY' }
     ];
+
+    console.log(POID, `PO ID`)
 
     const columnDefs = [
         // {
@@ -497,9 +499,9 @@ export const AddItemModal = ({setShowAddItemModal, inventory, warehouse, getPODa
                                         });
 
                                     if (res.status === 200) {
-                                        // Form data submitted successfully, handle success case here
-                                        setShowAddItemModal(false)
                                         getPOData()
+                                        setShowAddItemModal(false)
+
 
 
                                     } else {

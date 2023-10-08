@@ -5,11 +5,11 @@ import {Row, Col} from 'antd'
 import toast from 'react-hot-toast'
 import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import {useSelector, useDispatch} from "react-redux";
-import {setAPInvDetails} from "../../redux/slices/purchaseOrderSlice";
+import {setGRDetails} from "../../redux/slices/purchaseOrderSlice";
 import {useNavigate} from "react-router-dom";
 import {url} from "../../connections/toServer";
 
-export const GoodsReceipt = () => {
+export const APInvoice = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token;
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id;
     const userId = JSON.parse(localStorage.getItem('token')).user_id
@@ -24,12 +24,12 @@ export const GoodsReceipt = () => {
         const requestData = {
             tenant_id: tenantId,
             poNo: poNo,
-            receiver_id:userId
+            user_id: userId
         };
 
         try {
             dispatch(showLoading())
-            const res = await axios.post(`${url}/api/purchasing/get-po-data-for-gr`, requestData, {
+            const res = await axios.post(`${url}/api/purchasing/get-po-data-for-ap-invoice`, requestData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -39,7 +39,7 @@ export const GoodsReceipt = () => {
                 dispatch(hideLoading())
                 const data = res.data.data;
                 console.log('Purchase Order Data and Items:', data);
-                dispatch(setAPInvDetails(data))
+                dispatch(setGRDetails(data))
                 navigate('/purchasing/apinvoice/invoice')
                 // Handle the data as needed in your application
             } else {
@@ -62,7 +62,7 @@ export const GoodsReceipt = () => {
         <>
             <Layout />
             <div className="layout">
-                <h1>Goods Receipt PO</h1>
+                <h1>AP Invoice</h1>
                 <i className="ri-search-line ml-1" onClick={''}></i>
                 <form onSubmit={getPurchaseOrderDataAndItems}> {/* Use a regular form with POST request */}
                     <Row>

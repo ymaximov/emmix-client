@@ -153,3 +153,37 @@
     display: flex;
     justify-content: space-between;
 }
+
+
+.container {
+    display: flex; /* Use flexbox to arrange the inner divs */
+    justify-content: space-between; /* Place the divs at each end of the container */
+}
+
+.ri-checkbox-fill {
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.ri-user-search-line {
+
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 10px; /* Adjust the gap between columns */
+    align-items: center; /* Vertically center content */
+    width: 35%; /* Adjust the width of the grid */
+    margin-left: auto; /* Push the grid to the left side of the screen */
+}
+
+.text-right2 {
+    text-align: left;
+}
+
+.ri-add-line {
+    font-size: 1.4rem;
+}

@@ -13,7 +13,8 @@ const purchaseOrderSlice = createSlice({
         due_date: null,
         po_id: null,
         poData: {},
-        GR: {}
+        GR: {},
+        inv: {}
     },
     reducers: {
         addItem: (state, action) => {
@@ -72,8 +73,11 @@ const purchaseOrderSlice = createSlice({
         setPoData: (state, action) => {
             state.poData = action.payload
         },
+        setAPInvDetails: (state, action) => {
+            state.inv = action.payload
+        }
     },
 });
 
-export const { setPoId,setGRDetails, setPoData, addItem, removeItem, updateItem, updatePriceAndQuantity, clearWarehouse, clearQuantity, clearPrice, clearDueDate, clearSelectedItem, setSelectedItem, setDueDate, setPrice, setQuantity, setWarehouse, clearOrder } = purchaseOrderSlice.actions;
+export const { setPoId, setAPInvDetails,setGRDetails, setPoData, addItem, removeItem, updateItem, updatePriceAndQuantity, clearWarehouse, clearQuantity, clearPrice, clearDueDate, clearSelectedItem, setSelectedItem, setDueDate, setPrice, setQuantity, setWarehouse, clearOrder } = purchaseOrderSlice.actions;
 export default purchaseOrderSlice.reducer;
