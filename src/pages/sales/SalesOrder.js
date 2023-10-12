@@ -40,7 +40,7 @@ import toast from "react-hot-toast";
 import {SelectedItemModal} from "../../modals/purchasing/SelectedItemModal";
 import {url} from "../../connections/toServer";
 import {UpdateLineItemModal} from "../../modals/purchasing/UpdateLineItemModal";
-import {AddItemToSQModal} from "../../modals/sales/AddItemToSQ";
+import {AddItemToSOModal} from "../../modals/sales/AddItemToSO";
 import {UpdateLineItemSQ} from "../../modals/sales/UpdateLineItemSQ";
 
 export const SalesOrder = () => {
@@ -286,7 +286,7 @@ export const SalesOrder = () => {
             {/*{showAddItemModal && <AddItemModal getPOData={"getPOData"} warehouse={''} inventory={inventoryList} tenantID={tenantId} } setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal}/>}*/}
             {/*{showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={''}  itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}*/}
             <div className={'flex crown'}>
-                <h1 className={'mb-1 mt-1 title ml-5'}>Sales Quotation {SOData?.id}</h1>
+                <h1 className={'mb-1 mt-1 title ml-5'}>Sales Order {SOData?.id}</h1>
                 <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {SOData?.status}</h3>
             </div>
             <div className="layout">
@@ -317,7 +317,7 @@ export const SalesOrder = () => {
 
 
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}
-                {showAddItemModal && <AddItemToSQModal showModal={setShowAddItemModal} inventory={inventory} getSOData={getSOData} sqData={SOData}/>}
+                {showAddItemModal && <AddItemToSOModal showModal={setShowAddItemModal} inventory={inventory} getSOData={getSOData} soData={SOData}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
                 {showUpdateItemModal && <UpdateLineItemSQ getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <div className={'container'}>

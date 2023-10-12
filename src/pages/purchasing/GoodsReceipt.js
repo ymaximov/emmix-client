@@ -5,7 +5,7 @@ import {Row, Col} from 'antd'
 import toast from 'react-hot-toast'
 import {showLoading, hideLoading} from "../../redux/slices/alertsSlice";
 import {useSelector, useDispatch} from "react-redux";
-import {setAPInvDetails} from "../../redux/slices/purchaseOrderSlice";
+import {setAPInvDetails, setGRDetails} from "../../redux/slices/purchaseOrderSlice";
 import {useNavigate} from "react-router-dom";
 import {url} from "../../connections/toServer";
 
@@ -39,8 +39,8 @@ export const GoodsReceipt = () => {
                 dispatch(hideLoading())
                 const data = res.data.data;
                 console.log('Purchase Order Data and Items:', data);
-                dispatch(setAPInvDetails(data))
-                navigate('/purchasing/apinvoice/invoice')
+                dispatch(setGRDetails(data))
+                navigate('/purchasing/goodsreceipt/receiving')
                 // Handle the data as needed in your application
             } else {
                 dispatch(hideLoading())

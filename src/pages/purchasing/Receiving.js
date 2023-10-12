@@ -145,12 +145,13 @@ export const Receiving = () => {
     return (
         <>
             <Layout />
+            <h1 className={'mb-3 ml-1 title'}>Goods Receipt {goodsReceiptData?.id}</h1>
             <div className="layout">
+                <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>
                 {showRQModal && <ReceivingQuantity setShowModal={setShowRQModal} selectedItem={selectedItem} itemID={selectedItemID}/>}
                 {showReceivingWarning && <ReceivingWarning GRData={goodsReceiptData} handleSubmit={handleSubmit} showModal={setShowReceivingWarning}/>}
-                <h1 className={'mb-3 title'}>Goods Receipt PO</h1>
+
                 <div className={'po-details'}>
-                    <h1 className={'mt-1'}>Goods Receipt No. {goodsReceiptData?.id}</h1>
                     <h1 className={'mt-1'}>Status: {goodsReceiptData?.status}</h1>
                 </div>
 {/*div                <Row gutter={20} className='mt-7 mb-3'>*/}
@@ -199,17 +200,17 @@ export const Receiving = () => {
                     </div>
                 </div>
                 <div className="flex justify-between">
-                    <div className={'mt-4'}>
-                        {goodsReceiptData.status === 'open' && (
-                            <button
-                                type="button"
-                                className="mt-6 mb-3 ml-2 rounded-md bg-blue-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                onClick={handleSubmit}
-                            >
-                                Execute
-                            </button>
-                        )}
-                    </div>
+                    {/*<div className={'mt-4'}>*/}
+                    {/*    {goodsReceiptData.status === 'open' && (*/}
+                    {/*        <button*/}
+                    {/*            type="button"*/}
+                    {/*            className="mt-6 mb-3 ml-2 rounded-md bg-blue-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
+                    {/*            onClick={handleSubmit}*/}
+                    {/*        >*/}
+                    {/*            Execute*/}
+                    {/*        </button>*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
 
                     <div className={'mt-2'}>
         <h1>Based on PO No. {goodsReceiptData?.po_id}</h1>
