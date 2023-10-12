@@ -38,6 +38,7 @@ export const Receiving = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const navigate = useNavigate()
     const goodsReceiptData = useSelector((state) => state.purchaseOrder).GR.goodsReceipt
+    const closed = goodsReceiptData?.status == 'closed'
     console.log(goodsReceiptData, 'GR DATA')
     const dispatch = useDispatch()
     const currency = '$'
@@ -147,7 +148,7 @@ export const Receiving = () => {
             <Layout />
             <h1 className={'mb-3 ml-1 title'}>Goods Receipt {goodsReceiptData?.id}</h1>
             <div className="layout">
-                <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>
+                {!closed && <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>}
                 {showRQModal && <ReceivingQuantity setShowModal={setShowRQModal} selectedItem={selectedItem} itemID={selectedItemID}/>}
                 {showReceivingWarning && <ReceivingWarning GRData={goodsReceiptData} handleSubmit={handleSubmit} showModal={setShowReceivingWarning}/>}
 
