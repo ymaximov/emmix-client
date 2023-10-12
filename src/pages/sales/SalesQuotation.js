@@ -42,6 +42,7 @@ import {url} from "../../connections/toServer";
 import {UpdateLineItemModal} from "../../modals/purchasing/UpdateLineItemModal";
 import {AddItemToSQModal} from "../../modals/sales/AddItemToSQ";
 import {UpdateLineItemSQ} from "../../modals/sales/UpdateLineItemSQ";
+import {setSOID} from "../../redux/slices/salesSlice";
 
 export const SalesQuotation = () => {
     const [showUpdateLineItemModal, setShowUpdateLineItemModal] = useState(false)
@@ -256,6 +257,41 @@ export const SalesQuotation = () => {
         }
     };
 
+    const convertToSO = async () => {
+        const dataToPost = {
+            tenant_id: tenantId,
+            sq_id: SQID
+
+        }
+
+        try {
+            dispatch(showLoading())
+            const res = await axios.post(`${url}/api/sales/convert-sq-to-so`, dataToPost,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+
+                    }
+                });
+
+            if (res.status === 200) {
+                dispatch(hideLoading())
+                dispatch(setSOID(res.data.salesOrderId))
+                console.log(res.data.salesOrderId, 'SOID')
+                navigate('/sales/salesorder')
+
+            } else {
+                dispatch(hideLoading())
+                toast.error(res.response.data.error)
+                console.error('Please fill out all required data');
+            }
+        } catch (error) {
+            dispatch(hideLoading())
+            toast.error('Please fill out all required fields')
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    };
     console.log(items, 'ITYEMS')
     // const handleGeneratePDF = async () => {
     //     if (!SQData) {
@@ -313,6 +349,13 @@ export const SalesQuotation = () => {
                         className="mb-2 ml-1 bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Void
+                    </button>
+                    <button
+                        type="button"
+                        className="mb-2 ml-20 ml-1 bg-slate-400 px-2.5 py-1.5 text-sm hover:bg-black  font-semibold text-white shadow-sm hover:bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    onClick={convertToSO}
+                    >
+                        To SO
                     </button>
                 </div>
 

@@ -283,10 +283,11 @@ export const InventoryItemProfile = () => {
     return (
         <div>
             <Layout />
-            <h1>Item No. {item.id}</h1>
+            <h1 className='layout-title font-bold mt-1 ml-2'>{item.item_name}</h1>
+
             <div className='layout'>
 
-                <h1 className='layout-title font-bold mt-1'>{item.item_name}</h1>
+                <h1 className={''}>Item No. {item.id}</h1>
                 <div className='account-details'>
                     {item.status == 'inactive' && <div className=' mr-3 text-red-600 mb-2 font-bold'>Item is inactive</div>}
                     {/*<div >Account Balance: ${customer.id}</div>*/}

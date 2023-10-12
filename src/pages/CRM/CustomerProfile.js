@@ -150,19 +150,26 @@ export const CustomerProfile = () => {
     return (
         <div>
             <Layout />
+            <h1 className='layout-title font-bold mt-1 ml-2'>{title}</h1>
         <div className='layout'>
-            <h1 className='layout-title font-bold'>{title}</h1>
-            <div className='account-details'>
-                {customer.status == 'inactive' && <div className=' mr-3 text-red-600 mb-2 font-bold'>Customer is inactive</div>}
-            <div >Account Balance: ${customer.id}</div>
-            <div className='ml-3'>Open Sales Orders: 0</div>
-            </div>
-            <div className='mt-6 font-bold'>Customer No. {customer.id}</div>
+
+
+
+
             <Formik
                 initialValues={customer}
                 onSubmit={handleSubmit}
             >
                 <Form layout="vertical">
+                    <button className="ri-checkbox-fill mb-1"
+                            type="submit"
+                    ></button>
+                    <div className='account-details'>
+                        {customer.status == 'inactive' && <div className=' mr-3 text-red-600 mb-2 font-bold'>Customer is inactive</div>}
+                        <div >Account Balance: ${customer.id}</div>
+                        <div className='ml-3'>Open Sales Orders: 0</div>
+                    </div>
+                    <div className='mt-6 font-bold'>Customer No. {customer.id}</div>
                 <Tabs>
                     <Tabs.TabPane tab="Customer Information" key={0}>
                         <div>
@@ -177,8 +184,8 @@ export const CustomerProfile = () => {
                                 </Col>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
-                                        <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Company Name</label>
-                                        <Field type="text" placeholder='Company Name' name="company_name" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                        <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Customer Name</label>
+                                        <Field type="text" placeholder='Customer Name' name="company_name" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                         <ErrorMessage name="name" component="div" />
                                     </div>
                                 </Col>
@@ -559,12 +566,12 @@ export const CustomerProfile = () => {
 
                 </Tabs>
                 <div className="d-flex justify-content-end">
-                    <button
-                        type="submit"
-                        className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Update & Close
-                    </button>
+                    {/*<button*/}
+                    {/*    type="submit"*/}
+                    {/*    className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
+                    {/*>*/}
+                    {/*    Update & Close*/}
+                    {/*</button>*/}
                 </div>
             </Form>
             </Formik>

@@ -151,19 +151,24 @@ export const VendorProfile = () => {
     return (
         <div>
             <Layout />
+            <h1 className='layout-title font-bold mt-1 ml-2'>{title}</h1>
             <div className='layout'>
-                <h1 className='layout-title font-bold'>{title}</h1>
-                <div className='account-details'>
-                    {vendor.status == 'inactive' && <div className='mr-3 text-red-600 mb-2 font-bold'>Vendor is inactive</div>}
-                    <div >Account Balance: ${vendor.id}</div>
-                    <div className='ml-3'>Open Purchase Orders: 0</div>
-                </div>
-                <div className='mt-6 font-bold'>Vendor No. {vendor.id}</div>
+
+
                 <Formik
                     initialValues={vendor}
                     onSubmit={handleSubmit}
                 >
                     <Form layout="vertical">
+                        <button className="ri-checkbox-fill mb-1"
+                                type="submit"
+                        ></button>
+                        <div className='account-details'>
+                            {vendor.status == 'inactive' && <div className='mr-3 text-red-600 mb-2 font-bold'>Vendor is inactive</div>}
+                            <div >Account Balance: ${vendor.id}</div>
+                            <div className='ml-3'>Open Purchase Orders: 0</div>
+                        </div>
+                        <div className='mt-6 font-bold'>Vendor No. {vendor.id}</div>
                         <Tabs>
                             <Tabs.TabPane tab="Vendor Information" key={0}>
                                 <div>
@@ -432,12 +437,12 @@ export const VendorProfile = () => {
 
                         </Tabs>
                         <div className="d-flex justify-content-end">
-                            <button
-                                type="submit"
-                                className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                Update & Close
-                            </button>
+                            {/*<button*/}
+                            {/*    type="submit"*/}
+                            {/*    className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
+                            {/*>*/}
+                            {/*    Update & Close*/}
+                            {/*</button>*/}
                         </div>
                     </Form>
                 </Formik>
