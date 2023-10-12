@@ -35,6 +35,7 @@ import {APInvoice} from "./pages/purchasing/APInvoice";
 import {Invoice} from "./pages/purchasing/Invoice";
 import {CreateSQ} from "./pages/sales/CreateSQ";
 import {SalesQuotation} from "./pages/sales/SalesQuotation";
+import {SalesOrder} from "./pages/sales/SalesOrder";
 
 const router = createBrowserRouter([
   {
@@ -132,6 +133,10 @@ const router = createBrowserRouter([
     {
         path: '/sales/createso',
         element: <ProtectedRoute><CreateSalesOrder /></ProtectedRoute>
+    },
+    {
+        path: '/sales/salesorder',
+        element: <ProtectedRoute><SalesOrder /></ProtectedRoute>
     },
 ])
 function App() {

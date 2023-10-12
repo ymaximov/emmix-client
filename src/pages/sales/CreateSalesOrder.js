@@ -7,6 +7,8 @@ import axios from "axios";
 import {url} from "../../connections/toServer";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
+import {setSOID, setSqID} from "../../redux/slices/salesSlice";
+import toast from "react-hot-toast";
 
 export const CreateSalesOrder = () => {
     const [showSearchCustomerModal, setShowSearchCustomerModal] = useState(false)
@@ -18,6 +20,7 @@ export const CreateSalesOrder = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const userID = JSON.parse(localStorage.getItem('token')).user_id
+    const salesTax = 17
 
     const getInventoryData = async () => {
         try {
@@ -61,6 +64,48 @@ export const CreateSalesOrder = () => {
         }
     };
 
+    const handleSubmit = async () => {
+        const dataToPost = {
+            tenant_id: tenantId,
+            customer_id: selectedCustomer?.id,
+            user_id: userID,
+            tax_rate: salesTax,
+            sales_tax: 0,
+            subtotal: 0,
+            total_amount: 0
+
+        }
+
+        try {
+            dispatch(showLoading())
+            const res = await axios.post(`${url}/api/sales/create-sales-order`, dataToPost,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+
+                    }
+                });
+
+            if (res.status === 200) {
+                dispatch(hideLoading())
+                dispatch(setSOID(res.data.data))
+                toast.success(res.data.message);
+                console.log('SO ID', res.data.data)
+                navigate('/sales/salesorder')
+
+            } else {
+                dispatch(hideLoading())
+                toast.error(res.response.data.error)
+                console.error('Please fill out all required data');
+            }
+        } catch (error) {
+            dispatch(hideLoading())
+            toast.error('Please fill out all required fields')
+            // Handle any other errors that occurred during the submission process
+            console.error('An error occurred:', error);
+        }
+    };
+
     useEffect(() => {
         getInventoryData()
         getCustomersData()
@@ -75,7 +120,7 @@ export const CreateSalesOrder = () => {
 
             <h1 className={'mb-1 mt-1 title ml-5'}>Sales Order</h1>
             <div className="layout">
-                <i className="ri-checkbox-fill mb-1"/>
+                <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}/>
                 <div className={'container'}>
                     <div>
                         <i className="ri-user-search-line"  onClick={() => setShowSearchCustomerModal(true)} ></i>
