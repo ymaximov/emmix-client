@@ -29,7 +29,7 @@ import {Receiving} from "./pages/purchasing/Receiving";
 import {ViewPO} from "./pages/purchasing/ViewPO";
 import {Sales} from "./pages/sales/Sales";
 import {CreateSalesQuotation} from "./pages/sales/CreateSalesQuotation";
-import {ViewSQ} from "./pages/sales/ViewSQ";
+import {OldViewSQ} from "./pages/sales/OldViewSQ";
 import {CreateSalesOrder} from "./pages/sales/CreateSalesOrder";
 import {APInvoice} from "./pages/purchasing/APInvoice";
 import {Invoice} from "./pages/purchasing/Invoice";

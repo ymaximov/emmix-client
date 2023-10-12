@@ -1,88 +1,46 @@
-import {Layout} from '../../pages/layout/Layout'
+import {Layout} from '../layout/Layout'
 import React, {useEffect, useState} from "react";
-import {Row, Col} from 'antd'
+import {Tabs} from "antd";
+import {SearchCustomerSO} from "../../modals/sales/SearchCustomerSO";
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {url} from "../../connections/toServer";
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {SearchCustomerSO} from "../../modals/sales/SearchCustomerSO";
-import DatePicker from "react-datepicker";
-import toast from "react-hot-toast";
-import {setSqID} from "../../redux/slices/salesSlice";
+import {useDispatch} from "react-redux";
 
 export const CreateSalesOrder = () => {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const token = JSON.parse(localStorage.getItem('token')).access_token;
-    const salesRep = JSON.parse(localStorage.getItem('token'))
-    const userID = salesRep.user_id
-    const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
+    const [showSearchCustomerModal, setShowSearchCustomerModal] = useState(false)
     const [customers, setCustomers] = useState()
     const [selectedCustomer, setSelectedCustomer] = useState()
-    console.log(selectedCustomer, 'selected cust')
-    const [showSearchCustomerModal, setShowSearchCustomerModal] = useState(false)
-    const [dueDate, setDueDate] = useState(new Date());
-    const [postingDate, setPostingDate] = useState(new Date());
-    const taxRate = 17
-    const handleDueDateChange = (date, dateString) => {
-        setDueDate(date);
-        // dispatch(setDueDate(dueDate))
-    };
-    const handlePostingDateChange = (date, dateString) => {
-        setPostingDate(date);
-        // dispatch(setDueDate(dueDate))
-    };
-    const [reference, setReference] = useState('');
+    const [inventory, setInventory] = useState()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
+    const token = JSON.parse(localStorage.getItem('token')).access_token
+    const userID = JSON.parse(localStorage.getItem('token')).user_id
 
-    const handleChange = (e) => {
-        setReference(e.target.value);
-    };
-
-    const handleSubmit = async () => {
-        const dataToPost = {
-            tenant_id: tenantId,
-            customer_id: selectedCustomer?.id,
-            posting_date: postingDate,
-            due_date: dueDate,
-            user_id: userID,
-            reference,
-            tax_rate: taxRate,
-            sales_tax: 0,
-            subtotal: 0,
-            total_amount: 0
-
-        }
-
+    const getInventoryData = async () => {
         try {
-            dispatch(showLoading())
-            const res = await axios.post(`${url}/api/sales/create-sales-quotation`, dataToPost,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-
-                    }
-                });
-
+            dispatch(showLoading());
+            const res = await axios.get(`${url}/api/inventory/get-inventory-by-tenant-id/${tenantId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
             if (res.status === 200) {
-                dispatch(hideLoading())
-                dispatch(setSqID(res.data.data))
-                toast.success(res.data.message);
-                console.log('SQ ID', res.data.data)
-                navigate('/sales/salesquotation')
-
-            } else {
-                dispatch(hideLoading())
-                toast.error(res.response.data.error)
-                console.error('Please fill out all required data');
+                console.log(res)
+                setInventory(res.data.data)
             }
         } catch (error) {
-            dispatch(hideLoading())
-            toast.error('Please fill out all required fields')
-            // Handle any other errors that occurred during the submission process
-            console.error('An error occurred:', error);
+            dispatch(hideLoading());
+            console.log(error)
         }
     };
+    const activeInventory = inventory?.filter(inventory => inventory.status === 'active');
+    const inventoryList = activeInventory?.filter(inventory => inventory.sales_item === true);
+
     const getCustomersData = async () => {
         try {
             dispatch(showLoading());
@@ -104,112 +62,63 @@ export const CreateSalesOrder = () => {
     };
 
     useEffect(() => {
+        getInventoryData()
         getCustomersData()
+        // getPOData()
+
     }, []);
+    
     return (
         <>
-            <Layout />
-            <div className="layout">
-                {showSearchCustomerModal && <SearchCustomerSO setSelectedCustomer={setSelectedCustomer} customers={customers} showModal={setShowSearchCustomerModal}/>}
-                <h1 className={'mb-3 title'}>Create Sales Order</h1>
-                <div className={'font-bold mb-2'}>Step 1/2: Define sales order details</div>
-                <button
-                    onClick={() => setShowSearchCustomerModal(true)}
-                    type="button"
-                    className="mt-2 mb-1 rounded-md bg-slate-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                    + Customer
-                </button>
-                <Row gutter={20} className='mt-5 mb-4'>
-                    <Col span={8} xs={240} s={24} lg={8}>
-                        <div className='vendor-details-title'>Customer Name</div>
-                        <div>{selectedCustomer?.company_name}</div>
-                        <div className='vendor-details-title'>Contact Name</div>
-                        <div>{selectedCustomer?.first_name} {selectedCustomer?.last_name}</div>
-                    </Col>
-                    <Col span={8} xs={240} s={24} lg={8}>
-                        <div className='vendor-details-title'>Contact Email</div>
-                        <div>{selectedCustomer?.email}</div>
-                        <div className='vendor-details-title'>Contact Phone</div>
-                        <div>{selectedCustomer?.contact_phone}</div>
-                    </Col>
-                    <Col span={8} xs={240} s={24} lg={8}>
-                        <div className='vendor-details-title'>Payment Terms</div>
-                        <div>{selectedCustomer?.payment_terms}</div>
-                        <div className='vendor-details-title'>Tax/VAT ID</div>
-                        <div>{selectedCustomer?.tax_id}</div>
-                    </Col>
-                </Row>
-                <hr className={'mt-4 mb-4'}/>
-                <Row gutter={16}>
-                    <Col span={8} xs={240} s={24} lg={8}>
-                        <div>
-                            <label htmlFor="posting_date" className="block text-sm font-medium leading-6 text-gray-900">
-                                Posting Date
-                            </label>
-                            <DatePicker
-                                id="posting_date"
-                                selected={postingDate}
-                                onChange={handlePostingDateChange}
-                                dateFormat="yyyy-MM-dd" // Adjust the date format as needed
-                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
-                        </div>
-                    </Col>
-                    <Col span={8} xs={240} s={24} lg={8}>
-                        <div>
-                            <label htmlFor="order_date" className="block text-sm font-medium leading-6 text-gray-900">
-                                Due Date
-                            </label>
-                            <DatePicker
-                                id="due_date"
-                                selected={dueDate}
-                                onChange={handleDueDateChange}
-                                dateFormat="yyyy-MM-dd" // Adjust the date format as needed
-                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
-                        </div>
-                    </Col>
-                </Row>
-                <hr className={'mt-4 mb-4'}/>
-                <Row gutter={16}>
-                    <Col span={8} xs={240} s={24} lg={8}>
-                        <div>
-                            <div>
-                                <label htmlFor="remarks" className='block text-sm font-medium leading-6 text-gray-900'>
-                                    Reference
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder='Remarks'
-                                    id="remarks"
-                                    value={reference}
-                                    onChange={handleChange}
-                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                                    style={{ width: `15rem` }}
-                                />
+            <Layout/>
+            {showSearchCustomerModal && <SearchCustomerSO customers={customers} showModal={setShowSearchCustomerModal} setSelectedCustomer={setSelectedCustomer}/>}
 
-                            </div>
+            <h1 className={'mb-1 mt-1 title ml-5'}>Sales Order</h1>
+            <div className="layout">
+                <i className="ri-checkbox-fill mb-1"/>
+                <div className={'container'}>
+                    <div>
+                        <i className="ri-user-search-line"  onClick={() => setShowSearchCustomerModal(true)} ></i>
+                        {/*<button*/}
+                        {/*    type="button"*/}
+                        {/*    className="mt-1 mb-2 rounded-md bg-slate-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
+
+                        {/*>*/}
+                        {/*    + Vendor*/}
+                        {/*</button>*/}
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="text-right">Customer No.</div>
+                            <div className="bg-slate-50">{selectedCustomer?.id}</div>
+                            <div className="text-right">Customer Name</div>
+                            <div className="bg-slate-50">{selectedCustomer?.company_name}</div>
+                            <div className="text-right">Customer Contact</div>
+                            <div className="bg-slate-50">{selectedCustomer?.first_name} {selectedCustomer?.last_name}</div>
+                            <div className="text-right">Payment Terms</div>
+                            <div className="bg-slate-50">{selectedCustomer?.payment_terms}</div>
+
+
                         </div>
-                    </Col>
-                </Row>
-                <hr className={'mt-4 mb-4'}/>
-                <Row gutter={16}>
-                    <Col span={8} xs={240} s={24} lg={8}>
-                        <div className='vendor-details-title'>Sales Representative</div>
-                        <div>{salesRep?.first_name} {salesRep?.last_name}</div>
-                        <div className='vendor-details-title'>Contact Information</div>
-                        <div>{salesRep?.email} | {salesRep?.phone}</div>
-                    </Col>
-                </Row>
-                <div className={'mt-3'}>
-                    <button
-                        type="button"
-                        className="mt-4 mb-3 ml-2 rounded-md bg-black px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        onClick={handleSubmit}
-                    >
-                        Execute
-                    </button>
+
+                    </div>
+                    <div>
+                        <Tabs>
+                            <Tabs.TabPane tab="Ship To" key={0}>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="text-right">Address</div>
+                                    <div className="bg-slate-50">{selectedCustomer?.address_1}</div>
+                                    <div className="text-right">Address 2</div>
+                                    <div className="bg-slate-50">{selectedCustomer?.address_2}</div>
+                                    <div className="text-right">City, State</div>
+                                    <div className="bg-slate-50">{selectedCustomer?.city} {selectedCustomer?.state}</div>
+                                    <div className="text-right">Zip Code</div>
+                                    <div className="bg-slate-50">{selectedCustomer?.postal_code}</div>
+                                </div>
+
+                            </Tabs.TabPane>
+                            <Tabs.TabPane tab="Dates" key={1}>
+                            </Tabs.TabPane>
+                        </Tabs>
+                    </div>
                 </div>
             </div>
         </>

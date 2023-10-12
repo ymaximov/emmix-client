@@ -14,7 +14,7 @@ import 'ag-grid-enterprise';
 import {AddItemToSQModal} from "../../modals/sales/AddItemToSQ";
 import {UpdateLineItemSQ} from "../../modals/sales/UpdateLineItemSQ";
 
-export const ViewSQ = () => {
+export const OldViewSQ = () => {
     const dispatch = useDispatch()
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
