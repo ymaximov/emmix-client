@@ -266,7 +266,7 @@ export const CreatePurchaseOrder = () => {
                 // toast.success(res.data.message);
                 console.log('PO Data', res.data)
                 // dispatch(setPoId(res.data.data))
-                // setPoData(res.data.data)
+                setPoData(res.data.data)
                 dispatch(setPoId(res.data.data.createdPurchaseOrder.id))
                 navigate('/purchasing/purchaseorder')
             } else {

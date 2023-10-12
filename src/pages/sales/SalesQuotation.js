@@ -11,14 +11,14 @@ import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {SearchVendorModal} from '../../modals/purchasing/SearchVendorModal'
-import './purchasing.css'
 // import {addItemToOrder, removeItemFromOrder, clearOrder} from '../../redux/slices/purchaseOrderSlice'
 import {SearchItemModal} from "../../modals/purchasing/SearchItemModal";
 import {useNavigate} from "react-router-dom";
 import {AddItemModal} from "../../modals/purchasing/AddItemModal";
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import generatePDF from "./generatePDF";
+import './sales.css'
+
 import {
     addItem,
     removeItem,
@@ -39,27 +39,25 @@ import 'tailwindcss/tailwind.css';
 import toast from "react-hot-toast";
 import {SelectedItemModal} from "../../modals/purchasing/SelectedItemModal";
 import {url} from "../../connections/toServer";
-import './purchasing.css'
 import {UpdateLineItemModal} from "../../modals/purchasing/UpdateLineItemModal";
+import {AddItemToSQModal} from "../../modals/sales/AddItemToSQ";
+import {UpdateLineItemSQ} from "../../modals/sales/UpdateLineItemSQ";
 
-export const PurchaseOrder = () => {
+export const SalesQuotation = () => {
     const [showUpdateLineItemModal, setShowUpdateLineItemModal] = useState(false)
     const [showSearchVendorModal, setShowSearchVendorModal] = useState(false)
     const [showSearchItemModal, setShowSearchItemModal] = useState(false)
     const [showSelectedItemModal, setShowSelectedItemModal] = useState(false)
     const [showAddItemModal, setShowAddItemModal] = useState(false)
-    const [warehouses, setWarehouses] = useState()
-    const [PO, setPO] = useState()
-    const [vendors, setVendors] = useState([]);
-    const dispatch = useDispatch()
-    const purchaseOrder = useSelector(state => state.purchaseOrder)
-    const [inventory, setInventory] = useState()
-    const [dueDate, setDueDate] = useState(new Date());
-    const [selectedPrice, setSelectedPrice] = useState()
+    const [showUpdateItemModal, setShowUpdateItemModal] = useState(false)
+    const [lineItemID, setLineItemID] = useState()
     const [selectedQuantity, setSelectedQuantity] = useState()
-    const [itemKey, setItemKey] = useState()
-    const [itemName, setItemName] = useState()
-    const [invItemNo, setInvItemNo] = useState()
+    const [selectedPrice, setSelectedPrice] = useState()
+    const [warehouses, setWarehouses] = useState()
+    const [inventory, setInventory] = useState()
+    const [SQData, setSQData] = useState()
+    const dispatch = useDispatch()
+
     const navigate = useNavigate()
     const POID = useSelector((state) => state.purchaseOrder.po_id)
     console.log(POID, 'PO ID')
@@ -81,9 +79,30 @@ export const PurchaseOrder = () => {
     const vendor = useSelector((state) => state.vendor).vendor
     const [poData, setPoData] = useState(null)
     const [items, setItems] = useState([])
+    const SQID = useSelector((state) => state.sales).sqID
     const handleWarehouseChange = (event) => {
         const value = parseInt(event.target.value);
         dispatch(setWarehouse(value))
+    };
+
+    const getSQData = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`${url}/api/sales/get-sq-by-id/${SQID}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res.data, 'RES QL DATA')
+                setSQData(res.data.salesQuotation)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
     };
 
     console.log(warehouses, 'WAREHOUSES')
@@ -92,78 +111,17 @@ export const PurchaseOrder = () => {
     console.log(vendor, 'VENDOR')
     const currency = '$'
 
-    const getWarehouses = async () => {
-        try {
-            dispatch(showLoading());
-            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenantId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(res, 'response')
-            dispatch(hideLoading());
-            if (res.status === 200) {
-                console.log(res)
-                setWarehouses(res.data.data)
-            }
-        } catch (error) {
-            dispatch(hideLoading());
-            console.log(error)
-        }
-    };
 
     // Calculate the total price using reduce()
     const salesTax = 17
-    // const quantity = useSelector((state) => state.purchaseOrder.items[0]?.quantity)
-    // console.log(quantity, "quantity")
-    // const salesTaxRate = vendor.sales_tax == 'liable' ? salesTax : 0
-    // const subTotal = items.reduce((total, item) => total + parseFloat(item.price) * parseInt(item.quantity), 0);
-    // const salesTaxAmount = (subTotal * salesTaxRate) / 100;
-    // const grandTotal = subTotal + salesTaxAmount;
-    // const formattedSubTotal = subTotal.toFixed(2);
-    // const formattedSalesTaxAmount = salesTaxAmount.toFixed(2);
-    // const formattedGrandTotal = grandTotal.toFixed(2);
-
-    const handleAddToOrder = (item) => {
-        dispatch(addItem(item))
-    };
 
 
-    console.log(PO, 'PO')
-    const handleRemoveFromOrder = (itemId) => {
-        dispatch(removeItem(itemId));
-    };
-    const getVendorsData = async () => {
-        try {
-            dispatch(showLoading());
-            const res = await axios.get(`${url}/api/vendor/get-all-vendors-by-tenant-id/${tenantId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(res, 'response')
-            dispatch(hideLoading());
-            if (res.status === 200) {
-                console.log(res)
-                setVendors(res.data.data)
-            }
-        } catch (error) {
-            dispatch(hideLoading());
-            console.log(error)
-        }
-    };
-    const activeVendors = vendors?.filter(vendor => vendor.status === 'active');
-    console.log(activeVendors, 'ACTIVE VENDORTS')
+
+
     const [reference, setReference] = useState('');
 
     const handleChange = (e) => {
         setReference(e.target.value);
-    };
-
-
-    const removeRow = (rowId) => {
-        // Dispatch an action to remove the item from Redux state
-        dispatch(removeItem(rowId)); // You need to create the removeItem action
     };
 
     const columnDefs = [
@@ -189,39 +147,17 @@ export const PurchaseOrder = () => {
         },
     ];
 
-    const onCellValueChanged = ({ data, colDef, newValue, rowIndex }) => {
-        console.log(data, "data")
-        if (colDef.field === 'price') {
-            dispatch(updatePriceAndQuantity({ itemIndex: rowIndex, newPrice: newValue, newQuantity: data?.quantity }));
-        } else if (colDef.field === 'quantity') {
-            dispatch(updatePriceAndQuantity({ itemIndex: rowIndex, newPrice: data.price, newQuantity: newValue }));
+
+
+
+        const handleCellClicked = (event) => {
+            console.log(event, 'EVENT');
+            setSelectedQuantity(event.data.quantity)
+            setSelectedPrice(event.data.unit_price)
+            setLineItemID(event.data.id)
+            setShowUpdateItemModal(true)
         }
-    };
 
-    // const handleAddToOrder = (item) => {
-    //     dispatch(addItemToOrder(item));
-    // };
-    //
-    // const handleRemoveFromOrder = (itemId) => {
-    //     dispatch(removeItemFromOrder(itemId));
-    // };
-    //
-    // const handleClearOrder = () => {
-    //     dispatch(clearOrder());
-    // };
-
-    const handleCellClicked = (event) => {
-        console.log(event, 'EVENT');
-
-        if (PO?.status !== 'closed' && PO?.status !== 'void') {
-            setItemKey(event.data.id);
-            setInvItemNo(event.data.inv_item_id);
-            setItemName(event.data.inventory_item.item_name);
-            setSelectedQuantity(event.data.quantity);
-            setSelectedPrice(event.data.unit_price);
-            setShowUpdateLineItemModal(true);
-        }
-    }
 
 
 
@@ -249,25 +185,13 @@ export const PurchaseOrder = () => {
     const activeInventory = inventory?.filter(inventory => inventory.status === 'active');
     const inventoryList = activeInventory?.filter(inventory => inventory.purchasing_item === true);
 
-    const dataToPost = {
-        tenant_id: tenantId,
-        vendor_id: vendor.id,
-        user_id: userID,
-        warehouse_id: purchaseOrder.warehouse,
-        due_date: dueDate,
-        items: purchaseOrderItems,
-        // subtotal: formattedSubTotal,
-        // sales_tax: formattedSalesTaxAmount,
-        // total_amount: formattedGrandTotal,
-        reference,
-        tax_rate: salesTax
-    }
+
 
     const handleSubmit = async () => {
 
         try {
             dispatch(showLoading())
-            const res = await axios.post(`${url}/api/purchasing/create-purchase-order`, dataToPost,
+            const res = await axios.post(`${url}/api/purchasing/create-purchase-order`, "dataToPost",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -297,31 +221,7 @@ export const PurchaseOrder = () => {
         }
     };
 
-    console.log(dataToPost, 'DATATOPOST' )
-    // console.log(poData.data.createdPurchaseOrder, 'PO DATAAA ORDER')
 
-    const getPOData = async () => {
-        try {
-            dispatch(showLoading());
-            const res = await axios.get(`${url}/api/purchasing/get-po-by-id/${POID}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(res, 'responseee')
-            dispatch(hideLoading());
-            if (res.status === 200) {
-                console.log(res.data, 'RESSSSS')
-                setPO((res.data.purchaseOrder))
-                setItems(res.data.purchaseOrder)
-
-
-            }
-        } catch (error) {
-            dispatch(hideLoading());
-            console.log(error)
-        }
-    };
 
     const voidPO = async (values) => {
         try {
@@ -331,9 +231,9 @@ export const PurchaseOrder = () => {
             // Create the request body
             const requestBody = {
                 tenant_id: tenantId,
-                warehouse_id: PO.warehouse.id,
-                purchaseOrderId: PO.id,
-                items: PO.purchase_order_items
+                // warehouse_id: PO.warehouse.id,
+                // purchaseOrderId: PO.id,
+                // items: PO.purchase_order_items
             };
             const headers = {
                 Authorization: `Bearer ${token}`,
@@ -341,7 +241,7 @@ export const PurchaseOrder = () => {
             const res = await axios.put(URL, requestBody, {headers});
 
             if (res.status === 200) {
-                getPOData()
+
                 dispatch(hideLoading())
                 toast.success(res.data.message);
 
@@ -357,28 +257,27 @@ export const PurchaseOrder = () => {
     };
 
     console.log(items, 'ITYEMS')
-    const handleGeneratePDF = async () => {
-        if (!PO) {
-            return;
-        }
+    // const handleGeneratePDF = async () => {
+    //     if (!SQData) {
+    //         return;
+    //     }
+    //
+    //     try {
+    //         const pdfBlob = await generatePDF(SQData);
+    //         const pdfObjectURL = URL.createObjectURL(pdfBlob);
+    //
+    //         // Open the PDF in a new tab
+    //         window.open(pdfObjectURL, '_blank');
+    //     } catch (error) {
+    //         console.error('Error generating PDF:', error);
+    //     }
+    // };
 
-        try {
-            const pdfBlob = await generatePDF(PO);
-            const pdfObjectURL = URL.createObjectURL(pdfBlob);
 
-            // Open the PDF in a new tab
-            window.open(pdfObjectURL, '_blank');
-        } catch (error) {
-            console.error('Error generating PDF:', error);
-        }
-    };
-
-    console.log(PO?.subtotal, 'Sub')
     useEffect(() => {
-        getVendorsData()
         getInventoryData()
-        getWarehouses()
-        getPOData()
+
+        getSQData()
 
     }, []);
 
@@ -386,18 +285,18 @@ export const PurchaseOrder = () => {
     return (
         <>
             <Layout />
-            {showAddItemModal && <AddItemModal getPOData={getPOData} warehouse={PO?.warehouse?.id} inventory={inventoryList} tenantID={tenantId} POID={PO?.id} setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal}/>}
-            {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={PO?.warehouse?.id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
+            {/*{showAddItemModal && <AddItemModal getPOData={"getPOData"} warehouse={''} inventory={inventoryList} tenantID={tenantId} } setShowSelectedItemModal={setShowSelectedItemModal} setShowAddItemModal={setShowAddItemModal}/>}*/}
+            {/*{showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={''}  itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}*/}
             <div className={'flex crown'}>
-            <h1 className={'mb-1 mt-1 title ml-5'}>Purchase Order {PO?.id}</h1>
-                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {PO?.status}</h3>
+            <h1 className={'mb-1 mt-1 title ml-5'}>Sales Quotation {SQData?.id}</h1>
+                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {SQData?.status}</h3>
             </div>
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1"></i>
                 <div className={'flex mt-2'}>
                     <button
                         type="submit"
-                        onClick={handleGeneratePDF}
+                        // onClick={handleGeneratePDF}
                         className="mb-2 bg-slate-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Print
@@ -419,9 +318,10 @@ export const PurchaseOrder = () => {
 
 
 
-                {showSearchVendorModal && <SearchVendorModal setShowSearchVendorModal={setShowSearchVendorModal} vendors={activeVendors}/>}
-                {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal} handleAddToOrder={handleAddToOrder}/>}
+                {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}
+                {showAddItemModal && <AddItemToSQModal showModal={setShowAddItemModal} inventory={inventory} getSQData={getSQData} sqData={SQData}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
+                {showUpdateItemModal && <UpdateLineItemSQ getSQData={getSQData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <div className={'container'}>
                     <div>
                         {/*{poData == null && <i className="ri-user-search-line"   onClick={() => setShowSearchVendorModal(true)}></i>}*/}
@@ -433,14 +333,14 @@ export const PurchaseOrder = () => {
                         {/*    + Vendor*/}
                         {/*</button>*/}
                         <div className="grid grid-cols-2 gap-2 mt-4">
-                            <div className="text-right">Vendor No.</div>
-                            <div className="bg-slate-50">{PO?.vendor?.id}</div>
-                            <div className="text-right">Vendor Name</div>
-                            <div className="bg-slate-50">{PO?.vendor?.company_name}</div>
-                            <div className="text-right">Vendor Contact</div>
-                            <div className="bg-slate-50">{PO?.vendor?.first_name} {poData?.vendor?.last_name}</div>
+                            <div className="text-right">Customer No.</div>
+                            <div className="bg-slate-50">{SQData?.customer?.id}</div>
+                            <div className="text-right">Customer Name</div>
+                            <div className="bg-slate-50">{SQData?.customer?.company_name}</div>
+                            <div className="text-right">Customer Contact</div>
+                            <div className="bg-slate-50">{SQData?.customer?.first_name} {SQData?.customer?.last_name}</div>
                             <div className="text-right">Payment Terms</div>
-                            <div className="bg-slate-50">{PO?.vendor?.payment_terms}</div>
+                            <div className="bg-slate-50">{SQData?.customer?.payment_terms}</div>
 
                         </div>
 
@@ -449,9 +349,16 @@ export const PurchaseOrder = () => {
                         <Tabs>
                             <Tabs.TabPane tab="Ship To" key={0}>
                                 <div className="grid grid-cols-2 gap-2">
-                                <div className="text-right">Warehouse</div>
-                                <div className="bg-slate-50">{PO?.warehouse?.warehouse_name}</div>
+                                    <div className="text-right">Address 1</div>
+                                    <div className="bg-slate-50">{SQData?.customer?.address_1}</div>
+                                    <div className="text-right">Address 2</div>
+                                    <div className="bg-slate-50">{SQData?.customer?.address_2}</div>
+                                    <div className="text-right">City, State</div>
+                                    <div className="bg-slate-50">{SQData?.customer?.city} {SQData?.customer?.state}</div>
+                                    <div className="text-right">Zip Code</div>
+                                    <div className="bg-slate-50">{SQData?.customer?.postal_code}</div>
                                 </div>
+
                             </Tabs.TabPane>
                             <Tabs.TabPane tab="Dates" key={1}>
                             </Tabs.TabPane>
@@ -464,12 +371,14 @@ export const PurchaseOrder = () => {
                     <Tabs>
                         <Tabs.TabPane tab="Totals" key={0}>
                             <div className="grid grid2 grid-cols-2 gap-2">
-                                <div className="text-right2">Subtotal</div>
-                                <div className="bg-slate-50">${PO?.subtotal}</div>
-                                <div className="text-right2">Sales Tax {PO?.tax_rate}%</div>
-                                <div className="bg-slate-50">${PO?.sales_tax}</div>
-                                <div className="text-right2">Total</div>
-                                <div className="bg-slate-50">${PO?.total_amount}</div>
+
+                                    <div className="text-right2">Subtotal</div>
+                                    <div className="bg-slate-50">${SQData?.subtotal}</div>
+                                    <div className="text-right2">Sales Tax {SQData?.tax_rate}%</div>
+                                    <div className="bg-slate-50">${SQData?.sales_tax}</div>
+                                    <div className="text-right2">Total</div>
+                                    <div className="bg-slate-50">${SQData?.total_amount}</div>
+
 
                             </div>
                         </Tabs.TabPane>
@@ -486,10 +395,10 @@ export const PurchaseOrder = () => {
                 </div>
                 <hr className={'mt-3'}/>
                 <div className={'mt-3'}>
-                    {PO?.status == 'open' ? <i className="ri-add-line" onClick={() => setShowAddItemModal(true)}></i> : null}
+                    {SQData?.status == 'open' ? <i className="ri-add-line" onClick={() => setShowAddItemModal(true)}></i> : null}
                     <div className=''>
                         <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                            <AgGridReact rowData={PO?.purchase_order_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
+                            <AgGridReact rowData={SQData?.sales_quotation_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                         </div>
                     </div>
                 </div>

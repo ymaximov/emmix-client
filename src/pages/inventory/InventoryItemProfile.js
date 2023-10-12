@@ -283,19 +283,24 @@ export const InventoryItemProfile = () => {
     return (
         <div>
             <Layout />
+            <h1>Item No. {item.id}</h1>
             <div className='layout'>
-                <h1 className='layout-title font-bold'>{item.item_name}</h1>
+
+                <h1 className='layout-title font-bold mt-1'>{item.item_name}</h1>
                 <div className='account-details'>
                     {item.status == 'inactive' && <div className=' mr-3 text-red-600 mb-2 font-bold'>Item is inactive</div>}
                     {/*<div >Account Balance: ${customer.id}</div>*/}
                     {/*<div className='ml-3'>Open Sales Orders: 0</div>*/}
                 </div>
-                <div className='mt-6 font-bold'>Item No. {item.id}</div>
+
                 <Formik
                     initialValues={item}
                     onSubmit={handleSubmit}
                 >
                     <Form layout="vertical" >
+                        <button className="ri-checkbox-fill mb-1 mt-2"
+                           type="submit"
+                        ></button>
                         <Tabs rootClassName='overflow-hidden'>
                             <Tabs.TabPane tab="General" key={0}>
                                 <div>
@@ -852,14 +857,14 @@ export const InventoryItemProfile = () => {
                             </Tabs.TabPane>
 
                         </Tabs>
-                        <div className="d-flex justify-content-end">
-                            <button
-                                type="submit"
-                                className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                Update
-                            </button>
-                        </div>
+                        {/*<div className="d-flex justify-content-end">*/}
+                        {/*    <button*/}
+                        {/*        type="submit"*/}
+                        {/*        className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
+                        {/*    >*/}
+                        {/*        Update*/}
+                        {/*    </button>*/}
+                        {/*</div>*/}
                     </Form>
                 </Formik>
             </div>

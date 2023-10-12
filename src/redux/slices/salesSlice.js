@@ -4,7 +4,8 @@ export const salesSlice = createSlice({
     name: 'sales',
     initialState: {
         sqID: null,
-        selectedItem: []
+        selectedItem: [],
+        selectedCustomer: []
     },
     reducers: {
         setSqID: (state, action) => {
@@ -12,10 +13,13 @@ export const salesSlice = createSlice({
         },
         setSelectedItem: (state, action) => {
             state.selectedItem = action.payload
+        },
+        setSelectedCustomer: (state, action) => {
+            state.selectedCustomer = action.payload
         }
     },
 });
 
-export const {setSqID, setSelectedItem} = salesSlice.actions;
+export const {setSqID, setSelectedItem, setSelectedCustomer} = salesSlice.actions;
 
 export default salesSlice.reducer
