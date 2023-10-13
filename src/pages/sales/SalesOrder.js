@@ -144,6 +144,10 @@ export const SalesOrder = () => {
             headerName: `Price Per Unit ${currency}`,
             field: "unit_price",
         },
+        {
+            headerName: `Warehouse`,
+            field: "warehouse.warehouse_name",
+        },
     ];
 
 

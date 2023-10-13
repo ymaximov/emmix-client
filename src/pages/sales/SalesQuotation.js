@@ -146,6 +146,10 @@ export const SalesQuotation = () => {
             headerName: `Price Per Unit ${currency}`,
             field: "unit_price",
         },
+        {
+            headerName: `Warehouse`,
+            field: "warehouse.warehouse_name",
+        },
     ];
 
 
