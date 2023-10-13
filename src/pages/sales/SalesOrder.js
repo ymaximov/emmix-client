@@ -230,14 +230,15 @@ export const SalesOrder = () => {
 
 
 
-    const voidPO = async (values) => {
+    const voidSO = async (values) => {
         try {
             dispatch(showLoading())
-            const URL = `${url}/api/purchasing/void-po`;
+            const URL = `${url}/api/sales/void-so`;
 
             // Create the request body
             const requestBody = {
                 tenant_id: tenantId,
+                so_id: SOID
                 // warehouse_id: PO.warehouse.id,
                 // purchaseOrderId: PO.id,
                 // items: PO.purchase_order_items
@@ -251,6 +252,7 @@ export const SalesOrder = () => {
 
                 dispatch(hideLoading())
                 toast.success(res.data.message);
+                getSOData()
 
             } else {
                 toast.error(res.response.data.error)
@@ -315,7 +317,7 @@ export const SalesOrder = () => {
                     </button>
                     <button
                         type="submit"
-                        onClick={voidPO}
+                        onClick={voidSO}
                         className="mb-2 ml-1 bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Void
