@@ -151,6 +151,14 @@ export const SalesOrder = () => {
             headerName: `Warehouse`,
             field: "warehouse.warehouse_name",
         },
+        {
+            headerName: `Quantity Delivered`,
+            field: "delivered_qty",
+        },
+        {
+            headerName: `Delivery Status`,
+            field: "status",
+        },
     ];
 
 
