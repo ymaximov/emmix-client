@@ -41,7 +41,7 @@ import {SelectedItemModal} from "../../modals/purchasing/SelectedItemModal";
 import {url} from "../../connections/toServer";
 import {UpdateLineItemModal} from "../../modals/purchasing/UpdateLineItemModal";
 import {AddItemToSOModal} from "../../modals/sales/AddItemToSO";
-import {UpdateLineItemSQ} from "../../modals/sales/UpdateLineItemSQ";
+import {UpdateLineItemSO} from "../../modals/sales/UpdateLineItemSO";
 
 export const SalesOrder = () => {
     const [showUpdateLineItemModal, setShowUpdateLineItemModal] = useState(false)
@@ -319,7 +319,7 @@ export const SalesOrder = () => {
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}
                 {showAddItemModal && <AddItemToSOModal showModal={setShowAddItemModal} inventory={inventory} getSOData={getSOData} soData={SOData}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
-                {showUpdateItemModal && <UpdateLineItemSQ getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
+                {showUpdateItemModal && <UpdateLineItemSO getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <div className={'container'}>
                     <div>
                         {/*{poData == null && <i className="ri-user-search-line"   onClick={() => setShowSearchVendorModal(true)}></i>}*/}

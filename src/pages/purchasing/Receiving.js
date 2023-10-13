@@ -146,7 +146,7 @@ export const Receiving = () => {
     return (
         <>
             <Layout />
-            <h1 className={'mb-3 ml-1 title'}>Goods Receipt {goodsReceiptData?.id}</h1>
+            <h1 className={'mb-1 ml-2 title'}>Goods Receipt {goodsReceiptData?.id}</h1>
             <div className="layout">
                 {!closed && <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>}
                 {showRQModal && <ReceivingQuantity setShowModal={setShowRQModal} selectedItem={selectedItem} itemID={selectedItemID}/>}

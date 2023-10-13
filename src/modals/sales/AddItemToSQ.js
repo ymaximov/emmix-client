@@ -466,6 +466,7 @@ export const AddItemToSQModal = ({inventory, showModal, getSQData, sqData}) => {
                     {isItemSelected && <Formik
                         initialValues={{
                             price: null,
+                            warehouse: null
 
                         }}
                         onSubmit={(values, { resetForm }) => {
@@ -477,7 +478,8 @@ export const AddItemToSQModal = ({inventory, showModal, getSQData, sqData}) => {
                                 user_id: salesRep,
                                 tenant_id: tenantID,
                                 inv_item_id: selectedItem.id,
-                                sq_id: sqData.id
+                                sq_id: sqData.id,
+                                wh_id: values.warehouse
 
                             }
                             const handleSubmit = async () => {
@@ -542,6 +544,30 @@ export const AddItemToSQModal = ({inventory, showModal, getSQData, sqData}) => {
                                         />
                                         <ErrorMessage name="quantity" component="div" />
                                     </div>
+
+                                </Col>
+                                <Col span={8} xs={24} lg={8}>
+                                    {selectedItem.inventory_item && (
+                                        <div>
+                                            <label htmlFor="warehouse" className="block text-sm font-medium leading-6 text-gray-900">
+                                                Warehouse
+                                            </label>
+                                            <Field
+                                                as="select"
+                                                id="warehouse"
+                                                name="warehouse"
+                                                required={selectedItem.inventory_item} // Make it required conditionally
+                                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            >
+                                                <option value="">Please Select a Warehouse</option>
+                                                {warehouses?.map(warehouse => (
+                                                    <option key={warehouse.id} value={warehouse.id}>
+                                                        {warehouse.warehouse_name}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                        </div>
+                                    )}
                                 </Col>
                             </Row>
                             <Row gutter={20}>
