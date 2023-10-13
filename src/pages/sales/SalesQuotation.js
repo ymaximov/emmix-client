@@ -81,6 +81,7 @@ export const SalesQuotation = () => {
     const [poData, setPoData] = useState(null)
     const [items, setItems] = useState([])
     const SQID = useSelector((state) => state.sales).sqID
+    const [item, setItem] = useState()
     const handleWarehouseChange = (event) => {
         const value = parseInt(event.target.value);
         dispatch(setWarehouse(value))
@@ -160,6 +161,7 @@ export const SalesQuotation = () => {
             setSelectedQuantity(event.data.quantity)
             setSelectedPrice(event.data.unit_price)
             setLineItemID(event.data.id)
+            setItem(event.data)
             setShowUpdateItemModal(true)
         }
 
@@ -368,7 +370,7 @@ export const SalesQuotation = () => {
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}
                 {showAddItemModal && <AddItemToSQModal showModal={setShowAddItemModal} inventory={inventory} getSQData={getSQData} sqData={SQData}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
-                {showUpdateItemModal && <UpdateLineItemSQ getSQData={getSQData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
+                {showUpdateItemModal && <UpdateLineItemSQ getSQData={getSQData} itemID={lineItemID} item={item} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <div className={'container'}>
                     <div>
                         {/*{poData == null && <i className="ri-user-search-line"   onClick={() => setShowSearchVendorModal(true)}></i>}*/}

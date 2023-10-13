@@ -56,6 +56,8 @@ export const SalesOrder = () => {
     const [warehouses, setWarehouses] = useState()
     const [inventory, setInventory] = useState()
     const [SOData, setSOData] = useState()
+    const [item, setItem] = useState()
+    const [selectedWH, setSelectedWH] = useState()
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
@@ -157,7 +159,9 @@ export const SalesOrder = () => {
         console.log(event, 'EVENT');
         setSelectedQuantity(event.data.quantity)
         setSelectedPrice(event.data.unit_price)
+        setSelectedWH(event.data.wh_id)
         setLineItemID(event.data.id)
+        setItem(event.data)
         setShowUpdateItemModal(true)
     }
 
@@ -323,7 +327,7 @@ export const SalesOrder = () => {
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}
                 {showAddItemModal && <AddItemToSOModal showModal={setShowAddItemModal} inventory={inventory} getSOData={getSOData} soData={SOData}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
-                {showUpdateItemModal && <UpdateLineItemSO getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
+                {showUpdateItemModal && <UpdateLineItemSO WH={selectedWH} item={item} getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <div className={'container'}>
                     <div>
                         {/*{poData == null && <i className="ri-user-search-line"   onClick={() => setShowSearchVendorModal(true)}></i>}*/}

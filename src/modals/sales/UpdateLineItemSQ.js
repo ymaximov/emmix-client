@@ -1,5 +1,5 @@
 import '../../pages/purchasing/purchasing.css'
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {Row, Col} from 'antd'
 import {useDispatch, useSelector} from "react-redux";
@@ -7,11 +7,13 @@ import {setPoId, updatePriceAndQuantity} from "../../redux/slices/purchaseOrderS
 import axios from "axios";
 import toast from "react-hot-toast";
 import {url} from '../../connections/toServer'
+import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
 
-export const UpdateLineItemSQ = ({showModal, quantity, price, itemID, getSQData}) => {
+export const UpdateLineItemSQ = ({showModal, quantity, price, itemID, getSQData, item}) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const dispatch = useDispatch()
+    const [warehouses, setWarehouses] = useState()
 
     const handleClose = () => {
         showModal(false)
@@ -19,7 +21,7 @@ export const UpdateLineItemSQ = ({showModal, quantity, price, itemID, getSQData}
 
     const initialValues = {
         price,
-        quantity
+        quantity,
     };
 
 
@@ -30,6 +32,7 @@ export const UpdateLineItemSQ = ({showModal, quantity, price, itemID, getSQData}
             // inv_item_id: invItemNo,
             unit_price: values.price,
             quantity: values.quantity,
+            wh_id: values.warehouse,
             tenant_id: tenantId
         }
         try {
@@ -86,6 +89,30 @@ export const UpdateLineItemSQ = ({showModal, quantity, price, itemID, getSQData}
             console.error('An error occurred:', error);
         }
     };
+    const getWarehouses = async () => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.get(`${url}/api/inventory/get-warehouses/${tenantId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(res, 'response')
+            dispatch(hideLoading());
+            if (res.status === 200) {
+                console.log(res)
+                setWarehouses(res.data.data)
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            console.log(error)
+        }
+    };
+
+    useEffect(() => {
+        getWarehouses()
+    }, []);
+
 
     return (
         <>
@@ -110,6 +137,29 @@ export const UpdateLineItemSQ = ({showModal, quantity, price, itemID, getSQData}
                                         <Field type="text" placeholder='Quantity' name="quantity" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                         <ErrorMessage name="quantity" component="div" />
                                     </div>
+                                </Col>
+                                <Col span={8} xs={24} lg={8}>
+                                    {item.inventory_item && (
+                                        <div>
+                                            <label htmlFor="warehouse" className="block text-sm font-medium leading-6 text-gray-900">
+                                                Warehouse
+                                            </label>
+                                            <Field
+                                                as="select"
+                                                id="warehouse"
+                                                name="warehouse"
+                                                required={item.inventory_item} // Make it required conditionally
+                                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            >
+                                                <option value="">Please Select a Warehouse</option>
+                                                {warehouses?.map(warehouse => (
+                                                    <option key={warehouse.id} value={warehouse.id}>
+                                                        {warehouse.warehouse_name}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                        </div>
+                                    )}
                                 </Col>
                             </Row>
                             <div className="d-flex justify-content-end">
