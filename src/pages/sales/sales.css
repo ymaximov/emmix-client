@@ -11,3 +11,8 @@
 .ri-add-line {
     cursor: pointer;
 }
+
+.ri-delete-bin-5-fill {
+    font-size: 1.3rem;
+    cursor: pointer;
+}

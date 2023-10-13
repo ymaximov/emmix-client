@@ -58,6 +58,7 @@ export const SalesQuotation = () => {
     const [inventory, setInventory] = useState()
     const [SQData, setSQData] = useState()
     const dispatch = useDispatch()
+    const invoiceStatus = SQData?.invoiced == 'true' ? 'invoiced' : 'not invoiced'
 
     const navigate = useNavigate()
     const POID = useSelector((state) => state.purchaseOrder.po_id)
@@ -331,7 +332,7 @@ export const SalesQuotation = () => {
             {/*{showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={''}  itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}*/}
             <div className={'flex crown'}>
             <h1 className={'mb-1 mt-1 title ml-5'}>Sales Quotation {SQData?.id}</h1>
-                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {SQData?.status}</h3>
+                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {SQData?.status} | {invoiceStatus}</h3>
             </div>
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1"></i>
@@ -362,6 +363,12 @@ export const SalesQuotation = () => {
                     onClick={convertToSO}
                     >
                         To SO
+                    </button>
+                    <button
+                        type="button"
+                        className="mb-2 ml-1 ml-1 bg-slate-400 px-2.5 py-1.5 text-sm hover:bg-black  font-semibold text-white shadow-sm hover:bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        To Invoice
                     </button>
                 </div>
 

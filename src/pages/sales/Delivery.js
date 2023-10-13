@@ -10,7 +10,6 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import {ReceivingQuantity} from "../../modals/purchasing/ReceivingQuantity";
-import './purchasing.css'
 import {url} from '../../connections/toServer'
 import {ReceivingWarning} from "../../modals/purchasing/ReceivingWarning";
 import {
@@ -24,23 +23,23 @@ import {
 import {AddItemModal} from "../../modals/purchasing/AddItemModal";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
-import './purchasing.css'
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import generatePDF from "./generatePDF";
+
 import {UpdateLineItemModal} from "../../modals/purchasing/UpdateLineItemModal";
 import {purple} from "@mui/material/colors";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
-export const Receiving = () => {
+export const Delivery = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const navigate = useNavigate()
-    const goodsReceiptData = useSelector((state) => state.purchaseOrder).GR.goodsReceipt
-    const closed = goodsReceiptData?.status == 'closed'
+    const delivery = useSelector((state) => state.sales).deliveryData
+    console.log(delivery, 'Delivery')
 
-    console.log(goodsReceiptData, 'GR DATA')
+
+
     const dispatch = useDispatch()
     const currency = '$'
     const [showRQModal, setShowRQModal] = useState(false)
@@ -57,51 +56,44 @@ export const Receiving = () => {
         //     field: "tenant_id",
         // },
         {
-            headerName: "Item No.",
-            field: "inv_item_id",
-        },
-        {
             headerName: "Item Name",
-            field: "inventory_item.item_name",
+            field: "inventoryItem.item_name",
         },
         {
             headerName: `SKU`,
-            field: "inventory_item.manuf_sku",
+            field: "inventoryItem.manuf_sku",
         },
         {
-            headerName: "Quantity on PO",
-            field: "quantity",
+            headerName: "Quantity on SO",
+            field: "so_quantity",
         },
         {
-            headerName: "Quantity to Receive",
-            field: "received_quantity",
+            headerName: "Remaining Quantity",
+            field: "remaining_quantity",
+        },
+        {
+            headerName: "In Stock",
+            field: "stockData.in_stock",
+        },
+        {
+            headerName: "Quantity to Deliver",
+            field: "delivered_quantity",
         },
 
     ];
     const handleCellClicked = (event) => {
-        if (goodsReceiptData.status === 'open') {
+
             setSelectedItem(event.data);
             setSelectedItemID(event.data.id);
             setShowRQModal(true);
             console.log(event.data.id, 'event data ID');
-        } else {
-            // Optionally, you can provide some feedback or prevent the action here
-            console.log('Cannot perform the action when status is not "open".');
-        }
+
     };
 
     const handleSubmit = async () => {
         let hasDiscrepancy = false; // Flag to track discrepancies
 
-        for (const item of goodsReceiptData.items) {
-            const { received_quantity, quantity } = item;
 
-            if (received_quantity !== quantity) {
-                // Quantity and received_quantity do not match for this item
-                hasDiscrepancy = true;
-                break; // Exit the loop since there's a discrepancy
-            }
-        }
 
         if (hasDiscrepancy) {
             // Show a warning if there's a discrepancy
@@ -109,8 +101,8 @@ export const Receiving = () => {
         } else {
             // If there are no discrepancies, proceed with the API request
             const dataToPost = {
-                warehouseId: goodsReceiptData.warehouse_id,
-                goodsReceiptId: goodsReceiptData.id,
+                // warehouseId: goodsReceiptData.warehouse_id,
+                // goodsReceiptId: goodsReceiptData.id,
             };
 
             try {
@@ -147,50 +139,50 @@ export const Receiving = () => {
     return (
         <>
             <Layout />
-            <h1 className={'mb-1 ml-2 title'}>Goods Receipt {goodsReceiptData?.id}</h1>
+            <h1 className={'mb-1 ml-2 title'}>Delivery {delivery?.delivery.id}</h1>
             <div className="layout">
-                {!closed && <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>}
+                 <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>
                 {showRQModal && <ReceivingQuantity setShowModal={setShowRQModal} selectedItem={selectedItem} itemID={selectedItemID}/>}
-                {showReceivingWarning && <ReceivingWarning GRData={goodsReceiptData} handleSubmit={handleSubmit} showModal={setShowReceivingWarning}/>}
+
 
                 <div className={'po-details'}>
-                    <h1 className={'mt-1'}>Status: {goodsReceiptData?.status}</h1>
+                    <h1 className={'mt-1'}>Status: {delivery?.delivery.status}</h1>
                 </div>
-{/*div                <Row gutter={20} className='mt-7 mb-3'>*/}
-{/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
-{/*                        <div className='vendor-details-title'>Vendor Name</div>*/}
-{/*                        <div>{goodsReceiptData?.vendor.company_name}</div>*/}
-{/*                        <div className='vendor-details-title'>Contact Name</div>*/}
-{/*                        <div>{goodsReceiptData?.vendor.first_name} {goodsReceiptData?.vendor.last_name}</div>*/}
-{/*                    </Col>*/}
-{/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
-{/*                        <div className='vendor-details-title'>Contact Email</div>*/}
-{/*                        {goodsReceiptData?.vendor.email}*/}
-{/*                        <div className='vendor-details-title'>Contact Phone</div>*/}
-{/*                        {goodsReceiptData?.vendor.contact_phone}*/}
-{/*                    </Col>*/}
+                {/*div                <Row gutter={20} className='mt-7 mb-3'>*/}
+                {/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
+                {/*                        <div className='vendor-details-title'>Vendor Name</div>*/}
+                {/*                        <div>{goodsReceiptData?.vendor.company_name}</div>*/}
+                {/*                        <div className='vendor-details-title'>Contact Name</div>*/}
+                {/*                        <div>{goodsReceiptData?.vendor.first_name} {goodsReceiptData?.vendor.last_name}</div>*/}
+                {/*                    </Col>*/}
+                {/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
+                {/*                        <div className='vendor-details-title'>Contact Email</div>*/}
+                {/*                        {goodsReceiptData?.vendor.email}*/}
+                {/*                        <div className='vendor-details-title'>Contact Phone</div>*/}
+                {/*                        {goodsReceiptData?.vendor.contact_phone}*/}
+                {/*                    </Col>*/}
 
-{/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
-{/*                        <div>*/}
-{/*                            <div>*/}
-{/*                                /!*Ship-to Warehouse: {goodsReceiptData?.warehouse.warehouse_name}*!/*/}
-{/*                            </div>*/}
+                {/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
+                {/*                        <div>*/}
+                {/*                            <div>*/}
+                {/*                                /!*Ship-to Warehouse: {goodsReceiptData?.warehouse.warehouse_name}*!/*/}
+                {/*                            </div>*/}
 
 
 
-{/*                        </div>*/}
+                {/*                        </div>*/}
 
-{/*                        <div>*/}
-{/*                            <div>*/}
-{/*                                /!*Due Date: {poData.due_date}*!/*/}
-{/*                            </div>*/}
+                {/*                        <div>*/}
+                {/*                            <div>*/}
+                {/*                                /!*Due Date: {poData.due_date}*!/*/}
+                {/*                            </div>*/}
 
-{/*                        </div>*/}
-{/*                        <div>*/}
+                {/*                        </div>*/}
+                {/*                        <div>*/}
 
-{/*                        </div>*/}
+                {/*                        </div>*/}
 
-{/*                    </Col>*/}
+                {/*                    </Col>*/}
 
 
 
@@ -198,7 +190,7 @@ export const Receiving = () => {
                 {/*</Row>*/}
                 <div className='mt-6'>
                     <div className="ag-theme-alpine" style={{ height: '20rem', width: '100%' }}>
-                        <AgGridReact rowData={goodsReceiptData?.items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
+                        <AgGridReact rowData={delivery?.deliveryItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
                 </div>
                 <div className="flex justify-between">
@@ -215,10 +207,10 @@ export const Receiving = () => {
                     {/*</div>*/}
 
                     <div className={'mt-2'}>
-        <h1>Based on PO No. {goodsReceiptData?.po_id}</h1>
-        {/*<h1>Buyer: {goodsReceiptData?.user.first_name} {goodsReceiptData?.user.last_name}</h1>*/}
+                        <h1>Based on SO No. {delivery?.delivery.so_id}</h1>
+                        {/*<h1>Buyer: {goodsReceiptData?.user.first_name} {goodsReceiptData?.user.last_name}</h1>*/}
 
-    </div>
+                    </div>
                 </div>
             </div>
         </>

@@ -81,6 +81,7 @@ export const PurchaseOrder = () => {
     const vendor = useSelector((state) => state.vendor).vendor
     const [poData, setPoData] = useState(null)
     const [items, setItems] = useState([])
+    const invoiceStatus = PO?.invoiced == 'true' ? 'invoiced' : 'not invoiced'
     const handleWarehouseChange = (event) => {
         const value = parseInt(event.target.value);
         dispatch(setWarehouse(value))
@@ -390,7 +391,7 @@ export const PurchaseOrder = () => {
             {showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={PO?.warehouse?.id} getPOData={getPOData} itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}
             <div className={'flex crown'}>
             <h1 className={'mb-1 mt-1 title ml-5'}>Purchase Order {PO?.id}</h1>
-                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {PO?.status}</h3>
+                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {PO?.status} | {invoiceStatus}</h3>
             </div>
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1"></i>

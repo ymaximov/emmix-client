@@ -36,6 +36,8 @@ import {Invoice} from "./pages/purchasing/Invoice";
 import {CreateSQ} from "./pages/sales/CreateSQ";
 import {SalesQuotation} from "./pages/sales/SalesQuotation";
 import {SalesOrder} from "./pages/sales/SalesOrder";
+import {CreateDelivery} from "./pages/sales/CreateDelivery";
+import {Delivery} from "./pages/sales/Delivery";
 
 const router = createBrowserRouter([
   {
@@ -137,6 +139,14 @@ const router = createBrowserRouter([
     {
         path: '/sales/salesorder',
         element: <ProtectedRoute><SalesOrder /></ProtectedRoute>
+    },
+    {
+        path: '/inventory/createdelivery',
+        element: <ProtectedRoute><CreateDelivery /></ProtectedRoute>
+    },
+    {
+        path: '/inventory/delivery',
+        element: <ProtectedRoute><Delivery /></ProtectedRoute>
     },
 ])
 function App() {

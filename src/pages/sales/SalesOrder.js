@@ -80,6 +80,7 @@ export const SalesOrder = () => {
     const vendor = useSelector((state) => state.vendor).vendor
     const [poData, setPoData] = useState(null)
     const [items, setItems] = useState([])
+    const invoiceStatus = SOData?.invoiced == 'true' ? 'invoiced' : 'not invoiced'
     const SOID = useSelector((state) => state.sales).soID
     const handleWarehouseChange = (event) => {
         const value = parseInt(event.target.value);
@@ -156,15 +157,17 @@ export const SalesOrder = () => {
 
 
     const handleCellClicked = (event) => {
-        console.log(event, 'EVENT');
-        setSelectedQuantity(event.data.quantity)
-        setSelectedPrice(event.data.unit_price)
-        setSelectedWH(event.data.wh_id)
-        setLineItemID(event.data.id)
-        setItem(event.data)
-        setShowUpdateItemModal(true)
-    }
+        if (SOData?.status === 'open') {
+            console.log(event, 'EVENT');
+            setSelectedQuantity(event.data.quantity)
+            setSelectedPrice(event.data.unit_price)
+            setSelectedWH(event.data.wh_id)
+            setLineItemID(event.data.id)
+            setItem(event.data)
+            setShowUpdateItemModal(true)
+        }
 
+    }
 
 
 
@@ -297,7 +300,7 @@ export const SalesOrder = () => {
             {/*{showUpdateLineItemModal && <UpdateLineItemModal invItemNo={invItemNo} tenantId={tenantId} warehouse={''}  itemName={itemName} setShowUpdateLineItemModal={setShowUpdateLineItemModal} itemKey={itemKey} selectedQuantity={selectedQuantity} selectedPrice={selectedPrice}/>}*/}
             <div className={'flex crown'}>
                 <h1 className={'mb-1 mt-1 title ml-5'}>Sales Order {SOData?.id}</h1>
-                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {SOData?.status}</h3>
+                <h3 className={'mb-1 mt-1 mr-2 title ml-5'}>Status: {SOData?.status} | {invoiceStatus}</h3>
             </div>
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1"></i>

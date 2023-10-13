@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {url} from '../../connections/toServer'
 import {hideLoading, showLoading} from "../../redux/slices/alertsSlice";
+import '../../pages/sales/sales.css'
 
 export const UpdateLineItemSO = ({showModal, quantity, price, itemID, getSOData, item, WH}) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
@@ -126,6 +127,13 @@ export const UpdateLineItemSO = ({showModal, quantity, price, itemID, getSOData,
                     {/*<div className={'mt-3'}>{selectedItem.selectedItemName}</div>*/}
                     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                         <Form className={'mt-1'}>
+                            <div className={'flex'}>
+                                <button className="ri-checkbox-fill mb-1 mr-1"
+                                        type="submit"
+                                ></button>
+                                <i className="ri-delete-bin-5-fill" onClick={deleteLineItem}></i>
+                            </div>
+
                             <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <div>
@@ -142,7 +150,7 @@ export const UpdateLineItemSO = ({showModal, quantity, price, itemID, getSOData,
                                     </div>
                                 </Col>
                                 <Col span={8} xs={24} lg={8}>
-                                    {item.inventory_item && (
+                                    {item.inventory_item.inventory_item && (
                                         <div>
                                             <label htmlFor="warehouse" className="block text-sm font-medium leading-6 text-gray-900">
                                                 Warehouse
@@ -166,19 +174,7 @@ export const UpdateLineItemSO = ({showModal, quantity, price, itemID, getSOData,
                                 </Col>
                             </Row>
                             <div className="d-flex justify-content-end">
-                                <button
-                                    type="submit"
-                                    className="mt-4 mb-3 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                >
-                                    Update
-                                </button>
-                                <button
-                                    type="button"
-                                    className="mt-4 mb-3 ml-2 rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                    onClick={deleteLineItem}
-                                >
-                                    Delete Item
-                                </button>
+
                             </div>
 
                         </Form>
