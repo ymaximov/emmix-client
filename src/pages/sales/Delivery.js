@@ -9,7 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
-import {ReceivingQuantity} from "../../modals/purchasing/ReceivingQuantity";
+import {DeliveredQuantity} from '../../modals/inventory/DeliveredQuantity';
 import {url} from '../../connections/toServer'
 import {ReceivingWarning} from "../../modals/purchasing/ReceivingWarning";
 import {
@@ -35,9 +35,10 @@ export const Delivery = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const navigate = useNavigate()
-    const delivery = useSelector((state) => state.sales).deliveryData
-    console.log(delivery, 'Delivery')
+    const deliveryID = useSelector((state) => state.sales).deliveryID
 
+    const [showDeliveredQuantityModal, setShowDeliveredQuantityModal] = useState(false)
+    const [delivery, setDelivery] = useState()
 
 
     const dispatch = useDispatch()
@@ -47,7 +48,25 @@ export const Delivery = () => {
     const [selectedItem, setSelectedItem] = useState()
     const [selectedItemID, setSelectedItemID] = useState()
 
+    const fetchDeliveryData = async (id) => {
+        try {
 
+
+            const res = await axios.get(
+                `${url}/api/inventory/get-delivery-by-id/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setDelivery(res.data);
+            console.log(res.data, 'Delivery Data');
+        } catch (error) {
+            console.error('Error fetching delivery data:', error);
+        }
+    };
 
 
     const columnDefs = [
@@ -73,7 +92,7 @@ export const Delivery = () => {
         },
         {
             headerName: "In Stock",
-            field: "stockData.in_stock",
+            field: "inventory.in_stock",
         },
         {
             headerName: "Quantity to Deliver",
@@ -82,11 +101,11 @@ export const Delivery = () => {
 
     ];
     const handleCellClicked = (event) => {
+        console.log(event.data, 'Click Event')
+        setSelectedItem(event.data)
+        setSelectedItemID(event.data.id)
+        setShowDeliveredQuantityModal(true)
 
-            setSelectedItem(event.data);
-            setSelectedItemID(event.data.id);
-            setShowRQModal(true);
-            console.log(event.data.id, 'event data ID');
 
     };
 
@@ -128,13 +147,10 @@ export const Delivery = () => {
     };
 
 
-
-
-
-
     useEffect(() => {
-
-    }, []);
+        // Fetch delivery data when the component mounts or when the delivery ID changes
+        fetchDeliveryData(deliveryID);
+    }, [deliveryID]);
 
     return (
         <>
@@ -142,55 +158,15 @@ export const Delivery = () => {
             <h1 className={'mb-1 ml-2 title'}>Delivery {delivery?.delivery.id}</h1>
             <div className="layout">
                  <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>
-                {showRQModal && <ReceivingQuantity setShowModal={setShowRQModal} selectedItem={selectedItem} itemID={selectedItemID}/>}
-
+                {showDeliveredQuantityModal && <DeliveredQuantity selectedItem={selectedItem} itemID={selectedItemID} setShowModal={setShowDeliveredQuantityModal}/>}
 
                 <div className={'po-details'}>
-                    <h1 className={'mt-1'}>Status: {delivery?.delivery.status}</h1>
+                    {/*<h1 className={'mt-1'}>Status: {delivery?.delivery.status}</h1>*/}
                 </div>
-                {/*div                <Row gutter={20} className='mt-7 mb-3'>*/}
-                {/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
-                {/*                        <div className='vendor-details-title'>Vendor Name</div>*/}
-                {/*                        <div>{goodsReceiptData?.vendor.company_name}</div>*/}
-                {/*                        <div className='vendor-details-title'>Contact Name</div>*/}
-                {/*                        <div>{goodsReceiptData?.vendor.first_name} {goodsReceiptData?.vendor.last_name}</div>*/}
-                {/*                    </Col>*/}
-                {/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
-                {/*                        <div className='vendor-details-title'>Contact Email</div>*/}
-                {/*                        {goodsReceiptData?.vendor.email}*/}
-                {/*                        <div className='vendor-details-title'>Contact Phone</div>*/}
-                {/*                        {goodsReceiptData?.vendor.contact_phone}*/}
-                {/*                    </Col>*/}
 
-                {/*                    <Col span={8} xs={240} s={24} lg={8}>*/}
-                {/*                        <div>*/}
-                {/*                            <div>*/}
-                {/*                                /!*Ship-to Warehouse: {goodsReceiptData?.warehouse.warehouse_name}*!/*/}
-                {/*                            </div>*/}
-
-
-
-                {/*                        </div>*/}
-
-                {/*                        <div>*/}
-                {/*                            <div>*/}
-                {/*                                /!*Due Date: {poData.due_date}*!/*/}
-                {/*                            </div>*/}
-
-                {/*                        </div>*/}
-                {/*                        <div>*/}
-
-                {/*                        </div>*/}
-
-                {/*                    </Col>*/}
-
-
-
-
-                {/*</Row>*/}
                 <div className='mt-6'>
                     <div className="ag-theme-alpine" style={{ height: '20rem', width: '100%' }}>
-                        <AgGridReact rowData={delivery?.deliveryItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
+                        <AgGridReact rowData={delivery?.delivery.deliveryItems} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                     </div>
                 </div>
                 <div className="flex justify-between">

@@ -12,7 +12,7 @@ import {useDispatch} from "react-redux";
 import {setGRDetails, setWarehouse} from "../../redux/slices/purchaseOrderSlice";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import {setDeliveryData} from "../../redux/slices/salesSlice";
+import {setDeliveryID} from "../../redux/slices/salesSlice";
 
 export const CreateDelivery = () => {
     const { Option } = Select;
@@ -88,7 +88,7 @@ export const CreateDelivery = () => {
                 dispatch(hideLoading());
                 const data = res.data;
                 console.log('Created Delivery', data);
-                dispatch(setDeliveryData(data))
+                dispatch(setDeliveryID(data.delivery.id))
                navigate('/inventory/delivery')
             } else {
                 dispatch(hideLoading());

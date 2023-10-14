@@ -7,7 +7,7 @@ export const salesSlice = createSlice({
         soID: null,
         selectedItem: [],
         selectedCustomer: [],
-        deliveryData: []
+        deliveryID: null
     },
     reducers: {
         setSqID: (state, action) => {
@@ -22,12 +22,12 @@ export const salesSlice = createSlice({
         setSOID: (state, action) => {
             state.soID = action.payload
         },
-        setDeliveryData: (state, action) => {
-            state.deliveryData = action.payload
+        setDeliveryID: (state, action) => {
+            state.deliveryID = action.payload
         },
     },
 });
 
-export const {setSqID, setDeliveryData, setSOID, setSelectedItem, setSelectedCustomer} = salesSlice.actions;
+export const {setSqID, setDeliveryID, setSOID, setSelectedItem, setSelectedCustomer} = salesSlice.actions;
 
 export default salesSlice.reducer
