@@ -59,6 +59,7 @@ export const SalesOrder = () => {
     const [item, setItem] = useState()
     const [selectedWH, setSelectedWH] = useState()
     const dispatch = useDispatch()
+    const releasedStatus = SOData?.released == true ? 'released' : 'not released'
 
     const navigate = useNavigate()
 
@@ -203,7 +204,35 @@ export const SalesOrder = () => {
     const activeInventory = inventory?.filter(inventory => inventory.status === 'active');
     const inventoryList = activeInventory?.filter(inventory => inventory.purchasing_item === true);
 
+    const releaseSalesOrder = async() => {
+        const apiUrl = `${url}/api/sales/release-so`; // Replace with your actual backend API URL
 
+        try {
+            const res = await axios.put(
+                apiUrl,
+                {
+                    tenant_id: tenantId,
+                    so_id: SOID,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include the authentication token as a Bearer token
+                    },
+                }
+            );
+
+            // Check if the request was successful
+            if (res.status === 200) {
+                console.log('Sales order released successfully');
+                getSOData()
+                return res.data;
+            } else {
+                console.error('Error releasing sales order');
+            }
+        } catch (error) {
+            console.error('Error releasing sales order:', error);
+        }
+    }
 
     const handleSubmit = async () => {
 
@@ -327,14 +356,22 @@ export const SalesOrder = () => {
                         Email
                     </button>
                     <button
-                        type="submit"
+                        type="button"
                         onClick={voidSO}
                         className="mb-2 ml-1 bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Void
                     </button>
-                </div>
+                    <button
+                        type="buttom"
+                        onClick={releaseSalesOrder}
+                        className="mb-2 ml-5 bg-black px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        Release
+                    </button>
 
+                </div>
+                <div className={'font-bold'}>{releasedStatus}</div>
 
 
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}
@@ -342,6 +379,7 @@ export const SalesOrder = () => {
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
                 {showUpdateItemModal && <UpdateLineItemSO WH={selectedWH} item={item} getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <div className={'container'}>
+                    <div></div>
                     <div>
                         {/*{poData == null && <i className="ri-user-search-line"   onClick={() => setShowSearchVendorModal(true)}></i>}*/}
                         {/*<button*/}
@@ -417,7 +455,7 @@ export const SalesOrder = () => {
                     {SOData?.status == 'open' ? <i className="ri-add-line" onClick={() => setShowAddItemModal(true)}></i> : null}
                     <div className=''>
                         <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                            <AgGridReact rowData={SOData?.sales_order_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
+                            <AgGridReact rowData={SOData?.so_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                         </div>
                     </div>
                 </div>

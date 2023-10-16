@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import {hi} from "date-fns/locale";
 import {url} from '../../connections/toServer'
 
-export const DeliveredQuantity = ({setShowModal, selectedItem, itemID}) => {
+export const DeliveredQuantity = ({setShowModal, selectedItem, itemID, fetchDeliveryData}) => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const user = JSON.parse(localStorage.getItem('token')).user_id
@@ -19,6 +19,7 @@ export const DeliveredQuantity = ({setShowModal, selectedItem, itemID}) => {
     const poID = goodsReceiptData.po_id
     const itemId = goodsReceiptData.items.id
     console.log(goodsReceiptData, 'GR DAATA')
+    const deliveryID = useSelector((state) => state.sales).deliveryID
 
     const handleClose = () => {
         setShowModal(false)
@@ -36,12 +37,13 @@ export const DeliveredQuantity = ({setShowModal, selectedItem, itemID}) => {
         try {
             dispatch(showLoading())
             // Replace 'http://localhost:3000' with the actual URL of your backend endpoint
-            const URL = `${url}/api/inventory/update-delivered-quantity/${itemID}`;
+            const URL = `${url}/api/inventory/update-delivered-qty`;
 
             // Create the request body
             const requestBody = {
                 tenant_id: tenantId,
-                received_quantity: values.delivered_quantity
+                item_id: itemID,
+                delivered_qty: values.delivered_quantity
             };
             const headers = {
                 Authorization: `Bearer ${token}`,
@@ -50,8 +52,9 @@ export const DeliveredQuantity = ({setShowModal, selectedItem, itemID}) => {
 
             if (res.status === 200) {
                 dispatch(hideLoading())
-                getDeliveryData()
+
                 setShowModal(false)
+                fetchDeliveryData(deliveryID)
                 toast.success(res.data.message);
 
             } else {
@@ -87,7 +90,7 @@ export const DeliveredQuantity = ({setShowModal, selectedItem, itemID}) => {
 
                             </div>
 
-                            <h1 className={'mb-2 mt-2'}>{selectedItem.inventoryItem.item_name}</h1>
+                            <h1 className={'mb-2 mt-2'}>{selectedItem.inventoryItem.item_name} {itemID}</h1>
                             <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
                                     <h1 className={'mb-2 rq'}>Quantity To Deliver</h1>

@@ -188,6 +188,14 @@ export const PurchaseOrder = () => {
             headerName: `Price Per Unit ${currency}`,
             field: "unit_price",
         },
+        {
+            headerName: `Line Total`,
+            field: "total_price",
+        },
+        {
+            headerName: `Received Quantity`,
+            field: "received_qty",
+        },
     ];
 
     const onCellValueChanged = ({ data, colDef, newValue, rowIndex }) => {

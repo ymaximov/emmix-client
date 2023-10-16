@@ -111,6 +111,7 @@ export const Receiving = () => {
             const dataToPost = {
                 warehouseId: goodsReceiptData.warehouse_id,
                 goodsReceiptId: goodsReceiptData.id,
+                tenant_id: tenantId
             };
 
             try {

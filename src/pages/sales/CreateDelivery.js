@@ -98,7 +98,7 @@ export const CreateDelivery = () => {
         } catch (error) {
             dispatch(hideLoading());
             console.error('An error occurred:', error);
-            toast.error("No Sales Order Found");
+            toast.error("No Released Sales Order Found");
         }
     }
     useEffect(() => {

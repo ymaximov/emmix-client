@@ -146,6 +146,37 @@ export const Delivery = () => {
         }
     };
 
+    const deliver = async () => {
+        try {
+            // Send a PUT request to the backend to update remaining_quantity
+            const response = await axios.put(
+                `${url}/api/inventory/delivery-note`,
+                {
+                    delivery_id: delivery?.delivery.id,
+                    tenant_id: tenantId
+
+                }, // Pass the delivery ID in the request body
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include the token in the request headers
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                // Update was successful, handle success case here
+                console.log('Remaining quantities updated successfully');
+                fetchDeliveryData(deliveryID)
+            } else {
+                // Handle the case when the update request fails
+                console.error('Failed to update remaining quantities');
+            }
+        } catch (error) {
+            // Handle errors if the request encounters an issue
+            console.error('An error occurred while updating remaining quantities:', error);
+        }
+    };
+
 
     useEffect(() => {
         // Fetch delivery data when the component mounts or when the delivery ID changes
@@ -155,13 +186,43 @@ export const Delivery = () => {
     return (
         <>
             <Layout />
-            <h1 className={'mb-1 ml-2 title'}>Delivery {delivery?.delivery.id}</h1>
+            <h1 className={'mb-1 ml-2 title'}>Delivery Note {delivery?.delivery.id}</h1>
             <div className="layout">
-                 <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>
-                {showDeliveredQuantityModal && <DeliveredQuantity selectedItem={selectedItem} itemID={selectedItemID} setShowModal={setShowDeliveredQuantityModal}/>}
-
+                 <i className="ri-checkbox-fill mb-1" onClick={deliver}></i>
+                {showDeliveredQuantityModal && <DeliveredQuantity selectedItem={selectedItem} itemID={selectedItemID} setShowModal={setShowDeliveredQuantityModal} fetchDeliveryData={fetchDeliveryData}/>}
+                <h1 className={'mt-3'}>Status: {delivery?.delivery.status}</h1>
+                <div className={'mt-5'}>
+                    <button
+                        type="button"
+                        // onClick={handleGeneratePDF}
+                        className="mb-2 bg-slate-400 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        Print
+                    </button>
+                </div>
                 <div className={'po-details'}>
-                    {/*<h1 className={'mt-1'}>Status: {delivery?.delivery.status}</h1>*/}
+
+
+                    <div className="grid grid-cols-2 gap-2 mt-5">
+                        <div className="text-right">SO No.</div>
+                        <div className="bg-slate-50">{delivery?.delivery.so_id}</div>
+                        <div className="text-right">Customer No.</div>
+                        <div className="bg-slate-50">{delivery?.delivery.customer?.id}</div>
+                        <div className="text-right">Customer Name</div>
+                        <div className="bg-slate-50">{delivery?.delivery?.customer.company_name}</div>
+                        <div className="text-right">Customer Contact</div>
+                        <div className="bg-slate-50">{delivery?.delivery.customer?.first_name} {delivery?.delivery.customer?.last_name}</div>
+                        <div className="text-right">Address 1</div>
+                        <div className="bg-slate-50">{delivery?.delivery.customer?.address_1}</div>
+                        <div className="text-right">Address 2</div>
+                        <div className="bg-slate-50">{delivery?.delivery.customer?.address_2}</div>
+                        <div className="text-right">City, State</div>
+                        <div className="bg-slate-50">{delivery?.delivery.customer?.city} {delivery?.delivery.customer?.state}</div>
+                        <div className="text-right">Zip Code</div>
+                        <div className="bg-slate-50">{delivery?.delivery.customer?.postal_code}</div>
+
+                    </div>
+
                 </div>
 
                 <div className='mt-6'>
@@ -182,11 +243,6 @@ export const Delivery = () => {
                     {/*    )}*/}
                     {/*</div>*/}
 
-                    <div className={'mt-2'}>
-                        <h1>Based on SO No. {delivery?.delivery.so_id}</h1>
-                        {/*<h1>Buyer: {goodsReceiptData?.user.first_name} {goodsReceiptData?.user.last_name}</h1>*/}
-
-                    </div>
                 </div>
             </div>
         </>
