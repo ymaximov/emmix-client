@@ -356,18 +356,18 @@ export const SalesOrder = () => {
                         Email
                     </button>
                     <button
+                        type="buttom"
+                        onClick={releaseSalesOrder}
+                        className="mb-2 ml-1 bg-black px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        Release
+                    </button>
+                    <button
                         type="button"
                         onClick={voidSO}
                         className="mb-2 ml-1 bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Void
-                    </button>
-                    <button
-                        type="buttom"
-                        onClick={releaseSalesOrder}
-                        className="mb-2 ml-5 bg-black px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Release
                     </button>
                 </div>
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}

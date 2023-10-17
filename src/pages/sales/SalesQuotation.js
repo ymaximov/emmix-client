@@ -351,24 +351,24 @@ export const SalesQuotation = () => {
                         Email
                     </button>
                     <button
-                        type="submit"
-                        onClick={voidPO}
-                        className="mb-2 ml-1 bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Void
-                    </button>
-                    <button
                         type="button"
-                        className="mb-2 ml-20 ml-1 bg-slate-400 px-2.5 py-1.5 text-sm hover:bg-black  font-semibold text-white shadow-sm hover:bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="mb-2 ml-1 bg-slate-400 px-2.5 py-1.5 text-sm hover:bg-black  font-semibold text-white shadow-sm hover:bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     onClick={convertToSO}
                     >
                         To SO
                     </button>
                     <button
                         type="button"
-                        className="mb-2 ml-1 ml-1 bg-slate-400 px-2.5 py-1.5 text-sm hover:bg-black  font-semibold text-white shadow-sm hover:bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="mb-2 ml-1 bg-slate-400 px-2.5 py-1.5 text-sm hover:bg-black  font-semibold text-white shadow-sm hover:bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         To Invoice
+                    </button>
+                    <button
+                        type="submit"
+                        onClick={voidPO}
+                        className="mb-2 ml-1 bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        Void
                     </button>
                 </div>
 
