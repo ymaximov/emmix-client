@@ -145,25 +145,14 @@ export const AddItemToSQModal = ({inventory, showModal, getSQData, sqData}) => {
             field: "item_name",
         },
         {
-            headerName: "Last Name",
-            field: "last_name",
+            headerName: "Available",
+            field: "totalAvailable",
         },
         {
-            headerName: "Email",
-            field: "email",
+            headerName: "In Stock",
+            field: "totalInStock",
         },
-        {
-            headerName: "Phone Number",
-            field: "phone_1",
-        },
-        {
-            headerName: "Customer Type",
-            field: "customer_type",
-        },
-        {
-            headerName: "Status",
-            field: "status",
-        },
+
     ];
 
     console.log(searchResults, 'SEARCH RESULT')

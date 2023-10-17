@@ -93,8 +93,8 @@ export const Purchasing = () => {
                 field: "status",
                 sortable: true,
                 filter: true
-            }
-            // Add more columns as needed
+            },
+
         ],
         defaultColDef: {
             sortable: true,

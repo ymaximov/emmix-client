@@ -100,11 +100,19 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
         <>
             <div className={'po-modal'}>
                 <div className={'gr-form-content'}>
-                    <i className="ri-close-circle-line" onClick={handleClose}></i>
+
                     {/*<div>{itemName}</div>*/}
                     {/*<div className={'mt-3'}>{selectedItem.selectedItemName}</div>*/}
                     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                         <Form className={'mt-1'}>
+                     <div className={'flex'}>
+                            <button
+                                type="submit"
+                                className={'ri-checkbox-fill mr-1'}
+                            >
+                            </button>
+                            <i className="ri-close-circle-line mb-1" onClick={handleClose}></i>
+                     </div>
                             <h1 className={'mb-2'}>{selectedItem.inventory_item.item_name}</h1>
                             <Row gutter={20}>
                                 <Col span={8} xs={240} s={24} lg={8}>
@@ -117,12 +125,7 @@ export const ReceivingQuantity = ({setShowModal, selectedItem, itemID}) => {
                                 </Col>
                             </Row>
                             <div className="d-flex justify-content-end">
-                                <button
-                                    type="submit"
-                                    className="mt-4 mb-3 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                >
-                                    Set Quantity
-                                </button>
+
                             </div>
 
                         </Form>

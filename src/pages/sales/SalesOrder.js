@@ -193,7 +193,7 @@ export const SalesOrder = () => {
             console.log(res, 'response')
             dispatch(hideLoading());
             if (res.status === 200) {
-                console.log(res)
+                console.log(res, 'inv data')
                 setInventory(res.data.data)
             }
         } catch (error) {
@@ -369,26 +369,14 @@ export const SalesOrder = () => {
                     >
                         Release
                     </button>
-
                 </div>
-                <div className={'font-bold'}>{releasedStatus}</div>
-
-
                 {showSearchItemModal && <SearchItemModal inventory={inventoryList} setShowSelectedItemModal={setShowSelectedItemModal} setShowSearchItemModal={setShowSearchItemModal}/>}
                 {showAddItemModal && <AddItemToSOModal showModal={setShowAddItemModal} inventory={inventory} getSOData={getSOData} soData={SOData}/>}
                 {showSelectedItemModal && <SelectedItemModal setShowSelectedItemModal={setShowSelectedItemModal}/>}
                 {showUpdateItemModal && <UpdateLineItemSO WH={selectedWH} item={item} getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
+                <div className={'font-bold ml-1'}>{releasedStatus}</div>
                 <div className={'container'}>
-                    <div></div>
                     <div>
-                        {/*{poData == null && <i className="ri-user-search-line"   onClick={() => setShowSearchVendorModal(true)}></i>}*/}
-                        {/*<button*/}
-                        {/*    type="button"*/}
-                        {/*    className="mt-1 mb-2 rounded-md bg-slate-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
-
-                        {/*>*/}
-                        {/*    + Vendor*/}
-                        {/*</button>*/}
                         <div className="grid grid-cols-2 gap-2 mt-4">
                             <div className="text-right">Customer No.</div>
                             <div className="bg-slate-50">{SOData?.customer?.id}</div>
@@ -398,9 +386,7 @@ export const SalesOrder = () => {
                             <div className="bg-slate-50">{SOData?.customer?.first_name} {SOData?.customer?.last_name}</div>
                             <div className="text-right">Payment Terms</div>
                             <div className="bg-slate-50">{SOData?.customer?.payment_terms}</div>
-
                         </div>
-
                     </div>
                     <div>
                         <Tabs>
@@ -417,8 +403,7 @@ export const SalesOrder = () => {
                                 </div>
 
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab="Dates" key={1}>
-                            </Tabs.TabPane>
+
                         </Tabs>
                     </div>
                 </div>

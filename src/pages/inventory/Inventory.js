@@ -34,7 +34,7 @@ export const Inventory = () => {
             console.log(res, 'response')
             dispatch(hideLoading());
             if (res.status === 200) {
-                console.log(res)
+                console.log(res.data, 'Inv Data')
                 setInventory(res.data.data)
             }
         } catch (error) {

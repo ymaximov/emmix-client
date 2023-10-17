@@ -28,7 +28,8 @@ export const ReceivingWarning = ({showModal, GRData}) => {
     const handleSubmit = async () => {
         const dataToPost = {
             warehouseId: goodsReceiptData.warehouse_id,
-            goodsReceiptId: goodsReceiptData.id
+            goodsReceiptId: goodsReceiptData.id,
+            tenant_id: tenantId
         }
 
         try {

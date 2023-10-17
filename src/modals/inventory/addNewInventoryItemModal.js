@@ -271,7 +271,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
             <div className="modal ADDInventoryModal  ">
                 <div className="form-content">
                     <i className="ri-close-circle-line" onClick={handleClose}></i>
-                    <h1 className='layout-title mt-1'>Add New Inventory Item</h1>
+
                     <Formik
                         initialValues={{
                             inventory_item: false,
@@ -326,6 +326,11 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
                         onSubmit={addItem}
                     >
                         <Form layout="vertical" >
+                            <button
+                                type="submit"
+                                className='ri-checkbox-fill mt-3'>
+                            </button>
+                            <h1 className='layout-title mt-1'>Add New Inventory Item</h1>
                             <Tabs rootClassName='overflow-hidden'>
                                 <Tabs.TabPane tab="General" key={0}>
                                     <div>
@@ -887,12 +892,7 @@ export const AddNewInventoryItemModal = ({setShowAddNewInventoryItemModal, getIn
 
                             </Tabs>
                             <div className="d-flex justify-content-end">
-                                <button
-                                    type="submit"
-                                    className="mt-6 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                >
-                                    Add & Close
-                                </button>
+
                             </div>
                         </Form>
                     </Formik>
