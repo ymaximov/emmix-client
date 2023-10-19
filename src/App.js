@@ -38,6 +38,7 @@ import {SalesQuotation} from "./pages/sales/SalesQuotation";
 import {SalesOrder} from "./pages/sales/SalesOrder";
 import {CreateDelivery} from "./pages/sales/CreateDelivery";
 import {Delivery} from "./pages/sales/Delivery";
+import {Service} from "./pages/service/Service";
 
 const router = createBrowserRouter([
   {
@@ -147,6 +148,10 @@ const router = createBrowserRouter([
     {
         path: '/inventory/delivery',
         element: <ProtectedRoute><Delivery /></ProtectedRoute>
+    },
+    {
+        path: '/service',
+        element: <ProtectedRoute><Service /></ProtectedRoute>
     },
 ])
 function App() {

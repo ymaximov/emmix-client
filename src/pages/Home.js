@@ -36,8 +36,17 @@ export const Home = () => {
         case "il01":
             navigate('/inventory')
             break;
-            case "mm01":
+            case "il22":
                 navigate('/purchasing/goodsreceipt')
+                break;
+            case "il23":
+                navigate('/inventory/createdelivery')
+                break;
+            case "mm01":
+                navigate('/sales/createsq')
+                break;
+            case "mm02":
+                navigate('/sales/createso')
                 break;
 
         default:

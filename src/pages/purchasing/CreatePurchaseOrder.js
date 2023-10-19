@@ -363,13 +363,13 @@ export const CreatePurchaseOrder = () => {
                         {/*</button>*/}
                         <div className="grid grid-cols-2 gap-2">
                             <div className="text-right">Vendor No.</div>
-                            <div className="bg-slate-50">{vendor?.id}</div>
+                            <div className="bg-gray-100">{vendor?.id}</div>
                             <div className="text-right">Vendor Name</div>
-                            <div className="bg-slate-50">{vendor?.company_name}</div>
+                            <div className="bg-gray-100">{vendor?.company_name}</div>
                             <div className="text-right">Vendor Contact</div>
-                            <div className="bg-slate-50">{vendor?.first_name} {vendor?.last_name}</div>
+                            <div className="bg-gray-100">{vendor?.first_name} {vendor?.last_name}</div>
                             <div className="text-right">Payment Terms</div>
-                            <div className="bg-slate-50">{vendor?.payment_terms}</div>
+                            <div className="bg-gray-100">{vendor?.payment_terms}</div>
 
                         </div>
 

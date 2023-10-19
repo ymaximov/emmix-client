@@ -78,7 +78,6 @@ export const VendorProfile = () => {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
                 console.log('Form submitted successfully!');
-                navigate('/vendors')
             } else {
                 toast.error(res.data.message)
                 console.error('Form submission failed.');

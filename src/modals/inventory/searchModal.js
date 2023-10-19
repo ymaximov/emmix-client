@@ -135,24 +135,12 @@ export const SearchModal = ({setShowSearchModal, inventory}) => {
             field: "item_name",
         },
         {
-            headerName: "Last Name",
-            field: "last_name",
+            headerName: "Total In Stock",
+            field: "totalInStock",
         },
         {
-            headerName: "Email",
-            field: "email",
-        },
-        {
-            headerName: "Phone Number",
-            field: "phone_1",
-        },
-        {
-            headerName: "Customer Type",
-            field: "customer_type",
-        },
-        {
-            headerName: "Status",
-            field: "status",
+            headerName: "Total Available",
+            field: "totalAvailable",
         },
     ];
 

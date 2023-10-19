@@ -260,7 +260,6 @@ export const InventoryItemProfile = () => {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
                 console.log('Form submitted successfully!');
-                navigate('/inventory')
             } else {
                 toast.error(res.data.message)
                 console.error('Form submission failed.');

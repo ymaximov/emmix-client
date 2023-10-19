@@ -89,7 +89,7 @@ export const CreateSalesOrder = () => {
             if (res.status === 200) {
                 dispatch(hideLoading())
                 dispatch(setSOID(res.data.data))
-                toast.success(res.data.message);
+                // toast.success(res.data.message);
                 console.log('SO ID', res.data.data)
                 navigate('/sales/salesorder')
 
@@ -133,36 +133,29 @@ export const CreateSalesOrder = () => {
                         {/*</button>*/}
                         <div className="grid grid-cols-2 gap-2">
                             <div className="text-right">Customer No.</div>
-                            <div className="bg-slate-50">{selectedCustomer?.id}</div>
+                            <div className="bg-gray-100">{selectedCustomer?.id}</div>
                             <div className="text-right">Customer Name</div>
-                            <div className="bg-slate-50">{selectedCustomer?.company_name}</div>
+                            <div className="bg-gray-100">{selectedCustomer?.company_name}</div>
                             <div className="text-right">Customer Contact</div>
-                            <div className="bg-slate-50">{selectedCustomer?.first_name} {selectedCustomer?.last_name}</div>
+                            <div className="bg-gray-100">{selectedCustomer?.first_name} {selectedCustomer?.last_name}</div>
                             <div className="text-right">Payment Terms</div>
-                            <div className="bg-slate-50">{selectedCustomer?.payment_terms}</div>
+                            <div className="bg-gray-100">{selectedCustomer?.payment_terms}</div>
 
 
                         </div>
 
                     </div>
                     <div>
-                        <Tabs>
-                            <Tabs.TabPane tab="Ship To" key={0}>
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-2 gap-2 mt-6">
                                     <div className="text-right">Address</div>
-                                    <div className="bg-slate-50">{selectedCustomer?.address_1}</div>
+                                    <div className="bg-gray-100">{selectedCustomer?.address_1}</div>
                                     <div className="text-right">Address 2</div>
-                                    <div className="bg-slate-50">{selectedCustomer?.address_2}</div>
+                                    <div className="bg-gray-100">{selectedCustomer?.address_2}</div>
                                     <div className="text-right">City, State</div>
-                                    <div className="bg-slate-50">{selectedCustomer?.city} {selectedCustomer?.state}</div>
+                                    <div className="bg-gray-100">{selectedCustomer?.city} {selectedCustomer?.state}</div>
                                     <div className="text-right">Zip Code</div>
-                                    <div className="bg-slate-50">{selectedCustomer?.postal_code}</div>
+                                    <div className="bg-gray-100">{selectedCustomer?.postal_code}</div>
                                 </div>
-
-                            </Tabs.TabPane>
-                            <Tabs.TabPane tab="Dates" key={1}>
-                            </Tabs.TabPane>
-                        </Tabs>
                     </div>
                 </div>
             </div>

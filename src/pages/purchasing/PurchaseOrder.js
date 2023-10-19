@@ -443,13 +443,13 @@ export const PurchaseOrder = () => {
                         {/*</button>*/}
                         <div className="grid grid-cols-2 gap-2 mt-4">
                             <div className="text-right">Vendor No.</div>
-                            <div className="bg-slate-50">{PO?.vendor?.id}</div>
+                            <div className="bg-gray-100">{PO?.vendor?.id}</div>
                             <div className="text-right">Vendor Name</div>
-                            <div className="bg-slate-50">{PO?.vendor?.company_name}</div>
+                            <div className="bg-gray-100">{PO?.vendor?.company_name}</div>
                             <div className="text-right">Vendor Contact</div>
-                            <div className="bg-slate-50">{PO?.vendor?.first_name} {poData?.vendor?.last_name}</div>
+                            <div className="bg-gray-100">{PO?.vendor?.first_name} {poData?.vendor?.last_name}</div>
                             <div className="text-right">Payment Terms</div>
-                            <div className="bg-slate-50">{PO?.vendor?.payment_terms}</div>
+                            <div className="bg-gray-100">{PO?.vendor?.payment_terms}</div>
 
                         </div>
 
@@ -459,7 +459,7 @@ export const PurchaseOrder = () => {
                             <Tabs.TabPane tab="Ship To" key={0}>
                                 <div className="grid grid-cols-2 gap-2">
                                 <div className="text-right">Warehouse</div>
-                                <div className="bg-slate-50">{PO?.warehouse?.warehouse_name}</div>
+                                <div className="bg-gray-100">{PO?.warehouse?.warehouse_name}</div>
                                 </div>
                             </Tabs.TabPane>
                             <Tabs.TabPane tab="Dates" key={1}>
@@ -474,11 +474,11 @@ export const PurchaseOrder = () => {
                         <Tabs.TabPane tab="Totals" key={0}>
                             <div className="grid grid2 grid-cols-2 gap-2">
                                 <div className="text-right2">Subtotal</div>
-                                <div className="bg-slate-50">${PO?.subtotal}</div>
+                                <div className="bg-gray-100">${PO?.subtotal}</div>
                                 <div className="text-right2">Sales Tax {PO?.tax_rate}%</div>
-                                <div className="bg-slate-50">${PO?.sales_tax}</div>
+                                <div className="bg-gray-100">${PO?.sales_tax}</div>
                                 <div className="text-right2">Total</div>
-                                <div className="bg-slate-50">${PO?.total_amount}</div>
+                                <div className="bg-gray-100">${PO?.total_amount}</div>
 
                             </div>
                         </Tabs.TabPane>

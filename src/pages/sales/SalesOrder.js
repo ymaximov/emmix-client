@@ -376,70 +376,96 @@ export const SalesOrder = () => {
                 {showUpdateItemModal && <UpdateLineItemSO WH={selectedWH} item={item} getSOData={getSOData} itemID={lineItemID} showModal={setShowUpdateItemModal} quantity={selectedQuantity} price={selectedPrice}/>}
                 <div className={'font-bold ml-1'}>{releasedStatus}</div>
                 <div className={'container'}>
+                    <div className={'flex'}>
                     <div>
                         <div className="grid grid-cols-2 gap-2 mt-4">
                             <div className="text-right">Customer No.</div>
-                            <div className="bg-slate-50">{SOData?.customer?.id}</div>
+                            <div className="bg-gray-100">{SOData?.customer?.id}</div>
                             <div className="text-right">Customer Name</div>
-                            <div className="bg-slate-50">{SOData?.customer?.company_name}</div>
+                            <div className="bg-gray-100">{SOData?.customer?.company_name}</div>
                             <div className="text-right">Customer Contact</div>
-                            <div className="bg-slate-50">{SOData?.customer?.first_name} {SOData?.customer?.last_name}</div>
+                            <div className="bg-gray-100">{SOData?.customer?.first_name} {SOData?.customer?.last_name}</div>
                             <div className="text-right">Payment Terms</div>
-                            <div className="bg-slate-50">{SOData?.customer?.payment_terms}</div>
+                            <div className="bg-gray-100">{SOData?.customer?.payment_terms}</div>
                         </div>
                     </div>
-                    <div>
-                        <Tabs>
-                            <Tabs.TabPane tab="Ship To" key={0}>
-                                <div className="grid grid-cols-2 gap-2">
+                    <div className={''}>
+
+                                <div className="grid grid-cols-2 gap-2 cust-details">
                                     <div className="text-right">Address 1</div>
-                                    <div className="bg-slate-50">{SOData?.customer?.address_1}</div>
+                                    <div className="bg-gray-100">{SOData?.customer?.address_1}</div>
                                     <div className="text-right">Address 2</div>
-                                    <div className="bg-slate-50">{SOData?.customer?.address_2}</div>
+                                    <div className="bg-gray-100">{SOData?.customer?.address_2}</div>
                                     <div className="text-right">City, State</div>
-                                    <div className="bg-slate-50">{SOData?.customer?.city} {SOData?.customer?.state}</div>
+                                    <div className="bg-gray-100">{SOData?.customer?.city} {SOData?.customer?.state}</div>
                                     <div className="text-right">Zip Code</div>
-                                    <div className="bg-slate-50">{SOData?.customer?.postal_code}</div>
+                                    <div className="bg-gray-100">{SOData?.customer?.postal_code}</div>
                                 </div>
-
-                            </Tabs.TabPane>
-
-                        </Tabs>
+                    </div>
                     </div>
                 </div>
 
                 {poData !== null && <hr className={'mt-3'}/>}
-                <div className={''}>
+                <div className={'tabs'}>
                     <Tabs>
-                        <Tabs.TabPane tab="Totals" key={0}>
-                            <div className="grid grid2 grid-cols-2 gap-2">
+                        <Tabs.TabPane tab="Summary" key={0}>
+                            <div className="grid grid2 grid-cols-2 gap-2 mt-12">
 
                                 <div className="text-right2">Subtotal</div>
-                                <div className="bg-slate-50">${SOData?.subtotal}</div>
+                                <div className="bg-gray-100">${SOData?.subtotal}</div>
                                 <div className="text-right2">Sales Tax {SOData?.tax_rate}%</div>
-                                <div className="bg-slate-50">${SOData?.sales_tax}</div>
+                                <div className="bg-gray-100">${SOData?.sales_tax}</div>
                                 <div className="text-right2">Total</div>
-                                <div className="bg-slate-50">${SOData?.total_amount}</div>
-
-
+                                <div className="bg-gray-100">${SOData?.total_amount}</div>
                             </div>
                         </Tabs.TabPane>
-                        <Tabs.TabPane tab="Logistics" key={1}>
+                        <Tabs.TabPane tab="Dates" key={1}>
                             <div className="grid grid-cols-2 gap-2">
                                 gdgs
                             </div>
-                        </Tabs.TabPane>   <Tabs.TabPane tab="Logistics" key={2}>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Logistics" key={2}>
                         <div className="grid grid-cols-2 gap-2">
                             dgsg
                         </div>
                     </Tabs.TabPane>
+                        <Tabs.TabPane tab="Sales Details" key={3}>
+                            <div className="grid grid-cols-2 gap-2">
+                                dgsg
+                            </div>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Accounting" key={4}>
+                            <div className="grid grid-cols-2 gap-2">
+                                dgsg
+                            </div>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Deliveries" key={5}>
+                            <div className='mt-1'>
+                                <div className="ag-theme-alpine" style={{ height: '10rem', width: '100%' }}>
+                                    <AgGridReact rowData={SOData?.so_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
+                                </div>
+                            </div>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Remarks" key={6}>
+                            <div className="grid grid-cols-2 gap-2">
+                                dgsg
+                            </div>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Attachments" key={7}>
+                            <div className="grid grid-cols-2 gap-2">
+                                dgsg
+                            </div>
+                        </Tabs.TabPane>
                     </Tabs>
                 </div>
                 <hr className={'mt-3'}/>
                 <div className={'mt-3'}>
-                    {SOData?.status == 'open' ? <i className="ri-add-line" onClick={() => setShowAddItemModal(true)}></i> : null}
-                    <div className=''>
-                        <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
+                    {SOData?.status === 'open' && !SOData.released && (
+                        <i className="ri-add-line" onClick={() => setShowAddItemModal(true)}></i>
+                    )}
+
+                    <div className='mt-1'>
+                        <div className="ag-theme-alpine" style={{ height: '25rem', width: '100%' }}>
                             <AgGridReact rowData={SOData?.so_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                         </div>
                     </div>

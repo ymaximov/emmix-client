@@ -147,14 +147,13 @@ export const AddItemToSOModal = ({inventory, showModal, getSOData, soData}) => {
             headerName: "Item Name",
             field: "item_name",
         },
-
         {
-            headerName: "Available",
-            field: "totalAvailable",
+            headerName: "Total In Stock",
+            field: "totalInStock",
         },
         {
-            headerName: "In Stock",
-            field: "totalInStock",
+            headerName: "Total Available",
+            field: "totalAvailable",
         },
     ];
 
