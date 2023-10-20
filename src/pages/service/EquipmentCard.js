@@ -304,7 +304,7 @@ export const EquipmentCard = () => {
                                             </Col>
                                             <Col span={8} xs={240} s={24} lg={8} className='mt-7'>
                                                 <div>
-                                                    Delivery {ECData?.equipmentCard.delivery_id}
+                                                    {ECData?.equipmentCard.delivery_id}
                                                 </div>
                                             </Col>
                                         </Row>

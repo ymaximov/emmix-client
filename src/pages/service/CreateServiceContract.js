@@ -4,14 +4,12 @@ import axios from "axios";
 import {url} from "../../connections/toServer";
 import {useDispatch} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {SearchCustomerEC} from "../../modals/service/SearchCustomerEC";
-import {setEcID} from "../../redux/slices/serviceSlice";
+import {SearchCustomerSC} from "../../modals/service/SearchCustomerSC";
+import { setScID} from "../../redux/slices/serviceSlice";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 
-
-export const CreateEquipmentCard = () => {
-
+export const CreateServiceContract = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const userID = JSON.parse(localStorage.getItem('token')).user_id
@@ -20,7 +18,10 @@ export const CreateEquipmentCard = () => {
     const [customers, setCustomers] = useState()
     const [selectedCustomer, setSelectedCustomer] = useState()
     const [showModal, setShowModal] = useState(false)
-
+    const [contractType, setContractType] = useState('');
+    const handleDropdownChange = (event) => {
+        setContractType(event.target.value); // Update the state with the selected value
+    };
     const getCustomersData = async () => {
         try {
             dispatch(showLoading());
@@ -45,13 +46,13 @@ export const CreateEquipmentCard = () => {
         const dataToPost = {
             tenant_id: tenantId,
             customer_id: selectedCustomer?.id,
-            user_id: userID
-
+            user_id: userID,
+            contract_type: contractType
         }
 
         try {
             dispatch(showLoading())
-            const res = await axios.post(`${url}/api/service/create-equipment-card`, dataToPost,
+            const res = await axios.post(`${url}/api/service/create-service-contract`, dataToPost,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -61,15 +62,15 @@ export const CreateEquipmentCard = () => {
 
             if (res.status === 200) {
                 dispatch(hideLoading())
-                dispatch(setEcID(res.data.data))
+                dispatch(setScID(res.data.data))
                 // toast.success(res.data.message);
-                console.log('EQ ID', res.data.data)
-                navigate('/service/equipmentcard')
+                console.log('SC ID', res.data.data)
+                navigate('/service/contract')
 
             } else {
                 dispatch(hideLoading())
                 toast.error(res.response.data.error)
-                console.error('Please fill out all required data');
+                console.error('Please fill out all required datafnianfdebs');
             }
         } catch (error) {
             dispatch(hideLoading())
@@ -85,13 +86,13 @@ export const CreateEquipmentCard = () => {
     return (
         <>
             <Layout/>
-            <h1 className={'title ml-2'}>Create Equipment Card</h1>
-            {showModal && <SearchCustomerEC showModal={setShowModal} customers={customers} setSelectedCustomer={setSelectedCustomer}/>}
+            <h1 className={'title ml-2'}>Create Service Contract</h1>
+            {showModal && <SearchCustomerSC showModal={setShowModal} customers={customers} setSelectedCustomer={setSelectedCustomer}/>}
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}/>
-                <div className={'container'} onClick={() => setShowModal(true)}>
+                <div className={'container'} >
                     <div>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-2" onClick={() => setShowModal(true)}>
                             <div className="text-right">Customer No.</div>
                             <div className="bg-gray-100">{selectedCustomer?.id}</div>
                             <div className="text-right">Customer Name</div>
@@ -106,19 +107,16 @@ export const CreateEquipmentCard = () => {
 
                     </div>
                     <div>
-                        <div className="grid grid-cols-2 gap-2">
-                            <div className="text-right">Address</div>
-                            <div className="bg-gray-100">{selectedCustomer?.address_1}</div>
-                            <div className="text-right">Address 2</div>
-                            <div className="bg-gray-100">{selectedCustomer?.address_2}</div>
-                            <div className="text-right">City, State</div>
-                            <div className="bg-gray-100">{selectedCustomer?.city} {selectedCustomer?.state}</div>
-                            <div className="text-right">Zip Code</div>
-                            <div className="bg-gray-100">{selectedCustomer?.postal_code}</div>
-                        </div>
+                        <select onChange={handleDropdownChange} className={'block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6'}>
+                            <option value="">Select Service Type</option>
+                            <option value="regular">Regular</option>
+                            <option value="equipment">Equipment</option>
+
+                        </select>
                     </div>
                 </div>
             </div>
         </>
     )
 }
+

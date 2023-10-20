@@ -41,6 +41,8 @@ import {Delivery} from "./pages/sales/Delivery";
 import {Service} from "./pages/service/Service";
 import {CreateEquipmentCard} from "./pages/service/CreateEquipmentCard";
 import {EquipmentCard} from "./pages/service/EquipmentCard";
+import {CreateServiceContract} from "./pages/service/CreateServiceContract";
+import {ServiceContract} from "./pages/service/ServiceContract";
 
 const router = createBrowserRouter([
   {
@@ -162,6 +164,14 @@ const router = createBrowserRouter([
     {
         path: '/service/equipmentcard',
         element: <ProtectedRoute><EquipmentCard /></ProtectedRoute>
+    },
+    {
+        path: '/service/createcontract',
+        element: <ProtectedRoute><CreateServiceContract /></ProtectedRoute>
+    },
+    {
+        path: '/service/contract',
+        element: <ProtectedRoute><ServiceContract /></ProtectedRoute>
     },
 ])
 function App() {

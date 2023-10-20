@@ -11,7 +11,7 @@ import {useNavigate} from "react-router-dom";
 import {countries} from "countries-list";
 import '../../pages/CRM/crm.css'
 
-export const SearchCustomerEC = ({showModal, customers, setSelectedCustomer}) => {
+export const SearchCustomerSC = ({showModal, customers, setSelectedCustomer}) => {
     console.log(customers, 'customers')
     const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate()
