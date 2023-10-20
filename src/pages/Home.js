@@ -86,6 +86,9 @@ export const Home = () => {
                         </Row>
                     </Form>
                 </Formik>
+                <div className={'mt-5'}>
+                    <div onClick={() => navigate('/sales/createso')}>Create Sales Order</div>
+                </div>
                 {/*<div className='top-menus'>*/}
                 {/*    <Row gutter={20}>*/}
                 {/*        <div>hi</div>*/}

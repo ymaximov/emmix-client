@@ -179,17 +179,10 @@ export const CreateSQ = () => {
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}></i>
 
-                <div className={'container'}>
+                <div className={'container'} onClick={() => setShowSearchCustomerModal(true)}>
                     <div>
-                        <i className="ri-user-search-line"   onClick={() => setShowSearchCustomerModal(true)}></i>
-                        {/*<button*/}
-                        {/*    type="button"*/}
-                        {/*    className="mt-1 mb-2 rounded-md bg-slate-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"*/}
-
-                        {/*>*/}
-                        {/*    + Vendor*/}
-                        {/*</button>*/}
                         <div className="grid grid-cols-2 gap-2">
+
                             <div className="text-right">Customer No.</div>
                             <div className="bg-gray-100">{selectedCustomer?.id}</div>
                             <div className="text-right">Customer Name</div>
@@ -204,8 +197,7 @@ export const CreateSQ = () => {
 
                     </div>
                     <div>
-                        <Tabs>
-                            <Tabs.TabPane tab="Ship To" key={0}>
+
                                 <div className="grid grid-cols-2 gap-2">
                                     <div className="text-right">Address</div>
                                     <div className="bg-gray-100">{selectedCustomer?.address_1}</div>
@@ -216,11 +208,6 @@ export const CreateSQ = () => {
                                     <div className="text-right">Zip Code</div>
                                     <div className="bg-gray-100">{selectedCustomer?.postal_code}</div>
                                 </div>
-
-                            </Tabs.TabPane>
-                            <Tabs.TabPane tab="Dates" key={1}>
-                            </Tabs.TabPane>
-                        </Tabs>
                     </div>
                 </div>
 

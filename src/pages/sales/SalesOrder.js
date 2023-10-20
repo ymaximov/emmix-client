@@ -465,7 +465,7 @@ export const SalesOrder = () => {
                     )}
 
                     <div className='mt-1'>
-                        <div className="ag-theme-alpine" style={{ height: '25rem', width: '100%' }}>
+                        <div className="ag-theme-alpine"  style={{ height: '25rem', width: '100%' }}>
                             <AgGridReact rowData={SOData?.so_items} columnDefs={columnDefs} onCellClicked={handleCellClicked}/>
                         </div>
                     </div>
