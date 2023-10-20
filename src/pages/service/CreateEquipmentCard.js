@@ -5,7 +5,7 @@ import {url} from "../../connections/toServer";
 import {useDispatch} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {SearchCustomerEQ} from "../../modals/service/SearchCustomerEC";
-import {setEqID} from "../../redux/slices/serviceSlice";
+import {setEcID} from "../../redux/slices/serviceSlice";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 
@@ -61,10 +61,10 @@ export const CreateEquipmentCard = () => {
 
             if (res.status === 200) {
                 dispatch(hideLoading())
-                dispatch(setEqID(res.data.data))
+                dispatch(setEcID(res.data.data))
                 // toast.success(res.data.message);
                 console.log('EQ ID', res.data.data)
-                // navigate('/sales/salesorder')
+                navigate('/service/equipmentcard')
 
             } else {
                 dispatch(hideLoading())
