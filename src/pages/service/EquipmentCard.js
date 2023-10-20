@@ -16,6 +16,7 @@ export const EquipmentCard = () => {
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const tenantID = JSON.parse(localStorage.getItem('token')).tenant_id
     const ECID = useSelector((state) => state.service).ecID
+    console.log(ECID, 'EC IDDDD')
     const dispatch = useDispatch()
     const [ECData, setECData] = useState()
 
@@ -94,7 +95,7 @@ export const EquipmentCard = () => {
             dispatch(hideLoading());
             if (res.status === 200) {
                 console.log(res.data, 'RES QL DATA')
-                setECData(res.data.equipmentCard)
+                setECData(res.data)
             }
         } catch (error) {
             dispatch(hideLoading());
@@ -107,31 +108,38 @@ export const EquipmentCard = () => {
         mfr_serial: ECData?.mfr_serial,
         serial_no: ECData?.serial_no,
         delivery_id: ECData?.delivery_id,
-        inv_item_id: ECData?.inv_item_id
+        inv_item_id: ECData?.inv_item_id,
+        technician_id: ECData?.technician_id,
     };
 
 
     const handleSubmit = async (values, actions) => {
-        console.log('form data', values)
+        // Replace empty strings with null
+        for (const key in values) {
+            if (values[key] === "") {
+                values[key] = null;
+            }
+        }
+
+        console.log('form data', values);
         actions.setSubmitting(false);
+
         try {
             values.id = ECID;
             values.tenant_id = tenantID;
-            const res = await axios.put(`${url}/api/service/update-ec`, values,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-
-                    }
-                });
+            const res = await axios.put(`${url}/api/service/update-ec`, values, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             if (res.status === 200) {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
-                getECData()
+                getECData();
                 console.log('Form submitted successfully!');
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data.message);
                 console.error('Form submission failed.');
             }
         } catch (error) {
@@ -139,6 +147,7 @@ export const EquipmentCard = () => {
             console.error('An error occurred:', error);
         }
     };
+
 
     useEffect(() => {
         getECData()
@@ -148,7 +157,7 @@ export const EquipmentCard = () => {
     return (
         <>
             <Layout />
-            <div className={'title ml-2'}>Equipment Card {ECData?.id}</div>
+            <div className={'title ml-2'}>Equipment Card {ECData?.equipmentCard.id}</div>
             <div className="layout">
 
                         <Formik
@@ -163,15 +172,15 @@ export const EquipmentCard = () => {
                                     <Col>
                                         <div className="grid grid-cols-2 gap-2 mt-4 mb-7">
                                             <div className="text-right">Customer No.</div>
-                                            <div className="bg-gray-100">{ECData?.customer?.id}</div>
+                                            <div className="bg-gray-100">{ECData?.equipmentCard.customer?.id}</div>
                                             <div className="text-right">Customer Name</div>
-                                            <div className="bg-gray-100">{ECData?.customer?.company_name}</div>
+                                            <div className="bg-gray-100">{ECData?.equipmentCard.customer?.company_name}</div>
                                             <div className="text-right">Customer Contact</div>
-                                            <div className="bg-gray-100">{ECData?.customer?.first_name} {ECData?.customer?.last_name}</div>
+                                            <div className="bg-gray-100">{ECData?.equipmentCard.customer?.first_name} {ECData?.customer?.last_name}</div>
                                             <div className="text-right">Contact Phone</div>
-                                            <div className="bg-gray-100">{ECData?.customer?.contact_phone}</div>
+                                            <div className="bg-gray-100">{ECData?.equipmentCard.customer?.contact_phone}</div>
                                             <div className="text-right">Main Phone</div>
-                                            <div className="bg-gray-100">{ECData?.customer?.phone_1}</div>
+                                            <div className="bg-gray-100">{ECData?.equipmentCard.customer?.phone_1}</div>
                                         </div>
                                     </Col>
                                 </Row>
@@ -233,7 +242,21 @@ export const EquipmentCard = () => {
                                         </Col>
                                         <Col span={8} xs={240} s={24} lg={8} className={'mt-8 ml-3'}>
                                             <div>
-                                                {ECData?.inventory_item.item_name}
+                                                {ECData?.equipmentCard?.inventory_item?.item_name}
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col span={8} xs={240} s={24} lg={8}>
+                                            <div>
+                                                <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Technician No.</label>
+                                                <Field type="text" placeholder='Techician No.' name="technician_id" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <ErrorMessage name="name" component="div" />
+                                            </div>
+                                        </Col>
+                                        <Col span={8} xs={240} s={24} lg={8} className={'mt-8 ml-3'}>
+                                            <div>
+                                                {ECData?.technician?.first_name} {ECData?.technician?.last_name}
                                             </div>
                                         </Col>
                                     </Row>
@@ -245,13 +268,13 @@ export const EquipmentCard = () => {
                                             <Col>
                                                 <div className="grid grid-cols-2 gap-2 mt-4 mb-7">
                                                     <div className="text-right">Address 1</div>
-                                                    <div className="bg-gray-100">{ECData?.customer?.address_1}</div>
+                                                    <div className="bg-gray-100">{ECData?.equipmentCard.customer?.address_1}</div>
                                                     <div className="text-right">Address 2</div>
-                                                    <div className="bg-gray-100">{ECData?.customer?.address_}</div>
+                                                    <div className="bg-gray-100">{ECData?.equipmentCard.customer?.address_2}</div>
                                                     <div className="text-right">City, State</div>
-                                                    <div className="bg-gray-100">{ECData?.customer?.city} {ECData?.customer?.state}</div>
+                                                    <div className="bg-gray-100">{ECData?.equipmentCard.customer?.city} {ECData?.customer?.state}</div>
                                                     <div className="text-right">Zip Code</div>
-                                                    <div className="bg-gray-100">{ECData?.customer?.postal_code} </div>
+                                                    <div className="bg-gray-100">{ECData?.equipmentCard.customer?.postal_code} </div>
                                                 </div>
                                             </Col>
                                         </Row>
@@ -270,13 +293,18 @@ export const EquipmentCard = () => {
                                             </div>
                                         </div>
                                     </Tabs.TabPane>
-                                    <Tabs.TabPane tab="Sales Data" key={3}>
-                                        <Row gutter={20}>
+                                    <Tabs.TabPane tab="Sales Data" key={3} className={'lower'}>
+                                        <Row gutter={20} >
                                             <Col span={8} xs={240} s={24} lg={8}>
                                                 <div>
                                                     <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Delivery No.</label>
                                                     <Field type="text" placeholder='Delivery No.' name="delivery_id" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                                     <ErrorMessage name="name" component="div" />
+                                                </div>
+                                            </Col>
+                                            <Col span={8} xs={240} s={24} lg={8} className='mt-7'>
+                                                <div>
+                                                    Delivery {ECData?.equipmentCard.delivery_id}
                                                 </div>
                                             </Col>
                                         </Row>
