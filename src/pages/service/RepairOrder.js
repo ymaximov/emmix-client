@@ -110,7 +110,7 @@ export const RepairOrder = () => {
         technician_id: ROData?.repairOrder.technician_id,
         repair_description: ROData?.repairOrder.repair_description,
         resolution_description: ROData?.repairOrder.resolution_description,
-        contact_name: ROData?.repairOrder.contact_name,
+        contact_person: ROData?.repairOrder.contact_person,
         phone_1: ROData?.repairOrder.phone_1,
         mobile_phone: ROData?.repairOrder.mobile_phone,
         email: ROData?.repairOrder.email,
@@ -208,7 +208,7 @@ export const RepairOrder = () => {
                                 </div>
                             </Col>
                         </Row>
-                        <hr/>
+                        <hr className={'mb-2'}/>
                         <Row gutter={20}>
                             <Col span={8} xs={240} s={24} lg={8}>
                                 <div className={'field-short'}>
@@ -238,7 +238,7 @@ export const RepairOrder = () => {
                         </Row>
                         <Row gutter={20} className={'mt-2'}>
                             <Col span={8} xs={240} s={24} lg={8} className={''}>
-                                <div>
+                                <div className={'ro-description'}>
                                     <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Description</label>
                                     <Field type="text" placeholder='Description' name="description" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                     <ErrorMessage name="name" component="div" />
@@ -263,23 +263,19 @@ export const RepairOrder = () => {
                         <Row gutter={20}>
                             <Col>
                                 <div className="gap-2 mt-3">
-                                    <div className="">Repair Order Created On</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.createdAt}</div>
+                                    <div className="">Repair Contract Created By</div>
+                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.id}</div>
                                 </div>
                             </Col>
                             <Col>
                                 <div className="gap-2 mt-3">
-                                    <div className="">Repair Order Closed On</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.closed_on}.</div>
-                                </div>
-                            </Col>
-                            <Col>
-                                <div className="gap-2 mt-3">
-                                    <div className="">Last Updated On</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.updatedAt}</div>
+                                    <div className="">Service Type</div>
+                                    <div className="bg-gray-100">Warranty</div>
                                 </div>
                             </Col>
                         </Row>
+
+
                       <Row  gutter={20} className={'eq'}>
 
                         </Row>
@@ -314,16 +310,56 @@ export const RepairOrder = () => {
                                         <ErrorMessage name="name" component="div" />
                                     </div>
                                 </Col>
-
-
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab="Contact Info" key={1}>
+                            <Tabs.TabPane tab='Details' key={1}>
+                                <Row gutter={20}>
+                                    <Col>
+                                        <div className="gap-2 mt-3">
+                                            <div className="">Repair Order Created On</div>
+                                            <div className="bg-gray-100">{ROData?.repairOrder.createdAt}</div>
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div className="gap-2 mt-3">
+                                            <div className="">Repair Order Closed On</div>
+                                            <div className="bg-gray-100">{ROData?.repairOrder.closed_on}.</div>
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div className="gap-2 mt-3">
+                                            <div className="">Last Updated On</div>
+                                            <div className="bg-gray-100">{ROData?.repairOrder.updatedAt}</div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row gutter={20}>
+                                    <Col>
+                                        <div className="gap-2 mt-3">
+                                            <div className="">Repair Order Created By</div>
+                                            <div className="bg-gray-100">{ROData?.repairOrder.user_id}</div>
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div className="gap-2 mt-3">
+                                            <div className="">Repair Order Closed By</div>
+                                            <div className="bg-gray-100">{ROData?.repairOrder.user_id}</div>
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div className="gap-2 mt-3">
+                                            <div className="">Last Activity Created By</div>
+                                            <div className="bg-gray-100">{ROData?.repairOrder.user_id}</div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Tabs.TabPane>
+                            <Tabs.TabPane tab="Contact Info" key={2}>
                                 <div className={'definitions'}>
                                     <Row gutter={20} className={''}>
                                         <Col span={8} xs={240} s={24} lg={8} className={''}>
                                             <div>
                                                 <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Contact Name</label>
-                                                <Field type="text" placeholder='Contact Name' name="description" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                                <Field type="text" placeholder='Contact Name' name="contact_person" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                                 <ErrorMessage name="name" component="div" />
                                             </div>
                                         </Col>
@@ -355,7 +391,7 @@ export const RepairOrder = () => {
                                     </Row>
                                 </div>
                             </Tabs.TabPane>
-                         <Tabs.TabPane tab="Repair Details" key={2}>
+                         <Tabs.TabPane tab="Repair Description" key={3}>
                              <div>
                                  <Field
                                      as="textarea" // Use "textarea" as the input type
@@ -366,21 +402,21 @@ export const RepairOrder = () => {
                                  />
                              </div>
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab="Items" key={3} className={''}>
+                            <Tabs.TabPane tab="Items" key={4} className={''}>
                                 <div className=''>
                                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
                                         <AgGridReact rowData={'SQData?.sales_quotation_items'} columnDefs={woColumns} onCellClicked={handleWOCellClicked}/>
                                     </div>
                                 </div>
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab="Activites" key={4}>
+                            <Tabs.TabPane tab="Activites" key={5}>
                                 <div className=''>
                                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
                                         <AgGridReact rowData={'SQData?.sales_quotation_items'} columnDefs={woColumns} onCellClicked={handleWOCellClicked}/>
                                     </div>
                                 </div>
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab="Resolution Details" key={5}>
+                            <Tabs.TabPane tab="Resolution Description" key={6}>
                                 <div>
                                     <Field
                                         as="textarea" // Use "textarea" as the input type
