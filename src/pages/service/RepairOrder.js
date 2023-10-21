@@ -21,7 +21,10 @@ export const RepairOrder = () => {
     const [ROData, setROData] = useState()
     const [problemTypes, setProblemTypes] = useState([])
     const contractData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.id
-    const contractEndData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.end_date
+    const contractEndData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.end_dat
+    const closedOn =  ROData?.repairOrder.closed_on == null ? '...' :ROData?.repairOrder.closed_on
+    const closedBy =  ROData?.repairOrder.closed_by == null ? '...' :ROData?.repairOrder.closed_by
+
 
     const woColumns = [
         // {
@@ -324,13 +327,13 @@ export const RepairOrder = () => {
                                     <Col>
                                         <div className="gap-2 mt-3">
                                             <div className="">Repair Order Closed On</div>
-                                            <div className="bg-gray-100">{ROData?.repairOrder.closed_on}.</div>
+                                            <div className="bg-gray-100">{closedOn}.</div>
                                         </div>
                                     </Col>
                                     <Col>
                                         <div className="gap-2 mt-3">
                                             <div className="">Last Updated On</div>
-                                            <div className="bg-gray-100">{ROData?.repairOrder.updatedAt}</div>
+                                            <div className="bg-gray-100">{closedBy}</div>
                                         </div>
                                     </Col>
                                 </Row>
