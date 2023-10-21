@@ -15,5 +15,21 @@
 }
 
 .eq {
-    width: 30rem;
+    width: 100rem;
+}
+
+.ro-tabs {
+    height: 20rem;
+}
+
+.field-short {
+    width: 9rem;
+}
+
+.field-medium {
+    width: 18rem;
+}
+
+.lower {
+    margin-left: -11rem;
 }

@@ -6,7 +6,8 @@ const serviceSlice = createSlice({
     name: 'service',
     initialState: {
         ecID: null,
-        scID: null
+        scID: null,
+        roID: null,
     },
     reducers: {
         setEcID: (state, action) => {
@@ -15,10 +16,13 @@ const serviceSlice = createSlice({
         setScID: (state, action) => {
             state.scID = action.payload;
         },
+        setRoID: (state, action) => {
+            state.roID = action.payload;
+        },
     },
 
 
 });
 
-export const { setEcID, setScID } = serviceSlice.actions;
+export const { setEcID, setScID, setRoID } = serviceSlice.actions;
 export default serviceSlice.reducer;

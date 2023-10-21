@@ -107,10 +107,11 @@ export const EquipmentCard = () => {
         status: ECData?.status,
         mfr_serial: ECData?.mfr_serial,
         serial_no: ECData?.serial_no,
-        delivery_id: ECData?.delivery_id,
-        inv_item_id: ECData?.inv_item_id,
-        technician_id: ECData?.technician_id,
+        delivery_id: isNaN(ECData?.delivery_id) ? null : parseInt(ECData?.delivery_id, 10), // Check and convert to number or set to null
+        inv_item_id: isNaN(ECData?.inv_item_id) ? null : parseInt(ECData?.inv_item_id, 10), // Check and convert to number or set to null
+        technician_id: isNaN(ECData?.technician_id) ? null : parseInt(ECData?.technician_id, 10), // Check and convert to number or set to null
     };
+
 
 
     const handleSubmit = async (values, actions) => {

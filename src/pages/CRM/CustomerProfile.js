@@ -523,7 +523,8 @@ export const CustomerProfile = () => {
                     </Tabs.TabPane>
                     <Tabs.TabPane tab='Sales History' key={3}></Tabs.TabPane>
                     <Tabs.TabPane tab='Service History' key={4}></Tabs.TabPane>
-                    <Tabs.TabPane tab='Contracts' key={5}></Tabs.TabPane>
+                    <Tabs.TabPane tab='Equipment' key={5}></Tabs.TabPane>
+                    <Tabs.TabPane tab='Contracts' key={6}></Tabs.TabPane>
                     <Tabs.TabPane tab='Attachments' key={7}>
                         <Row gutter={20}>
 

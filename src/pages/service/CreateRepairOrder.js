@@ -4,12 +4,12 @@ import axios from "axios";
 import {url} from "../../connections/toServer";
 import {useDispatch} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {SearchCustomerSC} from "../../modals/service/SearchCustomerSC";
-import { setScID} from "../../redux/slices/serviceSlice";
+import {SearchCustomerRO} from "../../modals/service/SearchCustomerRO";
+import {setRoID} from "../../redux/slices/serviceSlice";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 
-export const CreateServiceContract = () => {
+export const CreateRepairOrder = () => {
     const tenantId = JSON.parse(localStorage.getItem('token')).tenant_id
     const token = JSON.parse(localStorage.getItem('token')).access_token
     const userID = JSON.parse(localStorage.getItem('token')).user_id
@@ -18,9 +18,11 @@ export const CreateServiceContract = () => {
     const [customers, setCustomers] = useState()
     const [selectedCustomer, setSelectedCustomer] = useState()
     const [showModal, setShowModal] = useState(false)
-    const [contractType, setContractType] = useState('');
-    const handleDropdownChange = (event) => {
-        setContractType(event.target.value); // Update the state with the selected value
+    const [equipment, setEquipment] = useState('');
+
+    // Create a function to handle changes in the input field
+    const handleInputChange = (e) => {
+        setEquipment(e.target.value);
     };
     const getCustomersData = async () => {
         try {
@@ -47,12 +49,12 @@ export const CreateServiceContract = () => {
             tenant_id: tenantId,
             customer_id: selectedCustomer?.id,
             user_id: userID,
-            contract_type: contractType
+            equipment_id: equipment,
         }
 
         try {
             dispatch(showLoading())
-            const res = await axios.post(`${url}/api/service/create-service-contract`, dataToPost,
+            const res = await axios.post(`${url}/api/service/create-repair-order`, dataToPost,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -62,19 +64,18 @@ export const CreateServiceContract = () => {
 
             if (res.status === 200) {
                 dispatch(hideLoading())
-                dispatch(setScID(res.data.data))
+                dispatch(setRoID(res.data.data))
                 // toast.success(res.data.message);
-                console.log('SC ID', res.data.data)
-                navigate('/service/contract')
+                console.log('RO ID', res.data.data)
+                navigate('/service/repairorder')
 
             } else {
                 dispatch(hideLoading())
-                toast.error(res.response.data.error)
-                console.error('Please fill out all required datafnianfdebs');
+                toast.error(res.data.error)
             }
         } catch (error) {
             dispatch(hideLoading())
-            toast.error('Please fill out all required fields')
+            toast.error('Error creating repair order')
             // Handle any other errors that occurred during the submission process
             console.error('An error occurred:', error);
         }
@@ -86,8 +87,8 @@ export const CreateServiceContract = () => {
     return (
         <>
             <Layout/>
-            <h1 className={'title ml-2'}>Create Service Contract</h1>
-            {showModal && <SearchCustomerSC showModal={setShowModal} customers={customers} setSelectedCustomer={setSelectedCustomer}/>}
+            <h1 className={'title ml-2'}>Create Repair Order</h1>
+            {showModal && <SearchCustomerRO showModal={setShowModal} customers={customers} setSelectedCustomer={setSelectedCustomer}/>}
             <div className="layout">
                 <i className="ri-checkbox-fill mb-1" onClick={handleSubmit}/>
                 <div className={'container'} >
@@ -107,13 +108,15 @@ export const CreateServiceContract = () => {
 
                     </div>
                     <div>
-                        <select onChange={handleDropdownChange} className={'block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6'}>
-                            <option value="">Select Contract Type</option>
-                            <option value="service">Service</option>
-                            <option value="repair">Repair</option>
-
-                        </select>
+                        <input
+                            type="text"
+                            value={equipment}
+                            onChange={handleInputChange}
+                            className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            placeholder="Equipment No."
+                        />
                     </div>
+
                 </div>
             </div>
         </>

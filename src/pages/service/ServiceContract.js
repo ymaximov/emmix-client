@@ -19,6 +19,7 @@ export const ServiceContract = () => {
     console.log(SCID, 'SC IDDDD')
     const dispatch = useDispatch()
     const [SCData, setSCData] = useState()
+    const contractType = SCData?.contract_type == 'service' ? 'Service' : 'Repair'
 
     const woColumns = [
         // {
@@ -103,7 +104,16 @@ export const ServiceContract = () => {
         }
     };
     const initialValues = {
-        status: SCData?.status,
+        status: SCData?.serviceContract.status,
+        equipment_id: SCData?.serviceContract.equipment_id,
+        description: SCData?.serviceContract.description,
+        remarks: SCData?.serviceContract.remarks,
+        service_type: SCData?.serviceContract.service_type,
+        response_time: SCData?.serviceContract.response_time,
+        resolution_time: SCData?.serviceContract.resolution_time,
+        response_time_type: SCData?.serviceContract.response_time_type,
+        resolution_time_type: SCData?.serviceContract.resolution_time_type,
+        technician_id: SCData?.serviceContract.technician_id
     };
 
 
@@ -121,7 +131,7 @@ export const ServiceContract = () => {
         try {
             values.id = SCID;
             values.tenant_id = tenantID;
-            const res = await axios.put(`${url}/api/service/update-ec`, values, {
+            const res = await axios.put(`${url}/api/service/update-sc`, values, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -130,7 +140,7 @@ export const ServiceContract = () => {
             if (res.status === 200) {
                 // Form data submitted successfully, handle success case here
                 toast.success(res.data.message);
-                getSCData()
+                getSCData();
                 console.log('Form submitted successfully!');
             } else {
                 toast.error(res.data.message);
@@ -142,7 +152,6 @@ export const ServiceContract = () => {
         }
     };
 
-
     useEffect(() => {
         getSCData()
 
@@ -151,7 +160,7 @@ export const ServiceContract = () => {
     return (
         <>
             <Layout />
-            <div className={'title ml-2'}>Service Contract {SCData?.serviceContract?.id}</div>
+            <div className={'title ml-2'}>{contractType} Contract {SCData?.serviceContract?.id}</div>
             <div className="layout">
 
                 <Formik
@@ -201,7 +210,7 @@ export const ServiceContract = () => {
                                     <option  value='draft'>
                                         Draft
                                     </option>
-                                    <option value='approved '>
+                                    <option value='approved'>
                                         Approved
                                     </option>
                                     <option  value='terminated'>
@@ -216,16 +225,16 @@ export const ServiceContract = () => {
                             </div>
                         </Col>
                         </Row>
-                        {SCData?.serviceContract.contract_type == 'equipment' && <Row  gutter={20} className={'eq'}>
+                        {SCData?.serviceContract.contract_type == 'repair' && <Row  gutter={20} className={'eq'}>
                             <Col span={8} xs={240} s={24} lg={8} className={''}>
                                 <div className={'flex'}>
                                 <div>
                                     <label htmlFor="name" className='block text-sm font-medium leading-6 text-gray-900'>Equipment No.</label>
-                                    <Field type="text" placeholder='Equipment No.' name="description" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
+                                    <Field type="text" placeholder='Equipment No.' name="equipment_id" className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'/>
                                     <ErrorMessage name="name" component="div" />
                                 </div>
                                     <div className={'mt-7 ml-2'}>
-                                        ID
+                                        {SCData?.serviceContract?.equipment_card?.inventory_item?.item_name}
                                     </div>
                                 </div>
                             </Col>
@@ -250,19 +259,19 @@ export const ServiceContract = () => {
                                         <Col span={8} xs={240} s={24} lg={8}>
                                             <div>
                                                 <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    Contract Type
+                                                    Service Type
                                                 </label>
                                                 <Field
                                                     as="select"
                                                     id="country"
-                                                    name="contract_type"
+                                                    name="service_type"
                                                     className=" block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option  value='regular'>
                                                         Regular
                                                     </option>
-                                                    <option value='equipment '>
-                                                        Equipment
+                                                    <option value='warranty '>
+                                                        Warranty
                                                     </option>
                                                 </Field>
                                                 <ErrorMessage name="country" component="div" className="text-red-600" />
@@ -287,10 +296,10 @@ export const ServiceContract = () => {
                                                             name="response_time_type"
                                                             className="block hours w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
-                                                            <option  value='regular'>
+                                                            <option  value='hours'>
                                                                 Hours
                                                             </option>
-                                                            <option value='equipment '>
+                                                            <option value='days'>
                                                                 Days
                                                             </option>
                                                         </Field>
@@ -317,10 +326,10 @@ export const ServiceContract = () => {
                                                             name="resolution_time_type"
                                                             className="block hours w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
-                                                            <option  value='regular'>
+                                                            <option  value='hours'>
                                                                 Hours
                                                             </option>
-                                                            <option value='equipment '>
+                                                            <option value='days'>
                                                                 Days
                                                             </option>
                                                         </Field>
