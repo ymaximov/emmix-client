@@ -20,7 +20,8 @@ export const RepairOrder = () => {
     const dispatch = useDispatch()
     const [ROData, setROData] = useState()
     const [problemTypes, setProblemTypes] = useState([])
-    // const contractType = SCData?.contract_type == 'service' ? 'Service' : 'Repair'
+    const contractData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.id
+    const contractEndData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.end_date
 
     const woColumns = [
         // {
@@ -138,7 +139,7 @@ export const RepairOrder = () => {
         try {
             values.id = ROID;
             values.tenant_id = tenantID;
-            const res = await axios.put(`${url}/api/service/update-sc`, values, {
+            const res = await axios.put(`${url}/api/service/update-ro`, values, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -158,6 +159,7 @@ export const RepairOrder = () => {
             console.error('An error occurred:', error);
         }
     };
+
 
     useEffect(() => {
         getROData()
@@ -250,13 +252,13 @@ export const RepairOrder = () => {
                             <Col>
                                 <div className="gap-2 mt-3">
                                     <div className="">Repair Contract No.</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.id}</div>
+                                    <div className="bg-gray-100">{contractData}</div>
                                 </div>
                             </Col>
                             <Col>
                                 <div className="gap-2 mt-3">
                                     <div className="">Repair Contract Expiration</div>
-                                    <div className="bg-gray-100">g</div>
+                                    <div className="bg-gray-100">.{contractEndData}</div>
                                 </div>
                             </Col>
                         </Row>
@@ -264,7 +266,7 @@ export const RepairOrder = () => {
                             <Col>
                                 <div className="gap-2 mt-3">
                                     <div className="">Repair Contract Created By</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.id}</div>
+                                    <div className="bg-gray-100">{ROData?.contractData?.user?.id} {ROData?.contractData?.user?.first_name} {ROData?.contractData?.user?.last_name}</div>
                                 </div>
                             </Col>
                             <Col>
