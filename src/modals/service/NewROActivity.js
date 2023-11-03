@@ -12,7 +12,7 @@ import TimePicker from 'react-time-picker';
 import {url} from "../../connections/toServer";
 import axios from 'axios'
 
-export const ROActivity = ({showModal, getROData, ROID}) => {
+export const NewROActivity = ({showModal, getROData, ROID}) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const token = JSON.parse(localStorage.getItem('token')).access_token;
@@ -60,7 +60,6 @@ export const ROActivity = ({showModal, getROData, ROID}) => {
                     <Formik
                         initialValues={{
                             activity_type: null,
-                            subject: null,
                             start_date: null,
                             start_time: null,
                             end_date: null,
@@ -75,7 +74,6 @@ export const ROActivity = ({showModal, getROData, ROID}) => {
                                     technician_id: userID,
                                     ro_id: ROID,
                                     meeting_location: values.meeting_location,
-                                    subject: values.subject,
                                     start_date: values.start_date,
                                     start_time: values.start_time,
                                     end_date: values.end_date,

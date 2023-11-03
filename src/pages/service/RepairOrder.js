@@ -10,7 +10,9 @@ import './service.css'
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {AgGridReact} from "ag-grid-react";
 import toast from "react-hot-toast";
-import {ROActivity} from "../../modals/service/ROActivity";
+import {NewROActivity} from "../../modals/service/NewROActivity";
+import {setPoId} from "../../redux/slices/purchaseOrderSlice";
+import {ShowROActivity} from "../../modals/service/ShowROActivity";
 
 export const RepairOrder = () => {
 
@@ -25,8 +27,18 @@ export const RepairOrder = () => {
     const contractEndData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.end_dat
     const closedOn =  ROData?.repairOrder?.closed_on == null ? '...' :ROData?.repairOrder.closed_on
     const closedBy =  ROData?.repairOrder?.closed_by == null ? '...' :ROData?.repairOrder.closed_by
-    const [showActivityModal, setShowActivityModal] = useState(false)
+    const [showNewActivityModal, setShowNewActivityModal] = useState(false)
+    const [showShowActivityModal, setShowShowActivityModal] = useState(false)
     const [showAddMaterialsModal, setShowAddMaterialsModal] = useState(false)
+    const [activityDescription, setActivityDescription] = useState('')
+    const [technician, setTechnician] = useState('')
+    const [meetingLocation, setMeetingLocation] = useState()
+    const [startTime, setStartTime] = useState()
+    const [endTime, setEndTime] = useState()
+    const [startDate, setStartDate] = useState()
+    const [endDate, setEndDate] = useState()
+    const [remarks, setRemarks] = useState()
+    const [activityID, setActivityID] = useState()
 
 
     const woColumns = [
@@ -87,6 +99,20 @@ export const RepairOrder = () => {
         console.log(event, 'EVENT');
 
     }
+    const handleActivityCellClicked = (params) => {
+        console.log('AG GRID cell clicked', params);
+        setActivityDescription(params.data.description)
+        setTechnician(params.data.user.first_name + ' ' + params.data.user.last_name)
+        setMeetingLocation(params.data.meeting_location)
+        setStartDate(params.data.start_date)
+        setStartTime(params.data.start_time)
+        setEndTime(params.data.end_time)
+        setEndDate(params.data.end_date)
+        setRemarks(params.data.remarks)
+        setActivityID(params.data.id)
+        setShowShowActivityModal(true)
+    };
+
 
     const handleContraxtslicked = (event) => {
         console.log(event, 'EVENT');
@@ -177,8 +203,8 @@ export const RepairOrder = () => {
             <Layout />
             <div className={'title ml-2'}>Repair Order {ROData?.repairOrder.id}</div>
             <div className="layout">
-                {showActivityModal && <ROActivity showModal={setShowActivityModal} getROData={getROData} ROID={ROID}/>}
-
+                {showNewActivityModal && <NewROActivity showModal={setShowNewActivityModal} getROData={getROData} ROID={ROID}/>}
+                {showShowActivityModal && <ShowROActivity id={activityID} meeting={meetingLocation} startTime={startTime} startDate={startDate} endTime={endTime} endDate={endDate} remarks={remarks} description={activityDescription} technician={technician} showModal={setShowShowActivityModal} getROData={getROData} ROID={ROID}/>}
                 <Formik
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
@@ -420,10 +446,10 @@ export const RepairOrder = () => {
                                 </div>
                             </Tabs.TabPane>
                             <Tabs.TabPane tab="Activites" key={5}>
-                                <i className="ri-add-line" onClick={() => setShowActivityModal(true)}></i>
+                                <i className="ri-add-line" onClick={() => setShowShowActivityModal(true)}></i>
                                 <div className=''>
                                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                                        <AgGridReact rowData={ROData?.repairOrder?.repair_order_activities} columnDefs={activitiesColumns} onCellClicked={handleWOCellClicked}/>
+                                        <AgGridReact rowData={ROData?.repairOrder?.repair_order_activities} columnDefs={activitiesColumns} onCellClicked={handleActivityCellClicked}/>
                                     </div>
                                 </div>
                             </Tabs.TabPane>
