@@ -58,32 +58,28 @@ export const RepairOrder = () => {
 
     const activitiesColumns = [
         {
-            headerName: "Technician",
-            field: "tenant_id",
+            headerName: "Tech First Name",
+            field: "user.first_name",
         },
         {
-            headerName: "Activity Type",
-            field: "inv_item_id",
+            headerName: "Tech Last Name",
+            field: "user.last_name",
         },
         {
-            headerName: "Start Date",
-            field: "inventory_item.item_name",
+        headerName: "Activity Type",
+            field: "meeting_location",
+    },
+        {
+            headerName: `Subject`,
+            field: "description",
         },
         {
-            headerName: "Start Time",
-            field: "quantity",
-        },
-        {
-            headerName: `End Date`,
-            field: "unit_price",
-        },
-        {
-            headerName: `End Time`,
-            field: "warehouse.warehouse_name",
+            headerName: `Duration (Hrs)`,
+            field: "duration",
         },
         {
             headerName: `Status`,
-            field: "warehouse.warehouse_name",
+            field: "status",
         },
     ];
 
@@ -427,7 +423,7 @@ export const RepairOrder = () => {
                                 <i className="ri-add-line" onClick={() => setShowActivityModal(true)}></i>
                                 <div className=''>
                                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                                        <AgGridReact rowData={'SQData?.sales_quotation_items'} columnDefs={activitiesColumns} onCellClicked={handleWOCellClicked}/>
+                                        <AgGridReact rowData={ROData?.repairOrder?.repair_order_activities} columnDefs={activitiesColumns} onCellClicked={handleWOCellClicked}/>
                                     </div>
                                 </div>
                             </Tabs.TabPane>
