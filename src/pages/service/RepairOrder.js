@@ -10,6 +10,7 @@ import './service.css'
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {AgGridReact} from "ag-grid-react";
 import toast from "react-hot-toast";
+import {ROActivity} from "../../modals/service/ROActivity";
 
 export const RepairOrder = () => {
 
@@ -22,8 +23,10 @@ export const RepairOrder = () => {
     const [problemTypes, setProblemTypes] = useState([])
     const contractData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.id
     const contractEndData = ROData?.contractData == null ? 'NOT IN CONTRACT' : ROData?.contractData?.end_dat
-    const closedOn =  ROData?.repairOrder.closed_on == null ? '...' :ROData?.repairOrder.closed_on
-    const closedBy =  ROData?.repairOrder.closed_by == null ? '...' :ROData?.repairOrder.closed_by
+    const closedOn =  ROData?.repairOrder?.closed_on == null ? '...' :ROData?.repairOrder.closed_on
+    const closedBy =  ROData?.repairOrder?.closed_by == null ? '...' :ROData?.repairOrder.closed_by
+    const [showActivityModal, setShowActivityModal] = useState(false)
+    const [showAddMaterialsModal, setShowAddMaterialsModal] = useState(false)
 
 
     const woColumns = [
@@ -53,29 +56,33 @@ export const RepairOrder = () => {
         },
     ];
 
-    const contractsColumns = [
-        // {
-        //     headerName: "Tenant ID",
-        //     field: "tenant_id",
-        // },
+    const activitiesColumns = [
         {
-            headerName: "Item No.",
+            headerName: "Technician",
+            field: "tenant_id",
+        },
+        {
+            headerName: "Activity Type",
             field: "inv_item_id",
         },
         {
-            headerName: "Item Name",
+            headerName: "Start Date",
             field: "inventory_item.item_name",
         },
         {
-            headerName: "Quantity",
+            headerName: "Start Time",
             field: "quantity",
         },
         {
-            headerName: `Price Per Unit`,
+            headerName: `End Date`,
             field: "unit_price",
         },
         {
-            headerName: `Warehouse`,
+            headerName: `End Time`,
+            field: "warehouse.warehouse_name",
+        },
+        {
+            headerName: `Status`,
             field: "warehouse.warehouse_name",
         },
     ];
@@ -174,6 +181,7 @@ export const RepairOrder = () => {
             <Layout />
             <div className={'title ml-2'}>Repair Order {ROData?.repairOrder.id}</div>
             <div className="layout">
+                {showActivityModal && <ROActivity showModal={setShowActivityModal} getROData={getROData} ROID={ROID}/>}
 
                 <Formik
                     initialValues={initialValues}
@@ -201,15 +209,15 @@ export const RepairOrder = () => {
                             <Col>
                                 <div className="grid grid-cols-2 gap-2 mt-4 mb-7">
                                     <div className="text-right">Equipment Card No.</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.id}</div>
+                                    <div className="bg-gray-100">{ROData?.repairOrder?.equipment_card.id}</div>
                                     <div className="text-right">Item Name</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.inventory_item.item_name}</div>
+                                    <div className="bg-gray-100">{ROData?.repairOrder?.equipment_card?.inventory_item?.item_name}</div>
                                     <div className="text-right">Manufacturer Serial No.</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.mfr_serial}</div>
+                                    <div className="bg-gray-100">{ROData?.repairOrder?.equipment_card?.mfr_serial}</div>
                                     <div className="text-right">Serial No.</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.serial_no}</div>
+                                    <div className="bg-gray-100">{ROData?.repairOrder?.equipment_card?.serial_no}</div>
                                     <div className="text-right">SKU</div>
-                                    <div className="bg-gray-100">{ROData?.repairOrder.equipment_card.inventory_item.manuf_sku}</div>
+                                    <div className="bg-gray-100">{ROData?.repairOrder?.equipment_card?.inventory_item?.manuf_sku}</div>
                                 </div>
                             </Col>
                         </Row>
@@ -285,8 +293,8 @@ export const RepairOrder = () => {
 
                         </Row>
 
-
-                        <Tabs className={'mt-3 ro-tabs'}>
+                        <div className={'tabs-ro'}>
+                        <Tabs className={'mt-3 ro-tabs p-3'}>
                             <Tabs.TabPane tab="General" key={0}>
                                 <Row gutter={20}>
                                     <Col span={8} xs={240} s={24} lg={8} className={''}>
@@ -316,7 +324,7 @@ export const RepairOrder = () => {
                                     </div>
                                 </Col>
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab='Details' key={1}>
+                            <Tabs.TabPane tab='Status' key={1}>
                                 <Row gutter={20}>
                                     <Col>
                                         <div className="gap-2 mt-3">
@@ -407,7 +415,8 @@ export const RepairOrder = () => {
                                  />
                              </div>
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab="Items" key={4} className={''}>
+                            <Tabs.TabPane tab="Materials" key={4} className={''}>
+                                <i className="ri-add-line" onClick={() => setShowAddMaterialsModal(true)}></i>
                                 <div className=''>
                                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
                                         <AgGridReact rowData={'SQData?.sales_quotation_items'} columnDefs={woColumns} onCellClicked={handleWOCellClicked}/>
@@ -415,9 +424,10 @@ export const RepairOrder = () => {
                                 </div>
                             </Tabs.TabPane>
                             <Tabs.TabPane tab="Activites" key={5}>
+                                <i className="ri-add-line" onClick={() => setShowActivityModal(true)}></i>
                                 <div className=''>
                                     <div className="ag-theme-alpine" style={{ height: '15rem', width: '100%' }}>
-                                        <AgGridReact rowData={'SQData?.sales_quotation_items'} columnDefs={woColumns} onCellClicked={handleWOCellClicked}/>
+                                        <AgGridReact rowData={'SQData?.sales_quotation_items'} columnDefs={activitiesColumns} onCellClicked={handleWOCellClicked}/>
                                     </div>
                                 </div>
                             </Tabs.TabPane>
@@ -456,7 +466,7 @@ export const RepairOrder = () => {
                                 </div>
                             </Tabs.TabPane>
                         </Tabs>
-
+                        </div>
                     </Form>
                 </Formik>
 

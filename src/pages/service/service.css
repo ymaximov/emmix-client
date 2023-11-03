@@ -3,7 +3,7 @@
 }
 
 .definitions {
-    margin-right: 50rem;
+    margin-right: 35rem;
 }
 
 .lower {
@@ -36,4 +36,16 @@
 
 .ro-description {
     width: 50rem;
+}
+
+.tabs-ro {
+    background-color: whitesmoke;
+}
+
+.subject-ro {
+    width: 35rem;
+}
+
+.status {
+    width: 10rem;
 }
