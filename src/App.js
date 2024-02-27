@@ -1,14 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom";
-import React, {useEffect} from "react";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import React, {createContext, useReducer} from "react";
 import {Home} from "./pages/Home";
 import {Toaster} from "react-hot-toast";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {Login} from './pages/login/Login'
 import PublicRoute from "./routes/PublicRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import {setUser, userSlice} from "./redux/slices/userSlice";
 import AdminRoute from "./routes/AdminRoute";
 import {Onboarding} from "./pages/Admin/Onboarding";
 import {Tenants} from "./pages/Admin/Tenants";
@@ -22,14 +21,10 @@ import {Inventory} from "./pages/inventory/Inventory";
 import {InventoryItemProfile} from "./pages/inventory/InventoryItemProfile";
 import {Purchasing} from "./pages/purchasing/Purchasing";
 import {CreatePurchaseOrder} from "./pages/purchasing/CreatePurchaseOrder";
-import {TokenExpirationHandler} from "./pages/login/TokenExpirationHandler";
 import {PurchaseOrder} from "./pages/purchasing/PurchaseOrder";
 import {GoodsReceipt} from "./pages/purchasing/GoodsReceipt";
 import {Receiving} from "./pages/purchasing/Receiving";
-import {ViewPO} from "./pages/purchasing/ViewPO";
 import {Sales} from "./pages/sales/Sales";
-import {CreateSalesQuotation} from "./pages/sales/CreateSalesQuotation";
-import {OldViewSQ} from "./pages/sales/OldViewSQ";
 import {CreateSalesOrder} from "./pages/sales/CreateSalesOrder";
 import {APInvoice} from "./pages/purchasing/APInvoice";
 import {Invoice} from "./pages/purchasing/Invoice";
@@ -45,6 +40,11 @@ import {CreateServiceContract} from "./pages/service/CreateServiceContract";
 import {ServiceContract} from "./pages/service/ServiceContract";
 import {CreateRepairOrder} from "./pages/service/CreateRepairOrder";
 import {RepairOrder} from "./pages/service/RepairOrder";
+import {Invoices} from "./pages/Admin/Invoices";
+import Quickbooks from "./pages/Admin/Quickbooks";
+import { initialState, reducer } from './context/reducer';
+
+export const QuickbookContext = createContext();
 
 const router = createBrowserRouter([
   {
@@ -70,6 +70,14 @@ const router = createBrowserRouter([
     {
         path: '/admin/resetpassword',
         element: <AdminRoute><ResetPassword /></AdminRoute>
+    },
+    {
+        path: '/admin/invoices',
+        element: <AdminRoute><Invoices/></AdminRoute>
+    },
+    {
+        path: '/admin/quickbooks',
+        element: <AdminRoute><Quickbooks/></AdminRoute>
     },
     {
         path: '/crm',
@@ -186,7 +194,7 @@ const router = createBrowserRouter([
 ])
 function App() {
   const {loading} = useSelector((state) => state.alerts)
-
+    const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <div>
@@ -201,7 +209,14 @@ function App() {
             </div>
         )}
       <Toaster position="top-center" reverseOrder={false} />
-      <RouterProvider router={router} />
+        <QuickbookContext.Provider
+            value={{
+                state,
+                dispatch,
+            }}
+        >
+            <RouterProvider router={router}/>
+        </QuickbookContext.Provider>
     </div>
   );
 }
