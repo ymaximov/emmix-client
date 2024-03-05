@@ -8,6 +8,7 @@ import {QuickbookContext} from '../../App';
 import {Layout} from "../layout/Layout";
 
 export default function Quickbooks() {
+    const token = JSON.parse(localStorage.getItem('token')).access_token
     const {state, dispatch} = useContext(QuickbookContext);
     const navigate = useNavigate();
     const [data, setData] = useState({errorMessage: '', isLoading: false});
@@ -40,7 +41,11 @@ export default function Quickbooks() {
             };
             const proxy_url = state.proxy_url;
 
-            axios.post(proxy_url, requestData).then(response => {
+            axios.post(proxy_url, requestData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }).then(response => {
                 dispatch({
                     type: 'LOGIN',
                     payload: {user: response.data, isLoggedIn: true},
@@ -55,11 +60,16 @@ export default function Quickbooks() {
     }, [state, dispatch, data]);
 
     const buttonClicked = () => {
-        fetch(authorize_url)
+        fetch(authorize_url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
             .then((res) => res.text())
             .then((url) => {
                 window.location.href = url;
-            });
+            })
+            .catch(err => console.error(err));
     };
 
     return (
@@ -70,7 +80,7 @@ export default function Quickbooks() {
                 <span>{data.errorMessage}</span>
                 <div className="login-container" style={{minHeight: 200}}>
                     {data.isLoading ? (
-                        <div style={{ marginTop: 100 }}>
+                        <div style={{marginTop: 100}}>
                             <Spin size="large" tip="Please wait...connecting to Quickbooks Dashboard">
                                 <div className="content"/>
                             </Spin>

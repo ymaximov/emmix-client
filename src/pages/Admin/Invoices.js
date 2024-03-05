@@ -9,7 +9,7 @@ import {Tabs, Col, Row, Tag} from 'antd';
 import {Layout} from '../layout/Layout';
 import {QuickbookContext} from '../../App';
 
-const { Text } = Typography;
+const {Text} = Typography;
 const onChange = key => null;
 
 const INVOICES_URL = 'http://localhost:8080/api/admin/invoices';
@@ -33,6 +33,9 @@ const releaseSO = async (totalAmount, so_id) => {
         method: 'post',
         data: {
             totalAmount
+        },
+        headers: {
+            Authorization: `Bearer ${token}`,
         }
     })
 
@@ -49,87 +52,90 @@ const releaseSO = async (totalAmount, so_id) => {
     })
 };
 
-const items = ({ invoices = [], salesOrders }, getInvoice, setFetchTrigger) => [
-  {
-    key: "1",
-    label: <div>All Invoices {invoices?.QueryResponse?.totalCount ?? 0}</div>,
-    children: (
-      <div>
-        {invoices.QueryResponse &&
-          invoices.QueryResponse?.Invoice?.map((invoice, index) => (
-            <Row gutter={16} key={index} style={{ marginBottom: 8 }}>
-              <Col className="gutter-row" span={5}>
-                {invoice.CustomerRef.name} - Total Amount:{" "}
-                <strong>{invoice.TotalAmt}$</strong>
-              </Col>
-              <Col className="gutter-row" span={6}>
-                <Button onClick={() => getInvoice(invoice.Id)}>Get PDF</Button>
-              </Col>
-            </Row>
-          ))}
-      </div>
-    ),
-  },
-  {
-    key: "2",
-    label: "Sales Orders",
-    children: (
-      <div>
-        {salesOrders &&
-          salesOrders.map((so, index) => (
-            <Row gutter={[16, 8]} key={`${index}-so`} style={{ marginBottom: 8 }}>
-              <Col className="gutter-row" span={2}>
-                Status: <Tag color="default">{so.status}</Tag>
-              </Col>
-              <Col className="gutter-row" span={2}>
-                Sales tax: {Number(so.sales_tax)}$
-              </Col>
-              <Col className="gutter-row" span={2}>
-                Subtotal: {Number(so.subtotal)}$
-              </Col>
-              <Col className="gutter-row" span={2}>
-                <strong>Total</strong>: {Number(so.total_amount)}$
-              </Col>
-              <Col className="gutter-row" span={4}>
-                <Text strong>Due Date</Text>:{" "}
-                {new Date(so.due_date).toLocaleString("en-GB", {
-                  timeZone: "UTC",
-                })}
-              </Col>
-              <Col className="gutter-row" span={4}>
-                <Button
-                  onClick={() => {
-                    releaseSO(so.total_amount, so.id);
-                    setFetchTrigger();
-                  }}
-                  disabled={so.released}
-                >
-                    {so.released ? 'Released' : 'Release'}
-                </Button>
-              </Col>
-            </Row>
-          ))}
-      </div>
-    ),
-  },
+const items = ({invoices = [], salesOrders}, getInvoice, setFetchTrigger) => [
+    {
+        key: "1",
+        label: <div>All Invoices {invoices?.QueryResponse?.totalCount ?? 0}</div>,
+        children: (
+            <div>
+                {invoices.QueryResponse &&
+                    invoices.QueryResponse?.Invoice?.map((invoice, index) => (
+                        <Row gutter={16} key={index} style={{marginBottom: 8}}>
+                            <Col className="gutter-row" span={5}>
+                                {invoice.CustomerRef.name} - Total Amount:{" "}
+                                <strong>{invoice.TotalAmt}$</strong>
+                            </Col>
+                            <Col className="gutter-row" span={2}>
+                                <Button onClick={() => getInvoice(invoice.Id)}>Get PDF</Button>
+                            </Col>
+                            <Col className="gutter-row" span={2}>
+                                <Button onClick={() => getInvoice(invoice.Id)}>Void</Button>
+                            </Col>
+                        </Row>
+                    ))}
+            </div>
+        ),
+    },
+    {
+        key: "2",
+        label: "Sales Orders",
+        children: (
+            <div>
+                {salesOrders &&
+                    salesOrders.map((so, index) => (
+                        <Row gutter={[16, 8]} key={`${index}-so`} style={{marginBottom: 8}}>
+                            <Col className="gutter-row" span={2}>
+                                Status: <Tag color="default">{so.status}</Tag>
+                            </Col>
+                            <Col className="gutter-row" span={2}>
+                                Sales tax: {Number(so.sales_tax)}$
+                            </Col>
+                            <Col className="gutter-row" span={2}>
+                                Subtotal: {Number(so.subtotal)}$
+                            </Col>
+                            <Col className="gutter-row" span={2}>
+                                <strong>Total</strong>: {Number(so.total_amount)}$
+                            </Col>
+                            <Col className="gutter-row" span={4}>
+                                <Text strong>Due Date</Text>:{" "}
+                                {new Date(so.due_date).toLocaleString("en-GB", {
+                                    timeZone: "UTC",
+                                })}
+                            </Col>
+                            <Col className="gutter-row" span={4}>
+                                <Button
+                                    onClick={() => {
+                                        releaseSO(so.total_amount, so.id);
+                                        setFetchTrigger();
+                                    }}
+                                    disabled={so.released}
+                                >
+                                    {so.released ? 'Released' : 'Release'}
+                                </Button>
+                            </Col>
+                        </Row>
+                    ))}
+            </div>
+        ),
+    },
 ];
 
 const getAllData = async dispatch => {
     const [invoicesResp, soResp] = await Promise.all([
-      axios.get(INVOICES_URL),
-      axios.get(SALES_ORDERS_URL),
+        axios.get(INVOICES_URL, {headers: {Authorization: `Bearer ${token}`}}),
+        axios.get(SALES_ORDERS_URL, {headers: {Authorization: `Bearer ${token}`}}),
     ]);
 
     dispatch({
-      type: "SET_INVOICES",
-      payload: invoicesResp.data.data,
+        type: "SET_INVOICES",
+        payload: invoicesResp.data.data,
     });
 
     dispatch({
-      type: "SET_SALES_ORDERS",
-      payload: soResp.data.salesOrders,
+        type: "SET_SALES_ORDERS",
+        payload: soResp.data.salesOrders,
     });
-  };
+};
 
 export const Invoices = () => {
     const {state, dispatch} = useContext(QuickbookContext);
@@ -179,9 +185,9 @@ export const Invoices = () => {
     }
 
     const tabs = items(
-      { invoices: state.invoices, salesOrders: state.salesOrders },
-      getInvoice,
-      setFetchTrigger
+        {invoices: state.invoices, salesOrders: state.salesOrders},
+        getInvoice,
+        setFetchTrigger
     );
 
     return (
