@@ -8,16 +8,18 @@ import 'ag-grid-enterprise';
 import {Tabs, Col, Row, Tag} from 'antd';
 import {Layout} from '../layout/Layout';
 import {QuickbookContext} from '../../App';
+import {url} from '../../connections/toServer'
 
 const {Text} = Typography;
 const onChange = key => null;
 
-const INVOICES_URL = 'http://localhost:8080/api/admin/invoices';
+// Please replace localhost with your server domain
+const INVOICES_URL = `${url}/api/quickbooks/invoices`;
 const tenantId = JSON.parse(localStorage.getItem('token'))?.tenant_id;
-const SALES_ORDERS_URL = `http://localhost:8080/api/sales/sales-orders/${tenantId}`;
-const GET_PDF_URL = 'http://localhost:8080/api/admin/invoice-pdf/';
-const CREATE_INVOICE_URL = 'http://localhost:8080/api/admin/create-invoice';
-const RELEASE_SALES_ORDER_URL = 'http://localhost:8080/api/sales/release-so';
+const SALES_ORDERS_URL = `${url}/api/sales/sales-orders/${tenantId}`;
+const GET_PDF_URL = `${url}/api/admin/invoice-pdf/`;
+const CREATE_INVOICE_URL = `${url}/api/admin/create-invoice`;
+const RELEASE_SALES_ORDER_URL = `${url}/api/sales/release-so`;
 const token = JSON.parse(localStorage.getItem('token'))?.access_token;
 
 const generateUniquePdfName = () => {

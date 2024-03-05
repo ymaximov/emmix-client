@@ -72,12 +72,12 @@ const router = createBrowserRouter([
         element: <AdminRoute><ResetPassword /></AdminRoute>
     },
     {
-        path: '/admin/invoices',
-        element: <AdminRoute><Invoices/></AdminRoute>
+        path: '/quickbooks/invoices',
+        element: <ProtectedRoute><Invoices/></ProtectedRoute>
     },
     {
-        path: '/admin/quickbooks',
-        element: <AdminRoute><Quickbooks/></AdminRoute>
+        path: '/quickbooks/login',
+        element: <ProtectedRoute><Quickbooks/></ProtectedRoute>
     },
     {
         path: '/crm',
